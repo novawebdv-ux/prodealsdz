@@ -1,0 +1,62 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // دالة للتحقق من أن المستخدم مسؤول
+    function isAdmin() {
+      return request.auth != null && 
+             request.auth.token.email == 'admin@prodeals.dz';
+    }
+    
+    // قواعد المنتجات - يمكن للجميع القراءة، فقط المسؤول يمكنه الكتابة
+    match /products/{productId} {
+      // السماح للجميع بقراءة المنتجات
+      allow read: if true;
+      
+      // السماح بالإنشاء والتحديث والحذف للمسؤولين فقط
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // قواعد الطلبات - تُحذف تلقائياً بعد 7 أيام
+    match /orders/{orderId} {
+      // السماح للمستخدمين بقراءة طلباتهم فقط، والمسؤول يرى الكل
+      allow read: if request.auth != null && 
+                     (resource.data.customerEmail == request.auth.token.email ||
+                      isAdmin());
+      
+      // السماح للمستخدمين المسجلين بإنشاء طلبات بشرط أن يكون البريد الإلكتروني خاصتهم
+      allow create: if request.auth != null &&
+                       request.resource.data.customerEmail == request.auth.token.email &&
+                       request.resource.data.status == 'pending';
+      
+      // السماح للمسؤولين فقط بتحديث حالة الطلب
+      allow update: if isAdmin();
+      
+      // السماح للمسؤولين فقط بحذف الطلبات (أو عبر Cloud Function)
+      allow delete: if isAdmin();
+    }
+    
+    // قواعد المشتريات - دائمة، لا تُحذف
+    match /purchases/{purchaseId} {
+      // السماح للمستخدمين بقراءة مشترياتهم فقط، والمسؤول يرى الكل
+      allow read: if request.auth != null && 
+                     (resource.data.customerEmail == request.auth.token.email ||
+                      isAdmin());
+      
+      // السماح بالإنشاء للمسؤولين فقط (عند تأكيد الطلب)
+      allow create: if isAdmin();
+      
+      // منع التحديث والحذف نهائياً - المشتريات دائمة
+      allow update, delete: if false;
+    }
+    
+    // قواعد الإعدادات - للمسؤولين فقط
+    match /settings/{settingId} {
+      // السماح للجميع بقراءة الإعدادات (رقم CCP)
+      allow read: if true;
+      
+      // السماح للمسؤولين فقط بتعديل الإعدادات
+      allow create, update, delete: if isAdmin();
+    }
+  }
+}

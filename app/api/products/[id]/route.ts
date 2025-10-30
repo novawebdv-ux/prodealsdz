@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/server/db';
-import { products } from '@/shared/schema';
-import { eq } from 'drizzle-orm';
+import { firestoreService } from '@/lib/firestore';
 
 export async function PUT(
   request: Request,
@@ -10,14 +8,15 @@ export async function PUT(
   try {
     const body = await request.json();
     const { title, description, price, downloadLink } = body;
-    const productId = parseInt(params.id);
     
-    const [updatedProduct] = await db
-      .update(products)
-      .set({ title, description, price, downloadLink })
-      .where(eq(products.id, productId))
-      .returning();
+    await firestoreService.products.update(params.id, {
+      title,
+      description,
+      price,
+      downloadLink,
+    });
     
+    const updatedProduct = await firestoreService.products.getById(params.id);
     return NextResponse.json(updatedProduct);
   } catch (error) {
     console.error('Error updating product:', error);
@@ -30,8 +29,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const productId = parseInt(params.id);
-    await db.delete(products).where(eq(products.id, productId));
+    await firestoreService.products.delete(params.id);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error deleting product:', error);

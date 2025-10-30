@@ -7,7 +7,7 @@ import WhatsAppButton from '@/components/WhatsAppButton'
 import styles from './purchases.module.css'
 
 interface Purchase {
-  id: number
+  id: string
   productTitle: string
   downloadLink: string | null
   purchasedAt: string
@@ -33,9 +33,10 @@ export default function MyPurchasesPage() {
     try {
       const res = await fetch(`/api/purchases?email=${encodeURIComponent(email)}`)
       const data = await res.json()
-      setPurchases(data)
+      setPurchases(Array.isArray(data) ? data : [])
     } catch (error) {
       console.error('Error loading purchases:', error)
+      setPurchases([])
     } finally {
       setLoading(false)
     }

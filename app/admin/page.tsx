@@ -7,7 +7,7 @@ import WhatsAppButton from '@/components/WhatsAppButton'
 import styles from './admin.module.css'
 
 interface Product {
-  id: number
+  id: string
   title: string
   description: string
   price: number
@@ -15,7 +15,7 @@ interface Product {
 }
 
 interface Order {
-  id: number
+  id: string
   customerName: string
   customerEmail: string
   customerPhone: string | null
@@ -46,7 +46,7 @@ export default function AdminPanel() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
   
   const [showRejectModal, setShowRejectModal] = useState(false)
-  const [rejectingOrderId, setRejectingOrderId] = useState<number | null>(null)
+  const [rejectingOrderId, setRejectingOrderId] = useState<string | null>(null)
   const [rejectionReason, setRejectionReason] = useState('')
 
   useEffect(() => {
@@ -64,18 +64,22 @@ export default function AdminPanel() {
   }, [isAuthenticated, activeTab])
 
   async function fetchData() {
-    if (activeTab === 'products') {
-      const res = await fetch('/api/products')
-      const data = await res.json()
-      setProducts(data)
-    } else if (activeTab === 'orders') {
-      const res = await fetch('/api/orders')
-      const data = await res.json()
-      setOrders(data)
-    } else if (activeTab === 'settings') {
-      const res = await fetch('/api/settings')
-      const data = await res.json()
-      setSettings(data)
+    try {
+      if (activeTab === 'products') {
+        const res = await fetch('/api/products')
+        const data = await res.json()
+        setProducts(Array.isArray(data) ? data : [])
+      } else if (activeTab === 'orders') {
+        const res = await fetch('/api/orders')
+        const data = await res.json()
+        setOrders(Array.isArray(data) ? data : [])
+      } else if (activeTab === 'settings') {
+        const res = await fetch('/api/settings')
+        const data = await res.json()
+        setSettings(data || { ccpNumber: '', ccpName: '' })
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error)
     }
   }
 
@@ -109,14 +113,14 @@ export default function AdminPanel() {
     fetchData()
   }
 
-  async function handleDeleteProduct(id: number) {
+  async function handleDeleteProduct(id: string) {
     if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
       await fetch(`/api/products/${id}`, { method: 'DELETE' })
       fetchData()
     }
   }
 
-  async function handleConfirmOrder(id: number) {
+  async function handleConfirmOrder(id: string) {
     await fetch(`/api/orders/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -126,7 +130,7 @@ export default function AdminPanel() {
     alert('✅ تم تأكيد الطلبية بنجاح!')
   }
 
-  function openRejectModal(id: number) {
+  function openRejectModal(id: string) {
     setRejectingOrderId(id)
     setRejectionReason('')
     setShowRejectModal(true)

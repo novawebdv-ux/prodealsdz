@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/server/db';
-import { purchases } from '@/shared/schema';
-import { eq, desc } from 'drizzle-orm';
+import { firestoreService } from '@/lib/firestore';
 
 export async function GET(request: Request) {
   try {
@@ -12,12 +10,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Email required' }, { status: 400 });
     }
     
-    const userPurchases = await db
-      .select()
-      .from(purchases)
-      .where(eq(purchases.customerEmail, email))
-      .orderBy(desc(purchases.purchasedAt));
-    
+    const userPurchases = await firestoreService.purchases.getByEmail(email);
     return NextResponse.json(userPurchases);
   } catch (error) {
     console.error('Error fetching purchases:', error);

@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/server/db';
-import { orders, purchases, products } from '@/shared/schema';
-import { eq } from 'drizzle-orm';
+import { firestoreService } from '@/lib/firestore';
 
 export async function PATCH(
   request: Request,
@@ -10,28 +8,24 @@ export async function PATCH(
   try {
     const body = await request.json();
     const { status, rejectionReason } = body;
-    const orderId = parseInt(params.id);
     
-    const [updatedOrder] = await db
-      .update(orders)
-      .set({
-        status,
-        rejectionReason: rejectionReason || null,
-        updatedAt: new Date(),
-      })
-      .where(eq(orders.id, orderId))
-      .returning();
+    await firestoreService.orders.update(params.id, {
+      status,
+      rejectionReason: rejectionReason || undefined,
+    });
     
-    if (status === 'confirmed') {
-      const product = await db.select().from(products).where(eq(products.id, updatedOrder.productId)).limit(1);
+    const updatedOrder = await firestoreService.orders.getById(params.id);
+    
+    if (status === 'confirmed' && updatedOrder) {
+      const product = await firestoreService.products.getById(updatedOrder.productId);
       
-      if (product[0]) {
-        await db.insert(purchases).values({
+      if (product) {
+        await firestoreService.purchases.create({
           orderId: updatedOrder.id,
           customerEmail: updatedOrder.customerEmail,
           productId: updatedOrder.productId,
           productTitle: updatedOrder.productTitle,
-          downloadLink: product[0].downloadLink || '',
+          downloadLink: product.downloadLink || '',
         });
       }
     }

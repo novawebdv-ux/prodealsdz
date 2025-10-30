@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/server/db';
-import { orders, products, purchases } from '@/shared/schema';
-import { eq, desc } from 'drizzle-orm';
+import { firestoreService } from '@/lib/firestore';
 
 export async function GET(request: Request) {
   try {
@@ -9,11 +7,11 @@ export async function GET(request: Request) {
     const email = searchParams.get('email');
     
     if (email) {
-      const userOrders = await db.select().from(orders).where(eq(orders.customerEmail, email)).orderBy(desc(orders.createdAt));
+      const userOrders = await firestoreService.orders.getByEmail(email);
       return NextResponse.json(userOrders);
     }
     
-    const allOrders = await db.select().from(orders).orderBy(desc(orders.createdAt));
+    const allOrders = await firestoreService.orders.getAll();
     return NextResponse.json(allOrders);
   } catch (error) {
     console.error('Error fetching orders:', error);
@@ -26,7 +24,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { customerEmail, customerName, customerPhone, productId, productTitle, productPrice, total, receiptImageUrl } = body;
     
-    const [newOrder] = await db.insert(orders).values({
+    const orderId = await firestoreService.orders.create({
       customerEmail,
       customerName,
       customerPhone,
@@ -36,8 +34,9 @@ export async function POST(request: Request) {
       total,
       receiptImageUrl,
       status: 'pending',
-    }).returning();
+    });
     
+    const newOrder = await firestoreService.orders.getById(orderId);
     return NextResponse.json(newOrder);
   } catch (error) {
     console.error('Error creating order:', error);

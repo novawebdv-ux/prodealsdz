@@ -9,7 +9,7 @@ import BuyModal from '@/components/BuyModal'
 import styles from './products.module.css'
 
 interface Product {
-  id: number
+  id: string
   title: string
   description: string
   price: number
@@ -31,9 +31,10 @@ export default function ProductsPage() {
     try {
       const res = await fetch('/api/products')
       const data = await res.json()
-      setProducts(data)
+      setProducts(Array.isArray(data) ? data : [])
     } catch (error) {
       console.error('Error loading products:', error)
+      setProducts([])
     }
   }
 

@@ -1,11 +1,9 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/server/db';
-import { products } from '@/shared/schema';
-import { eq } from 'drizzle-orm';
+import { firestoreService } from '@/lib/firestore';
 
 export async function GET() {
   try {
-    const allProducts = await db.select().from(products);
+    const allProducts = await firestoreService.products.getAll();
     return NextResponse.json(allProducts);
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -18,13 +16,14 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { title, description, price, downloadLink } = body;
     
-    const [newProduct] = await db.insert(products).values({
+    const productId = await firestoreService.products.create({
       title,
       description,
       price,
-      downloadLink: downloadLink || null,
-    }).returning();
+      downloadLink: downloadLink || undefined,
+    });
     
+    const newProduct = await firestoreService.products.getById(productId);
     return NextResponse.json(newProduct);
   } catch (error) {
     console.error('Error creating product:', error);

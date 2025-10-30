@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import styles from './BuyModal.module.css'
 
 interface Product {
-  id: number
+  id: string
   title: string
   price: number
 }
