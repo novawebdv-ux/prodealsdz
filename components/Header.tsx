@@ -4,22 +4,39 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { getCurrentUser, setCurrentUser, isAdmin } from '@/lib/auth'
 import styles from './Header.module.css'
 
 export default function Header() {
   const [user, setUser] = useState<any>(null)
   const [showUserMenu, setShowUserMenu] = useState(false)
+  const [showMobileMenu, setShowMobileMenu] = useState(false)
 
   useEffect(() => {
     setUser(getCurrentUser())
   }, [])
 
+  useEffect(() => {
+    if (showMobileMenu) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [showMobileMenu])
+
   const handleLogout = () => {
     setCurrentUser(null)
     setUser(null)
+    setShowMobileMenu(false)
     window.location.href = '/'
+  }
+
+  const closeMobileMenu = () => {
+    setShowMobileMenu(false)
   }
 
   return (
@@ -47,6 +64,18 @@ export default function Header() {
             </div>
           </Link>
 
+          {/* زر الهامبرغر للموبايل */}
+          <button 
+            className={styles.hamburger}
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+            aria-label="القائمة"
+          >
+            <span className={showMobileMenu ? styles.hamburgerActive : ''}></span>
+            <span className={showMobileMenu ? styles.hamburgerActive : ''}></span>
+            <span className={showMobileMenu ? styles.hamburgerActive : ''}></span>
+          </button>
+
+          {/* القائمة للشاشات الكبيرة */}
           <nav className={styles.nav}>
             <Link href="/" className={styles.navLink}>الرئيسية</Link>
             <Link href="/products" className={styles.navLink}>المنتجات</Link>
@@ -83,6 +112,82 @@ export default function Header() {
           </nav>
         </div>
       </div>
+
+      {/* القائمة الجانبية للموبايل */}
+      <AnimatePresence>
+        {showMobileMenu && (
+          <>
+            <motion.div 
+              className={styles.overlay}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={closeMobileMenu}
+            />
+            <motion.div 
+              className={styles.mobileMenu}
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'tween', duration: 0.3 }}
+            >
+              <div className={styles.mobileMenuHeader}>
+                <h2>القائمة</h2>
+                <button 
+                  className={styles.closeButton}
+                  onClick={closeMobileMenu}
+                  aria-label="إغلاق"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <nav className={styles.mobileNav}>
+                <Link href="/" className={styles.mobileNavLink} onClick={closeMobileMenu}>
+                  🏠 الرئيسية
+                </Link>
+                <Link href="/products" className={styles.mobileNavLink} onClick={closeMobileMenu}>
+                  🛍️ المنتجات
+                </Link>
+                <Link href="/about" className={styles.mobileNavLink} onClick={closeMobileMenu}>
+                  ℹ️ حولنا
+                </Link>
+                <Link href="/contact" className={styles.mobileNavLink} onClick={closeMobileMenu}>
+                  📞 اتصل بنا
+                </Link>
+                {user && isAdmin(user.email) && (
+                  <Link href="/admin" className={styles.mobileNavLink} onClick={closeMobileMenu}>
+                    ⚙️ لوحة التحكم
+                  </Link>
+                )}
+
+                <div className={styles.mobileMenuDivider}></div>
+
+                {user ? (
+                  <div className={styles.mobileUserSection}>
+                    <div className={styles.mobileUserInfo}>
+                      {user.picture && (
+                        <Image src={user.picture} alt={user.name} width={48} height={48} style={{ borderRadius: '50%' }} />
+                      )}
+                      <div>
+                        <p className={styles.userName}>{user.name}</p>
+                        <p className={styles.userEmail}>{user.email}</p>
+                      </div>
+                    </div>
+                    <button onClick={handleLogout} className="btn btn-danger" style={{ width: '100%', marginTop: '16px' }}>
+                      تسجيل الخروج
+                    </button>
+                  </div>
+                ) : (
+                  <Link href="/login" className="btn btn-primary" onClick={closeMobileMenu} style={{ width: '100%' }}>
+                    تسجيل الدخول
+                  </Link>
+                )}
+              </nav>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   )
 }
