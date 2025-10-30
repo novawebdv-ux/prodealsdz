@@ -121,6 +121,94 @@
   margin-top: auto;
 }
 
+.heroActions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.sellerProfile {
+  margin: 40px 0;
+}
+
+.profileHeader {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sellerAvatar {
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(111, 208, 255, 0.3);
+}
+
+.sellerInfo h3 {
+  margin: 0 0 5px 0;
+  color: var(--deep-blue);
+}
+
+.sellerInfo p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.sellerStats {
+  display: flex;
+  gap: 30px;
+  margin-top: 15px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.statValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--deep-blue);
+}
+
+.statLabel {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.profileDescription {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e6f2fb;
+}
+
+.profileDescription h4 {
+  margin: 0 0 10px 0;
+  color: var(--deep-blue);
+}
+
+.features {
+  margin: 40px 0;
+}
+
+.features h3 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--deep-blue);
+}
+
+.featureIcon {
+  font-size: 48px;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.features .card h4 {
+  margin: 10px 0;
+  color: var(--deep-blue);
+}
+
 .footer {
   margin-top: auto;
   padding: 30px 0;

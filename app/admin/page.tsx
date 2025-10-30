@@ -1,13 +1,15 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { type Product, type Order, DEFAULT_ADMIN } from '@/lib/data'
+import { type Product, type Order } from '@/lib/data'
+import { getCurrentUser, ADMIN_EMAIL, isAdmin } from '@/lib/auth'
+import Header from '@/components/Header'
+import WhatsAppButton from '@/components/WhatsAppButton'
 import styles from './admin.module.css'
 
 export default function AdminPanel() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [user, setUser] = useState<any>(null)
   const [activeTab, setActiveTab] = useState<'products' | 'orders'>('orders')
 
   const [products, setProducts] = useState<Product[]>([])
@@ -17,11 +19,10 @@ export default function AdminPanel() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const isLoggedIn = sessionStorage.getItem('prodeals_admin_logged_in')
-      if (isLoggedIn === 'true') {
-        setIsAuthenticated(true)
-      }
+    const currentUser = getCurrentUser()
+    setUser(currentUser)
+    if (currentUser && isAdmin(currentUser.email)) {
+      setIsAuthenticated(true)
     }
   }, [])
 
@@ -31,25 +32,7 @@ export default function AdminPanel() {
     }
   }, [isAuthenticated, activeTab])
 
-  function handleLogin(e: React.FormEvent) {
-    e.preventDefault()
-    
-    if (email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password) {
-      setIsAuthenticated(true)
-      if (typeof window !== 'undefined') {
-        sessionStorage.setItem('prodeals_admin_logged_in', 'true')
-      }
-    } else {
-      alert('بيانات تسجيل الدخول غير صحيحة')
-    }
-  }
-
-  function handleLogout() {
-    setIsAuthenticated(false)
-    if (typeof window !== 'undefined') {
-      sessionStorage.removeItem('prodeals_admin_logged_in')
-    }
-  }
+  
 
   function fetchData() {
     if (typeof window === 'undefined') return
@@ -111,49 +94,35 @@ export default function AdminPanel() {
 
   if (!isAuthenticated) {
     return (
-      <div className={styles.loginPage}>
-        <div className={styles.loginCard}>
-          <h1>لوحة تحكم الأدمن</h1>
-          <p style={{ textAlign: 'center', color: '#666', marginBottom: '20px' }}>
-            البريد: {DEFAULT_ADMIN.email}<br />
-            كلمة المرور: {DEFAULT_ADMIN.password}
-          </p>
-          <form onSubmit={handleLogin}>
-            <div className={styles.formGroup}>
-              <label>البريد الإلكتروني</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label>كلمة المرور</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <button type="submit" className="btn btn-primary">
-              تسجيل الدخول
+      <>
+        <Header />
+        <WhatsAppButton />
+        <div className={styles.loginPage}>
+          <div className={styles.loginCard}>
+            <h1>⛔ غير مصرح</h1>
+            <p style={{ textAlign: 'center', color: '#666', marginBottom: '20px' }}>
+              هذه الصفحة مخصصة للمسؤول فقط ({ADMIN_EMAIL})
+            </p>
+            <button 
+              onClick={() => window.location.href = '/'}
+              className="btn btn-primary"
+            >
+              العودة للرئيسية
             </button>
-          </form>
+          </div>
         </div>
-      </div>
+      </>
     )
   }
 
   return (
-    <div className={styles.adminPanel}>
-      <header className={styles.header}>
-        <h1>لوحة تحكم ProDeals</h1>
-        <button className="btn btn-secondary" onClick={handleLogout}>
-          تسجيل الخروج
-        </button>
-      </header>
+    <>
+      <Header />
+      <WhatsAppButton />
+      <div className={styles.adminPanel}>
+        <header className={styles.header}>
+          <h1>لوحة تحكم ProDeals</h1>
+        </header>
 
       <div className={styles.tabs}>
         <button
@@ -317,6 +286,7 @@ export default function AdminPanel() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   )
 }

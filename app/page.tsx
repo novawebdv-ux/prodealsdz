@@ -3,295 +3,116 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { type Product, type Order, INITIAL_PRODUCTS } from '@/lib/data'
+import Link from 'next/link'
+import Header from '@/components/Header'
+import WhatsAppButton from '@/components/WhatsAppButton'
 import styles from './page.module.css'
 
 export default function Home() {
-  const [products, setProducts] = useState<Product[]>([])
-  const [cart, setCart] = useState<Product[]>([])
-  const [showCart, setShowCart] = useState(false)
-  const [showCheckout, setShowCheckout] = useState(false)
-  const [searchTerm, setSearchTerm] = useState('')
-
-  useEffect(() => {
-    loadProducts()
-  }, [])
-
-  function loadProducts() {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('prodeals_products')
-      if (stored) {
-        setProducts(JSON.parse(stored))
-      } else {
-        localStorage.setItem('prodeals_products', JSON.stringify(INITIAL_PRODUCTS))
-        setProducts(INITIAL_PRODUCTS)
-      }
-    }
-  }
-
-  const addToCart = (product: Product) => {
-    setCart([...cart, product])
-  }
-
-  const removeFromCart = (index: number) => {
-    const newCart = [...cart]
-    newCart.splice(index, 1)
-    setCart(newCart)
-  }
-
-  const getTotal = () => {
-    return cart.reduce((sum, item) => sum + item.price, 0)
-  }
-
-  const filteredProducts = products.filter(
-    (p) =>
-      p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.description.toLowerCase().includes(searchTerm.toLowerCase())
-  )
-
-  async function handleCheckout(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-
-    const order: Order = {
-      id: 'order_' + Date.now(),
-      customer_name: formData.get('name') as string,
-      customer_email: formData.get('email') as string,
-      customer_phone: formData.get('phone') as string,
-      products: cart,
-      total: getTotal(),
-      status: 'pending',
-      created_at: new Date().toISOString(),
-    }
-
-    // Save order to localStorage
-    if (typeof window !== 'undefined') {
-      const orders = JSON.parse(localStorage.getItem('prodeals_orders') || '[]')
-      orders.push(order)
-      localStorage.setItem('prodeals_orders', JSON.stringify(orders))
-    }
-
-    alert('تم إرسال طلبك بنجاح! سيتم التواصل معك قريباً.')
-    setCart([])
-    setShowCheckout(false)
-    setShowCart(false)
-  }
-
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <div className="container">
-          <div className={styles.headerInner}>
-            <motion.div
-              className={styles.brand}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <motion.div
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                whileTap={{ scale: 0.95 }}
-                className={styles.logoWrapper}
-              >
-                <Image
-                  src="/images/logo.png"
-                  alt="ProDeals Logo"
-                  width={80}
-                  height={80}
-                  className={styles.logo}
-                  priority
-                />
-              </motion.div>
-              <div className={styles.brandText}>
-                <h1>ProDeals</h1>
-                <p>منصة جزائرية للمنتجات الرقمية</p>
-              </div>
-            </motion.div>
-
-            <nav className={styles.nav}>
-              <input
-                type="text"
-                placeholder="ابحث عن منتج..."
-                className={styles.search}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <button
-                className="btn btn-secondary"
-                onClick={() => setShowCart(true)}
-              >
-                السلة ({cart.length})
-              </button>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <Header />
+      <WhatsAppButton />
 
       <main className="container">
         <motion.section
           className={styles.hero}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.8 }}
         >
-          <h2>أفضل المنتجات الرقمية — بسيطة، أنيقة، وعملية</h2>
-          <p>منتجات رقمية عالية الجودة لمبدعي المحتوى والمطورين</p>
+          <h2>مرحباً بك في ProDeals</h2>
+          <p>منصة جزائرية رائدة لبيع المنتجات الرقمية</p>
+          <div className={styles.heroActions}>
+            <Link href="/products" className="btn btn-primary">
+              تصفح المنتجات
+            </Link>
+            <Link href="/about" className="btn btn-secondary">
+              تعرف علينا
+            </Link>
+          </div>
         </motion.section>
 
-        <section className={`grid grid-3 ${styles.products}`}>
-          {filteredProducts.map((product, index) => (
+        <section className={styles.sellerProfile}>
+          <motion.div
+            className="card"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className={styles.profileHeader}>
+              <Image
+                src="/images/logo.png"
+                alt="Seller"
+                width={100}
+                height={100}
+                className={styles.sellerAvatar}
+              />
+              <div className={styles.sellerInfo}>
+                <h3>ProDeals Team</h3>
+                <p>بائع موثوق | منتجات رقمية عالية الجودة</p>
+                <div className={styles.sellerStats}>
+                  <div className={styles.stat}>
+                    <span className={styles.statValue}>500+</span>
+                    <span className={styles.statLabel}>عميل راضي</span>
+                  </div>
+                  <div className={styles.stat}>
+                    <span className={styles.statValue}>4.9</span>
+                    <span className={styles.statLabel}>⭐ تقييم</span>
+                  </div>
+                  <div className={styles.stat}>
+                    <span className={styles.statValue}>100+</span>
+                    <span className={styles.statLabel}>منتج</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={styles.profileDescription}>
+              <h4>نبذة عن البائع</h4>
+              <p>
+                نحن فريق محترف متخصص في تقديم أفضل المنتجات الرقمية للسوق الجزائري.
+                نلتزم بالجودة العالية والخدمة الممتازة لجميع عملائنا.
+              </p>
+            </div>
+          </motion.div>
+        </section>
+
+        <section className={styles.features}>
+          <h3>لماذا تختار ProDeals؟</h3>
+          <div className="grid grid-3">
             <motion.div
-              key={product.id}
               className="card"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ delay: 0.2 }}
             >
-              <div className={styles.productThumb}>
-                {product.title.split(' ')[0]}
-              </div>
-              <h3>{product.title}</h3>
-              <p className={styles.productDesc}>{product.description}</p>
-              <div className={styles.price}>
-                {product.price.toLocaleString()} دج
-              </div>
-              <div className={styles.actions}>
-                <button
-                  className="btn btn-secondary"
-                  onClick={() => addToCart(product)}
-                >
-                  أضف للسلة
-                </button>
-                <button
-                  className="btn btn-primary"
-                  onClick={() => {
-                    addToCart(product)
-                    setShowCart(true)
-                  }}
-                >
-                  اشترِ الآن
-                </button>
-              </div>
+              <div className={styles.featureIcon}>🎯</div>
+              <h4>منتجات عالية الجودة</h4>
+              <p>نقدم أفضل المنتجات الرقمية المختارة بعناية</p>
             </motion.div>
-          ))}
+            <motion.div
+              className="card"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <div className={styles.featureIcon}>⚡</div>
+              <h4>تسليم فوري</h4>
+              <p>احصل على منتجاتك فوراً بعد الدفع</p>
+            </motion.div>
+            <motion.div
+              className="card"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <div className={styles.featureIcon}>💎</div>
+              <h4>دعم متواصل</h4>
+              <p>فريق الدعم متاح دائماً لمساعدتك</p>
+            </motion.div>
+          </div>
         </section>
       </main>
-
-      {showCart && (
-        <div className="modal-overlay" onClick={() => setShowCart(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <h2>سلة المشتريات</h2>
-            <div style={{ marginTop: '20px' }}>
-              {cart.length === 0 ? (
-                <p>السلة فارغة</p>
-              ) : (
-                cart.map((item, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      padding: '10px',
-                      borderBottom: '1px solid #eee',
-                    }}
-                  >
-                    <div>
-                      <strong>{item.title}</strong>
-                      <div style={{ fontSize: '14px', color: '#666' }}>
-                        {item.price.toLocaleString()} دج
-                      </div>
-                    </div>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => removeFromCart(index)}
-                    >
-                      حذف
-                    </button>
-                  </div>
-                ))
-              )}
-            </div>
-            <div
-              style={{
-                marginTop: '20px',
-                fontSize: '20px',
-                fontWeight: 'bold',
-              }}
-            >
-              الإجمالي: {getTotal().toLocaleString()} دج
-            </div>
-            <div
-              style={{
-                marginTop: '20px',
-                display: 'flex',
-                gap: '10px',
-              }}
-            >
-              <button
-                className="btn btn-secondary"
-                onClick={() => setShowCart(false)}
-              >
-                إغلاق
-              </button>
-              {cart.length > 0 && (
-                <button
-                  className="btn btn-primary"
-                  onClick={() => {
-                    setShowCart(false)
-                    setShowCheckout(true)
-                  }}
-                >
-                  إتمام الطلب
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showCheckout && (
-        <div
-          className="modal-overlay"
-          onClick={() => setShowCheckout(false)}
-        >
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <h2>إتمام الطلب</h2>
-            <form onSubmit={handleCheckout} style={{ marginTop: '20px' }}>
-              <div style={{ marginBottom: '15px' }}>
-                <label>الاسم الكامل</label>
-                <input type="text" name="name" required />
-              </div>
-              <div style={{ marginBottom: '15px' }}>
-                <label>البريد الإلكتروني</label>
-                <input type="email" name="email" required />
-              </div>
-              <div style={{ marginBottom: '15px' }}>
-                <label>رقم الهاتف</label>
-                <input type="tel" name="phone" required />
-              </div>
-              <div style={{ marginTop: '20px' }}>
-                <p style={{ fontSize: '14px', color: '#666' }}>
-                  سيتم التواصل معك لإتمام عملية الدفع
-                </p>
-              </div>
-              <div
-                style={{ marginTop: '20px', display: 'flex', gap: '10px' }}
-              >
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => setShowCheckout(false)}
-                >
-                  إلغاء
-                </button>
-                <button type="submit" className="btn btn-primary">
-                  إرسال الطلب
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
 
       <footer className={styles.footer}>
         <p>© 2025 ProDeals — جميع الحقوق محفوظة</p>
