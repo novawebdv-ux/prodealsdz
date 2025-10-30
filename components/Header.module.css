@@ -1,70 +1,123 @@
 
 .header {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(111, 208, 255, 0.2);
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-light);
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.header:hover {
+  box-shadow: 0 6px 28px rgba(111, 208, 255, 0.12);
 }
 
 .headerInner {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
-  padding: 15px 0;
+  gap: 24px;
+  padding: 18px 0;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 18px;
   text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.brand:hover {
+  transform: translateX(-4px);
 }
 
 .logoWrapper {
   position: relative;
 }
 
+.logoWrapper::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--sky-blue), var(--light-blue));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.logoWrapper:hover::before {
+  opacity: 0.3;
+  animation: pulse 2s infinite;
+}
+
 .logo {
   border-radius: 50%;
-  box-shadow: 0 4px 15px rgba(111, 208, 255, 0.3);
+  box-shadow: 0 6px 24px rgba(111, 208, 255, 0.35);
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.logo:hover {
+  transform: scale(1.1) rotate(5deg);
 }
 
 .brandText h1 {
   margin: 0;
-  font-size: 28px;
-  background: linear-gradient(135deg, #0b6b8f, #6fd0ff);
+  font-size: 32px;
+  background: linear-gradient(135deg, #0b6b8f, #6fd0ff, #a8e0ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
 .brandText p {
-  margin: 0;
+  margin: 4px 0 0 0;
   font-size: 14px;
-  color: #6b7280;
+  color: var(--muted);
+  font-weight: 500;
 }
 
 .nav {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
 }
 
 .navLink {
-  color: #0b6b8f;
+  color: var(--deep-blue);
   text-decoration: none;
   font-weight: 600;
-  padding: 8px 16px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  padding: 10px 20px;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.navLink::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--sky-blue), var(--light-blue));
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
 }
 
 .navLink:hover {
-  background: rgba(111, 208, 255, 0.1);
+  background: rgba(111, 208, 255, 0.12);
+  color: var(--sky-blue);
+}
+
+.navLink:hover::before {
+  width: 80%;
 }
 
 .userMenu {
@@ -74,35 +127,99 @@
 .userButton {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   background: white;
-  border: 2px solid #6fd0ff;
-  padding: 6px 12px;
-  border-radius: 8px;
+  border: 2px solid var(--sky-blue);
+  padding: 10px 18px;
+  border-radius: 12px;
   cursor: pointer;
   font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(111, 208, 255, 0.15);
+}
+
+.userButton:hover {
+  background: linear-gradient(135deg, var(--sky-blue), var(--light-blue));
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(111, 208, 255, 0.3);
 }
 
 .dropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 12px);
   left: 0;
-  margin-top: 8px;
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 8px;
-  min-width: 150px;
+  border-radius: 14px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
+  padding: 12px;
+  min-width: 180px;
+  border: 1px solid var(--border-light);
+  animation: fadeInScale 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdown button {
+  width: 100%;
+  padding: 12px 16px;
+  text-align: right;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  color: var(--text-primary);
+}
+
+.dropdown button:hover {
+  background: rgba(111, 208, 255, 0.1);
+  color: var(--sky-blue);
+  transform: translateX(-4px);
+}
+
+@media (max-width: 968px) {
+  .brandText h1 {
+    font-size: 26px;
+  }
+
+  .nav {
+    gap: 16px;
+  }
+
+  .navLink {
+    padding: 8px 14px;
+    font-size: 15px;
+  }
 }
 
 @media (max-width: 768px) {
   .headerInner {
     flex-direction: column;
+    gap: 16px;
   }
 
   .nav {
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .navLink {
+    flex: 1;
+    text-align: center;
+    min-width: 100px;
+  }
+
+  .userButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dropdown {
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    max-width: 300px;
   }
 }
