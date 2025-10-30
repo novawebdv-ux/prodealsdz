@@ -3,8 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { supabase, type Product } from '@/lib/supabase'
-import SetupNotice from '@/components/SetupNotice'
+import { type Product, type Order, INITIAL_PRODUCTS } from '@/lib/data'
 import styles from './page.module.css'
 
 export default function Home() {
@@ -15,17 +14,18 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
-    fetchProducts()
+    loadProducts()
   }, [])
 
-  async function fetchProducts() {
-    const { data, error } = await supabase
-      .from('products')
-      .select('*')
-      .order('created_at', { ascending: false })
-
-    if (data) {
-      setProducts(data)
+  function loadProducts() {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('prodeals_products')
+      if (stored) {
+        setProducts(JSON.parse(stored))
+      } else {
+        localStorage.setItem('prodeals_products', JSON.stringify(INITIAL_PRODUCTS))
+        setProducts(INITIAL_PRODUCTS)
+      }
     }
   }
 
@@ -53,30 +53,32 @@ export default function Home() {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
 
-    const order = {
+    const order: Order = {
+      id: 'order_' + Date.now(),
       customer_name: formData.get('name') as string,
       customer_email: formData.get('email') as string,
       customer_phone: formData.get('phone') as string,
       products: cart,
       total: getTotal(),
-      status: 'pending' as const,
+      status: 'pending',
+      created_at: new Date().toISOString(),
     }
 
-    const { error } = await supabase.from('orders').insert([order])
-
-    if (!error) {
-      alert('تم إرسال طلبك بنجاح! سيتم التواصل معك قريباً.')
-      setCart([])
-      setShowCheckout(false)
-      setShowCart(false)
-    } else {
-      alert('حدث خطأ، يرجى المحاولة مرة أخرى')
+    // Save order to localStorage
+    if (typeof window !== 'undefined') {
+      const orders = JSON.parse(localStorage.getItem('prodeals_orders') || '[]')
+      orders.push(order)
+      localStorage.setItem('prodeals_orders', JSON.stringify(orders))
     }
+
+    alert('تم إرسال طلبك بنجاح! سيتم التواصل معك قريباً.')
+    setCart([])
+    setShowCheckout(false)
+    setShowCart(false)
   }
 
   return (
     <div className={styles.page}>
-      <SetupNotice />
       <header className={styles.header}>
         <div className="container">
           <div className={styles.headerInner}>

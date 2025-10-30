@@ -1,25 +1,28 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { supabase, type Product, type Order, type Admin } from '@/lib/supabase'
+import { type Product, type Order, DEFAULT_ADMIN } from '@/lib/data'
 import styles from './admin.module.css'
 
 export default function AdminPanel() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [activeTab, setActiveTab] = useState<'products' | 'orders' | 'admins'>('orders')
-  
+  const [activeTab, setActiveTab] = useState<'products' | 'orders'>('orders')
+
   const [products, setProducts] = useState<Product[]>([])
   const [orders, setOrders] = useState<Order[]>([])
-  const [admins, setAdmins] = useState<Admin[]>([])
-  
+
   const [showProductModal, setShowProductModal] = useState(false)
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
-  const [showAdminModal, setShowAdminModal] = useState(false)
 
   useEffect(() => {
-    checkAuth()
+    if (typeof window !== 'undefined') {
+      const isLoggedIn = sessionStorage.getItem('prodeals_admin_logged_in')
+      if (isLoggedIn === 'true') {
+        setIsAuthenticated(true)
+      }
+    }
   }, [])
 
   useEffect(() => {
@@ -28,133 +31,82 @@ export default function AdminPanel() {
     }
   }, [isAuthenticated, activeTab])
 
-  async function checkAuth() {
-    const { data } = await supabase.auth.getSession()
-    if (data.session) {
-      const { data: adminData } = await supabase
-        .from('admins')
-        .select('*')
-        .eq('id', data.session.user.id)
-        .single()
-      
-      if (adminData) {
-        setIsAuthenticated(true)
-      }
-    }
-  }
-
-  async function handleLogin(e: React.FormEvent) {
+  function handleLogin(e: React.FormEvent) {
     e.preventDefault()
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-
-    if (data.session) {
-      const { data: adminData } = await supabase
-        .from('admins')
-        .select('*')
-        .eq('id', data.session.user.id)
-        .single()
-      
-      if (adminData) {
-        setIsAuthenticated(true)
-      } else {
-        alert('ليس لديك صلاحيات أدمن')
-        await supabase.auth.signOut()
+    
+    if (email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password) {
+      setIsAuthenticated(true)
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('prodeals_admin_logged_in', 'true')
       }
     } else {
-      alert('خطأ في تسجيل الدخول')
+      alert('بيانات تسجيل الدخول غير صحيحة')
     }
   }
 
-  async function handleLogout() {
-    await supabase.auth.signOut()
+  function handleLogout() {
     setIsAuthenticated(false)
-  }
-
-  async function fetchData() {
-    if (activeTab === 'products') {
-      const { data } = await supabase
-        .from('products')
-        .select('*')
-        .order('created_at', { ascending: false })
-      if (data) setProducts(data)
-    } else if (activeTab === 'orders') {
-      const { data } = await supabase
-        .from('orders')
-        .select('*')
-        .order('created_at', { ascending: false })
-      if (data) setOrders(data)
-    } else if (activeTab === 'admins') {
-      const { data } = await supabase
-        .from('admins')
-        .select('*')
-        .order('created_at', { ascending: false })
-      if (data) setAdmins(data)
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('prodeals_admin_logged_in')
     }
   }
 
-  async function handleProductSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function fetchData() {
+    if (typeof window === 'undefined') return
+
+    if (activeTab === 'products') {
+      const stored = localStorage.getItem('prodeals_products')
+      if (stored) {
+        setProducts(JSON.parse(stored))
+      }
+    } else if (activeTab === 'orders') {
+      const stored = localStorage.getItem('prodeals_orders')
+      if (stored) {
+        setOrders(JSON.parse(stored))
+      }
+    }
+  }
+
+  function handleProductSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
-    
-    const productData = {
+
+    const productData: Product = {
+      id: editingProduct?.id || 'prod_' + Date.now(),
       title: formData.get('title') as string,
       description: formData.get('description') as string,
       price: parseFloat(formData.get('price') as string),
     }
 
+    let updatedProducts: Product[]
     if (editingProduct) {
-      await supabase
-        .from('products')
-        .update(productData)
-        .eq('id', editingProduct.id)
+      updatedProducts = products.map((p) =>
+        p.id === editingProduct.id ? productData : p
+      )
     } else {
-      await supabase.from('products').insert([productData])
+      updatedProducts = [...products, productData]
     }
 
+    localStorage.setItem('prodeals_products', JSON.stringify(updatedProducts))
+    setProducts(updatedProducts)
     setShowProductModal(false)
     setEditingProduct(null)
-    fetchData()
   }
 
-  async function handleDeleteProduct(id: string) {
+  function handleDeleteProduct(id: string) {
     if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
-      await supabase.from('products').delete().eq('id', id)
-      fetchData()
+      const updatedProducts = products.filter((p) => p.id !== id)
+      localStorage.setItem('prodeals_products', JSON.stringify(updatedProducts))
+      setProducts(updatedProducts)
     }
   }
 
-  async function handleOrderStatus(id: string, status: 'confirmed' | 'rejected') {
-    await supabase.from('orders').update({ status }).eq('id', id)
-    fetchData()
-  }
-
-  async function handleAddAdmin(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    const newEmail = formData.get('email') as string
-    const newPassword = formData.get('password') as string
-
-    const { data, error } = await supabase.auth.signUp({
-      email: newEmail,
-      password: newPassword,
-    })
-
-    if (data.user) {
-      await supabase.from('admins').insert([
-        {
-          id: data.user.id,
-          email: newEmail,
-        },
-      ])
-      setShowAdminModal(false)
-      fetchData()
-      alert('تم إضافة الأدمن بنجاح')
-    } else {
-      alert('حدث خطأ: ' + error?.message)
-    }
+  function handleOrderStatus(id: string, status: 'confirmed' | 'rejected') {
+    const updatedOrders = orders.map((o) =>
+      o.id === id ? { ...o, status } : o
+    )
+    localStorage.setItem('prodeals_orders', JSON.stringify(updatedOrders))
+    setOrders(updatedOrders)
   }
 
   if (!isAuthenticated) {
@@ -162,6 +114,10 @@ export default function AdminPanel() {
       <div className={styles.loginPage}>
         <div className={styles.loginCard}>
           <h1>لوحة تحكم الأدمن</h1>
+          <p style={{ textAlign: 'center', color: '#666', marginBottom: '20px' }}>
+            البريد: {DEFAULT_ADMIN.email}<br />
+            كلمة المرور: {DEFAULT_ADMIN.password}
+          </p>
           <form onSubmit={handleLogin}>
             <div className={styles.formGroup}>
               <label>البريد الإلكتروني</label>
@@ -212,12 +168,6 @@ export default function AdminPanel() {
         >
           المنتجات
         </button>
-        <button
-          className={activeTab === 'admins' ? styles.activeTab : ''}
-          onClick={() => setActiveTab('admins')}
-        >
-          المسؤولين
-        </button>
       </div>
 
       <div className={styles.content}>
@@ -244,7 +194,7 @@ export default function AdminPanel() {
                     <div className={styles.orderProducts}>
                       <strong>المنتجات:</strong>
                       <ul>
-                        {order.products.map((p: any, i: number) => (
+                        {order.products.map((p, i) => (
                           <li key={i}>{p.title}</li>
                         ))}
                       </ul>
@@ -311,28 +261,6 @@ export default function AdminPanel() {
             </div>
           </div>
         )}
-
-        {activeTab === 'admins' && (
-          <div>
-            <div className={styles.sectionHeader}>
-              <h2>إدارة المسؤولين</h2>
-              <button
-                className="btn btn-primary"
-                onClick={() => setShowAdminModal(true)}
-              >
-                + إضافة مسؤول جديد
-              </button>
-            </div>
-            <div className={styles.adminsGrid}>
-              {admins.map((admin) => (
-                <div key={admin.id} className="card">
-                  <p><strong>البريد:</strong> {admin.email}</p>
-                  <p><strong>تاريخ الإضافة:</strong> {new Date(admin.created_at).toLocaleDateString('ar-DZ')}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
 
       {showProductModal && (
@@ -383,36 +311,6 @@ export default function AdminPanel() {
                 </button>
                 <button type="submit" className="btn btn-primary">
                   {editingProduct ? 'تحديث' : 'إضافة'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {showAdminModal && (
-        <div className="modal-overlay" onClick={() => setShowAdminModal(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <h2>إضافة مسؤول جديد</h2>
-            <form onSubmit={handleAddAdmin}>
-              <div className={styles.formGroup}>
-                <label>البريد الإلكتروني</label>
-                <input type="email" name="email" required />
-              </div>
-              <div className={styles.formGroup}>
-                <label>كلمة المرور</label>
-                <input type="password" name="password" required minLength={6} />
-              </div>
-              <div className={styles.modalActions}>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => setShowAdminModal(false)}
-                >
-                  إلغاء
-                </button>
-                <button type="submit" className="btn btn-primary">
-                  إضافة
                 </button>
               </div>
             </form>
