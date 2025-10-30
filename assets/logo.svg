@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <rect width="120" height="120" rx="20" fill="#6fd0ff"/>
+  <g transform="translate(22,30)" fill="#fff">
+    <path d="M18 0 L30 0 L30 6 L18 6 Z" opacity="0.95"/>
+    <text x="6" y="80" font-family="Arial" font-size="36" fill="#0b2540">PD</text>
+  </g>
+</svg>
