@@ -240,19 +240,20 @@
 .mobileMenu {
   position: fixed;
   top: 0;
+  left: 0;
   right: 0;
-  bottom: 0;
-  width: 85%;
-  max-width: 340px;
+  max-height: 90vh;
+  width: 100%;
   background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
   z-index: 1001;
-  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.15), 
-              -2px 0 12px rgba(111, 208, 255, 0.1);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15), 
+              0 2px 12px rgba(111, 208, 255, 0.1);
   overflow-y: auto;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  border-left: 3px solid var(--sky-blue);
+  border-bottom: 3px solid var(--sky-blue);
+  border-radius: 0 0 24px 24px;
 }
 
 .mobileMenuHeader {
