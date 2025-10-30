@@ -1,8 +1,9 @@
 import { initializeApp, getApps, cert, App } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
+import { getFirestore, Firestore } from 'firebase-admin/firestore';
 import { getAuth } from 'firebase-admin/auth';
 
 let app: App;
+let db: Firestore;
 
 if (!getApps().length) {
   const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
@@ -18,11 +19,13 @@ if (!getApps().length) {
       projectId: projectId,
     });
   }
+  
+  db = getFirestore(app);
+  db.settings({ ignoreUndefinedProperties: true });
 } else {
   app = getApps()[0];
+  db = getFirestore(app);
 }
 
-export const adminDb = getFirestore(app);
+export const adminDb = db;
 export const adminAuth = getAuth(app);
-
-adminDb.settings({ ignoreUndefinedProperties: true });
