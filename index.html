@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ProDealsDZ — سوق المنتجات الرقمية</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="assets/logo.svg" alt="ProDealsDZ logo" class="logo" />
+        <div class="brand-text">
+          <h1>prodealsdz</h1>
+          <p class="tag">منصة جزائرية لبيع المنتجات الرقمية</p>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <input id="search" placeholder="ابحث عن منتج..." />
+        <button id="cartBtn" class="cart-btn">سلة (<span id="cartCount">0</span>)</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container main">
+    <section class="hero">
+      <h2>أفضل المنتجات الرقمية — بسيطة، أنيقة، وعملية</h2>
+      <p>ادفع بسهولة بواسطة <strong>البطاقة الذهبية فقط</strong> — تجربة جزائرية محلية.</p>
+      <a href="#products" class="btn primary">تسوق الآن</a>
+    </section>
+
+    <section id="products" class="products-grid">
+      <!-- المنتجات تُعبّأ عبر جافاسكربت -->
+    </section>
+
+    <section class="about">
+      <h3>عن ProDealsDZ</h3>
+      <p>منصة بسيطة ومصممة لتمكين المبدعين الجزائريين من بيع منتجاتهم الرقمية — قوالب، دورات، كتب إلكترونية وأدوات برمجية.</p>
+    </section>
+  </main>
+
+  <!-- سلة الشراء -->
+  <div id="cartModal" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <header>
+        <h3>سلة المشتريات</h3>
+        <button class="close" data-close>&times;</button>
+      </header>
+      <div class="modal-body" id="cartItems"></div>
+      <footer>
+        <div class="total">الإجمالي: <span id="cartTotal">0.00</span> دج</div>
+        <button id="checkoutBtn" class="btn primary" disabled>الدفع بالبطاقة الذهبية</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- نموذج الدفع (محاكاة) -->
+  <div id="checkoutModal" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <header>
+        <h3>الدفع — البطاقة الذهبية</h3>
+        <button class="close" data-close>&times;</button>
+      </header>
+      <div class="modal-body">
+        <form id="checkoutForm">
+          <label>اسم صاحب البطاقة
+            <input type="text" id="cardName" required />
+          </label>
+          <label>رقم البطاقة (16 رقماً)
+            <input type="text" id="cardNumber" inputmode="numeric" maxlength="16" required />
+          </label>
+          <div class="row">
+            <label>تاريخ الانتهاء (MM/YY)
+              <input type="text" id="cardExp" maxlength="5" placeholder="MM/YY" required />
+            </label>
+            <label>CVV
+              <input type="password" id="cardCVV" maxlength="4" inputmode="numeric" required />
+            </label>
+          </div>
+          <p class="small">ملاحظة: هذه صفحة تجريبية تعرض تدفق الدفع محلياً — لا يتم إرسال بيانات حقيقية.</p>
+          <div class="actions">
+            <button type="submit" class="btn primary">تأكيد الدفع</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- إشعار نجاح -->
+  <div id="toast" class="toast" aria-hidden="true"></div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> ProDealsDZ — جميع الحقوق محفوظة</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
