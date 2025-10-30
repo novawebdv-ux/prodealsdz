@@ -234,3 +234,63 @@
     grid-template-columns: 1fr;
   }
 }
+
+.receiptImage {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e6f2fb;
+}
+
+.receiptImage strong {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--deep-blue);
+}
+
+.receiptImage img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 10px;
+  border: 2px solid var(--sky-blue);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.receiptImage img:hover {
+  transform: scale(1.05);
+}
+
+.rejectionReason {
+  margin-top: 15px;
+  padding: 15px;
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 4px solid #ef4444;
+  border-radius: 8px;
+}
+
+.rejectionReason strong {
+  color: #dc2626;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.rejectionReason p {
+  margin: 0;
+  color: #666;
+}
+
+.settingsCard {
+  max-width: 600px;
+  padding: 30px;
+}
+
+.downloadLink {
+  font-size: 12px;
+  color: #666;
+  word-break: break-all;
+  margin: 10px 0;
+  padding: 8px;
+  background: rgba(111, 208, 255, 0.1);
+  border-radius: 5px;
+}

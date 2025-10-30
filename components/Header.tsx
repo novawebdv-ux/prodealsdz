@@ -81,6 +81,9 @@ export default function Header() {
             <Link href="/products" className={styles.navLink}>المنتجات</Link>
             <Link href="/about" className={styles.navLink}>حولنا</Link>
             <Link href="/contact" className={styles.navLink}>اتصل بنا</Link>
+            {user && user.email !== 'guest@prodeals.dz' && (
+              <Link href="/my-purchases" className={styles.navLink}>مشترياتي</Link>
+            )}
             {user && isAdmin(user.email) && (
               <Link href="/admin" className={styles.navLink}>لوحة التحكم</Link>
             )}
@@ -161,6 +164,12 @@ export default function Header() {
                     <span className={styles.navIcon}>📞</span>
                     <span>اتصل بنا</span>
                   </Link>
+                  {user && user.email !== 'guest@prodeals.dz' && (
+                    <Link href="/my-purchases" className={styles.mobileNavLink} onClick={closeMobileMenu}>
+                      <span className={styles.navIcon}>📦</span>
+                      <span>مشترياتي</span>
+                    </Link>
+                  )}
                 </div>
 
                 {user && isAdmin(user.email) && (

@@ -1,0 +1,110 @@
+.productInfo {
+  background: linear-gradient(135deg, rgba(111, 208, 255, 0.1), rgba(11, 107, 143, 0.05));
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.productInfo h3 {
+  margin: 0 0 10px 0;
+  color: var(--deep-blue);
+}
+
+.price {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--deep-blue);
+  margin: 0;
+}
+
+.paymentInfo {
+  margin: 20px 0;
+}
+
+.paymentInfo h4 {
+  color: var(--deep-blue);
+  margin-bottom: 15px;
+}
+
+.ccpBox {
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid var(--sky-blue);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.ccpNumber {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--deep-blue);
+  background: rgba(111, 208, 255, 0.2);
+  padding: 10px;
+  border-radius: 8px;
+  margin: 10px 0;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+}
+
+.form {
+  margin-top: 20px;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--deep-blue);
+}
+
+.fileInput {
+  width: 100%;
+  padding: 10px;
+  border: 2px dashed var(--sky-blue);
+  border-radius: 10px;
+  background: rgba(111, 208, 255, 0.05);
+  cursor: pointer;
+}
+
+.fileInput:hover {
+  border-color: var(--deep-blue);
+  background: rgba(111, 208, 255, 0.1);
+}
+
+.preview {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.preview img {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 10px;
+  border: 2px solid var(--sky-blue);
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .ccpNumber {
+    font-size: 18px;
+  }
+  
+  .actions {
+    flex-direction: column;
+  }
+  
+  .actions button {
+    width: 100%;
+  }
+}

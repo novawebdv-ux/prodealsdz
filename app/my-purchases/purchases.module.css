@@ -1,0 +1,69 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, rgba(111, 208, 255, 0.1), rgba(255, 255, 255, 0.9));
+  padding-bottom: 40px;
+}
+
+h1 {
+  text-align: center;
+  margin: 40px 0;
+  background: linear-gradient(135deg, #0b6b8f, #6fd0ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  margin: 40px auto;
+  max-width: 500px;
+}
+
+.emptyState p {
+  margin: 20px 0;
+  color: #666;
+  font-size: 18px;
+}
+
+.purchasesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.purchaseCard {
+  text-align: center;
+  padding: 30px;
+}
+
+.productIcon {
+  font-size: 60px;
+  margin-bottom: 15px;
+}
+
+.purchaseCard h3 {
+  color: var(--deep-blue);
+  margin: 15px 0;
+}
+
+.date {
+  color: #666;
+  font-size: 14px;
+  margin: 10px 0 20px 0;
+}
+
+.noLink {
+  color: #999;
+  font-style: italic;
+  margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+  .purchasesGrid {
+    grid-template-columns: 1fr;
+  }
+}
