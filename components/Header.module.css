@@ -316,7 +316,7 @@
 }
 
 .mobileNavLink {
-  padding: 15px 14px;
+  padding: 12px 14px;
   text-decoration: none;
   color: var(--text-primary);
   font-weight: 600;
@@ -324,7 +324,9 @@
   border-radius: 10px;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
+  flex-direction: row;
   align-items: center;
+  justify-content: flex-start;
   gap: 12px;
   margin: 0 6px 6px 6px;
   position: relative;
@@ -366,6 +368,7 @@
 
 .mobileUserInfo {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 12px;
   padding: 16px;
