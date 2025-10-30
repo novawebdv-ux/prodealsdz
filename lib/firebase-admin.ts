@@ -1,27 +1,29 @@
 import { initializeApp, getApps, cert, App } from 'firebase-admin/app';
 import { getFirestore, Firestore } from 'firebase-admin/firestore';
 import { getAuth } from 'firebase-admin/auth';
+import * as fs from 'fs';
+import * as path from 'path';
 
 let app: App;
 let db: Firestore;
 
 if (!getApps().length) {
-  const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
-  
-  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-    const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  try {
+    const configPath = path.join(process.cwd(), 'firebase-config.json');
+    const configFile = fs.readFileSync(configPath, 'utf8');
+    const config = JSON.parse(configFile);
+    
     app = initializeApp({
-      credential: cert(serviceAccount),
-      projectId: projectId,
+      credential: cert(config.serviceAccount),
+      projectId: config.serviceAccount.project_id,
     });
-  } else {
-    app = initializeApp({
-      projectId: projectId,
-    });
+    
+    db = getFirestore(app);
+    db.settings({ ignoreUndefinedProperties: true });
+  } catch (error) {
+    console.error('Error loading firebase config:', error);
+    throw new Error('Firebase configuration file not found. Please create firebase-config.json');
   }
-  
-  db = getFirestore(app);
-  db.settings({ ignoreUndefinedProperties: true });
 } else {
   app = getApps()[0];
   db = getFirestore(app);

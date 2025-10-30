@@ -19,6 +19,9 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 
+# Firebase config (contains sensitive data)
+firebase-config.json
+
 # Misc
 .DS_Store
 *.pem
