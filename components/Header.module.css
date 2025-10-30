@@ -292,27 +292,56 @@
   display: flex;
   flex-direction: column;
   padding: 20px;
-  gap: 4px;
+  gap: 0;
   flex: 1;
+  overflow-y: auto;
+}
+
+.mobileNavSection {
+  margin-bottom: 8px;
+}
+
+.sectionTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 16px 0 8px 0;
+  padding: 0 12px;
 }
 
 .mobileNavLink {
-  padding: 16px 20px;
+  padding: 14px 16px;
   text-decoration: none;
   color: var(--text-primary);
   font-weight: 600;
-  font-size: 17px;
+  font-size: 16px;
   border-radius: 12px;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+
+.navIcon {
+  font-size: 22px;
+  width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .mobileNavLink:hover {
-  background: rgba(111, 208, 255, 0.1);
+  background: rgba(111, 208, 255, 0.12);
   color: var(--sky-blue);
   transform: translateX(-4px);
+}
+
+.mobileNavLink:active {
+  background: rgba(111, 208, 255, 0.2);
+  transform: translateX(-6px);
 }
 
 .mobileMenuDivider {
@@ -324,16 +353,18 @@
 
 .mobileUserSection {
   margin-top: auto;
-  padding-top: 20px;
+  padding-top: 0;
 }
 
 .mobileUserInfo {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 16px;
-  background: rgba(111, 208, 255, 0.08);
-  border-radius: 12px;
+  padding: 18px;
+  background: linear-gradient(135deg, rgba(111, 208, 255, 0.1), rgba(168, 224, 255, 0.08));
+  border-radius: 14px;
+  border: 2px solid rgba(111, 208, 255, 0.2);
+  margin-top: 8px;
 }
 
 .userName {
@@ -345,8 +376,12 @@
 
 .userEmail {
   margin: 4px 0 0 0;
-  font-size: 13px;
+  font-size: 12px;
   color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
 }
 
 @media (max-width: 768px) {

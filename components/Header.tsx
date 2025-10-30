@@ -143,28 +143,44 @@ export default function Header() {
               </div>
 
               <nav className={styles.mobileNav}>
-                <Link href="/" className={styles.mobileNavLink} onClick={closeMobileMenu}>
-                  🏠 الرئيسية
-                </Link>
-                <Link href="/products" className={styles.mobileNavLink} onClick={closeMobileMenu}>
-                  🛍️ المنتجات
-                </Link>
-                <Link href="/about" className={styles.mobileNavLink} onClick={closeMobileMenu}>
-                  ℹ️ حولنا
-                </Link>
-                <Link href="/contact" className={styles.mobileNavLink} onClick={closeMobileMenu}>
-                  📞 اتصل بنا
-                </Link>
-                {user && isAdmin(user.email) && (
-                  <Link href="/admin" className={styles.mobileNavLink} onClick={closeMobileMenu}>
-                    ⚙️ لوحة التحكم
+                <div className={styles.mobileNavSection}>
+                  <h3 className={styles.sectionTitle}>التصفح</h3>
+                  <Link href="/" className={styles.mobileNavLink} onClick={closeMobileMenu}>
+                    <span className={styles.navIcon}>🏠</span>
+                    <span>الرئيسية</span>
                   </Link>
+                  <Link href="/products" className={styles.mobileNavLink} onClick={closeMobileMenu}>
+                    <span className={styles.navIcon}>🛍️</span>
+                    <span>المنتجات</span>
+                  </Link>
+                  <Link href="/about" className={styles.mobileNavLink} onClick={closeMobileMenu}>
+                    <span className={styles.navIcon}>ℹ️</span>
+                    <span>حولنا</span>
+                  </Link>
+                  <Link href="/contact" className={styles.mobileNavLink} onClick={closeMobileMenu}>
+                    <span className={styles.navIcon}>📞</span>
+                    <span>اتصل بنا</span>
+                  </Link>
+                </div>
+
+                {user && isAdmin(user.email) && (
+                  <>
+                    <div className={styles.mobileMenuDivider}></div>
+                    <div className={styles.mobileNavSection}>
+                      <h3 className={styles.sectionTitle}>الإدارة</h3>
+                      <Link href="/admin" className={styles.mobileNavLink} onClick={closeMobileMenu}>
+                        <span className={styles.navIcon}>⚙️</span>
+                        <span>لوحة التحكم</span>
+                      </Link>
+                    </div>
+                  </>
                 )}
 
                 <div className={styles.mobileMenuDivider}></div>
 
                 {user ? (
                   <div className={styles.mobileUserSection}>
+                    <h3 className={styles.sectionTitle}>الحساب</h3>
                     <div className={styles.mobileUserInfo}>
                       {user.picture && (
                         <Image src={user.picture} alt={user.name} width={48} height={48} style={{ borderRadius: '50%' }} />
@@ -179,9 +195,12 @@ export default function Header() {
                     </button>
                   </div>
                 ) : (
-                  <Link href="/login" className="btn btn-primary" onClick={closeMobileMenu} style={{ width: '100%' }}>
-                    تسجيل الدخول
-                  </Link>
+                  <div className={styles.mobileNavSection}>
+                    <h3 className={styles.sectionTitle}>الحساب</h3>
+                    <Link href="/login" className="btn btn-primary" onClick={closeMobileMenu} style={{ width: '100%' }}>
+                      تسجيل الدخول
+                    </Link>
+                  </div>
                 )}
               </nav>
             </motion.div>
