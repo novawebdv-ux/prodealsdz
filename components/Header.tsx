@@ -190,15 +190,15 @@ export default function Header() {
                         <p className={styles.userEmail}>{user.email}</p>
                       </div>
                     </div>
-                    <button onClick={handleLogout} className="btn btn-danger" style={{ width: '100%', marginTop: '16px' }}>
-                      تسجيل الخروج
+                    <button onClick={handleLogout} className="btn btn-danger" style={{ width: '100%', marginTop: '14px', marginLeft: '6px', marginRight: '6px' }}>
+                      🚪 تسجيل الخروج
                     </button>
                   </div>
                 ) : (
                   <div className={styles.mobileNavSection}>
                     <h3 className={styles.sectionTitle}>الحساب</h3>
-                    <Link href="/login" className="btn btn-primary" onClick={closeMobileMenu} style={{ width: '100%' }}>
-                      تسجيل الدخول
+                    <Link href="/login" className="btn btn-primary" onClick={closeMobileMenu} style={{ width: '100%', marginLeft: '6px', marginRight: '6px' }}>
+                      🔐 تسجيل الدخول
                     </Link>
                   </div>
                 )}
