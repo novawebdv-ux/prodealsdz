@@ -6,24 +6,15 @@
     "dev": "next dev -p 5000 -H 0.0.0.0",
     "build": "next build",
     "start": "next start -p 5000 -H 0.0.0.0",
-    "lint": "next lint",
-    "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "lint": "next lint"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^1.0.2",
-    "@types/ws": "^8.18.1",
-    "bufferutil": "^4.0.9",
-    "drizzle-kit": "^0.31.6",
-    "drizzle-orm": "^0.44.7",
     "firebase": "^12.5.0",
     "firebase-admin": "^13.5.0",
     "framer-motion": "^10.16.16",
     "next": "^14.0.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "utf-8-validate": "^6.0.5",
-    "ws": "^8.18.3"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.19.24",
