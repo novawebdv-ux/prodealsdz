@@ -1,43 +1,142 @@
-# ProDealsDZ
+# ProDeals
 
 ## Overview
-ProDealsDZ is an Algerian digital products marketplace - a clean, minimal single-page application built with vanilla HTML, CSS, and JavaScript. The site is in Arabic (RTL layout) and features a simulated e-commerce experience for digital products like templates, courses, ebooks, and tools.
+ProDeals هو منصة جزائرية متكاملة لبيع المنتجات الرقمية، مبني بـ Next.js 14 و Supabase. يتضمن واجهة عامة للعملاء ولوحة تحكم كاملة للإدارة.
 
 ## Project Architecture
-- **Type**: Static frontend-only web application
-- **Languages**: HTML5, CSS3, JavaScript (ES6+)
-- **No build system**: Pure vanilla code, no frameworks or bundlers
-- **No backend**: All functionality is client-side simulation
-- **No dependencies**: Self-contained project
+- **Frontend Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Database**: Supabase (PostgreSQL)
+- **Authentication**: Supabase Auth
+- **Animations**: Framer Motion
+- **Styling**: CSS Modules + Global CSS
+- **Deployment Target**: Vercel
 
 ## File Structure
 ```
 .
-├── index.html          # Main HTML structure
-├── styles.css          # Complete styling (RTL, responsive)
-├── script.js           # All client-side logic
-├── assets/
-│   └── logo.svg        # ProDealsDZ logo
-├── server.py           # Simple Python HTTP server for development
-└── replit.md           # This file
+├── app/
+│   ├── layout.tsx          # Root layout (RTL, Arabic)
+│   ├── page.tsx            # الصفحة الرئيسية - عرض المنتجات
+│   ├── page.module.css     # تصميم الصفحة الرئيسية
+│   ├── globals.css         # التصميم العام
+│   └── admin/
+│       ├── page.tsx        # لوحة تحكم الأدمن
+│       └── admin.module.css
+├── lib/
+│   ├── supabase.ts         # إعداد Supabase client
+│   └── database.sql        # Schema قاعدة البيانات
+├── public/
+│   └── images/
+│       └── logo.png        # شعار ProDeals
+├── components/             # المكونات القابلة لإعادة الاستخدام
+├── backup/                 # نسخة احتياطية من المشروع القديم
+├── package.json
+├── tsconfig.json
+├── next.config.js
+└── README.md
 ```
 
 ## Features
-- Product catalog display
-- Shopping cart functionality
-- Search/filter products
-- Simulated checkout flow (Golden Card payment - Algeria-specific)
-- Modal dialogs for cart and checkout
-- Toast notifications
-- Fully responsive design
-- RTL (Right-to-Left) layout for Arabic
 
-## Development
-The project uses a simple Python HTTP server to serve static files on port 5000 with cache-control headers disabled for proper development experience.
+### الواجهة العامة (/)
+- عرض المنتجات الرقمية من قاعدة البيانات
+- البحث والتصفية
+- سلة تسوق تفاعلية
+- نموذج إرسال الطلبات
+- تصميم متجاوب بالكامل
+- أنيميشن احترافي للشعار باستخدام Framer Motion
+- تدرج لوني من أزرق سماوي إلى أبيض
+
+### لوحة التحكم (/admin)
+- **نظام المصادقة**: تسجيل دخول آمن للمسؤولين فقط
+- **إدارة الطلبات**: 
+  - عرض جميع الطلبات
+  - تأكيد أو رفض الطلبات
+  - تفاصيل كاملة لكل طلب
+- **إدارة المنتجات**:
+  - إضافة منتجات جديدة
+  - تعديل المنتجات الموجودة
+  - حذف المنتجات
+- **إدارة المسؤولين**:
+  - إضافة حسابات مسؤولين جديدة
+  - عرض جميع المسؤولين
+
+## Database Schema
+
+### Products Table
+- `id`: UUID (Primary Key)
+- `title`: TEXT
+- `description`: TEXT
+- `price`: NUMERIC
+- `image_url`: TEXT (optional)
+- `created_at`: TIMESTAMP
+
+### Orders Table
+- `id`: UUID (Primary Key)
+- `customer_name`: TEXT
+- `customer_email`: TEXT
+- `customer_phone`: TEXT
+- `products`: JSONB (array of products)
+- `total`: NUMERIC
+- `status`: TEXT (pending/confirmed/rejected)
+- `created_at`: TIMESTAMP
+
+### Admins Table
+- `id`: UUID (Foreign Key to auth.users)
+- `email`: TEXT
+- `created_at`: TIMESTAMP
+
+## Setup Instructions
+
+### في Replit (Development):
+1. المشروع جاهز للعمل محلياً
+2. لكن تحتاج إلى إعداد Supabase أولاً (انظر أدناه)
+3. بعد إعداد Supabase، أضف متغيرات البيئة في Secrets
+
+### إعداد Supabase:
+1. إنشاء حساب في https://supabase.com
+2. إنشاء مشروع جديد
+3. تشغيل الكود في `lib/database.sql` في SQL Editor
+4. الحصول على Project URL و Anon Key
+5. إضافتهم في `.env.local` أو Replit Secrets:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+### إنشاء أول أدمن:
+بعد تشغيل SQL schema:
+1. قم بالتسجيل في Supabase Auth
+2. أضف البريد الإلكتروني في جدول admins:
+```sql
+INSERT INTO admins (id, email) 
+VALUES ('user_id_from_supabase_auth', 'admin@email.com');
+```
+
+### للنشر على Vercel:
+1. ربط المشروع مع GitHub
+2. استيراد المشروع في Vercel
+3. إضافة Environment Variables
+4. النشر التلقائي
+
+## Workflow Configuration
+- الـ workflow الحالي يشغل Next.js dev server على المنفذ 5000
+- Command: `npm run dev`
+- Output type: webview
+- Port: 5000
 
 ## Recent Changes
-- 2025-10-30: Initial Replit environment setup
-  - Added Python HTTP server for serving static files
-  - Configured workflow for port 5000
-  - Added cache-control headers for development
-  - Created .gitignore for Python files
+- 2025-10-30: تحويل كامل للمشروع
+  - تحويل من HTML/CSS/JS بسيط إلى Next.js 14
+  - إضافة Supabase كـ backend
+  - إضافة نظام مصادقة كامل
+  - بناء لوحة تحكم إدارية شاملة
+  - إضافة الشعار الجديد مع أنيميشن
+  - تطبيق التصميم الجديد (أزرق سماوي → أبيض)
+  - إضافة TypeScript للأمان
+  - استخدام Framer Motion للأنيميشن
+
+## Important Notes
+- المشروع مُعد للاستضافة على Vercel (وليس Replit Deployments)
+- يحتاج إلى Supabase account ليعمل بشكل كامل
+- جميع الميزات جاهزة ومتكاملة
+- الأمان مطبق عبر RLS في Supabase

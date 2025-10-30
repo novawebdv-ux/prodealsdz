@@ -1,0 +1,156 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(111, 208, 255, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.headerInner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 15px 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logoWrapper {
+  position: relative;
+}
+
+.logo {
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(111, 208, 255, 0.3);
+}
+
+.brandText h1 {
+  margin: 0;
+  font-size: 28px;
+  background: linear-gradient(135deg, #0b6b8f, #6fd0ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.brandText p {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.search {
+  min-width: 250px;
+}
+
+.hero {
+  background: linear-gradient(135deg, rgba(111, 208, 255, 0.2), rgba(255, 255, 255, 0.1));
+  padding: 50px 30px;
+  border-radius: 20px;
+  text-align: center;
+  margin: 30px 0;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(111, 208, 255, 0.15);
+}
+
+.hero h2 {
+  margin: 0;
+  font-size: 36px;
+  color: #0b2540;
+}
+
+.hero p {
+  margin: 15px 0 0 0;
+  font-size: 18px;
+  color: #6b7280;
+}
+
+.products {
+  margin: 40px 0;
+}
+
+.productThumb {
+  height: 180px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #e6f9ff, #ffffff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--deep-blue);
+  margin-bottom: 15px;
+  box-shadow: inset 0 2px 10px rgba(111, 208, 255, 0.1);
+}
+
+.productDesc {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 10px 0;
+}
+
+.price {
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--deep-blue);
+  margin: 15px 0;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.footer {
+  margin-top: auto;
+  padding: 30px 0;
+  text-align: center;
+  color: #6b7280;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+@media (max-width: 768px) {
+  .headerInner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .search {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .hero h2 {
+    font-size: 24px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+}
