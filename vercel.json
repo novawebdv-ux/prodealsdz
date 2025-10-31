@@ -1,14 +1,14 @@
+
 {
   "buildCommand": "npm run build",
   "framework": "nextjs",
   "regions": ["cdg1"],
   "env": {
     "NEXT_PUBLIC_FIREBASE_API_KEY": "AIzaSyCe585MI4eIYYqrhrIXxLAMxdlBlm6RH-o",
-    "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN": "@firebase-auth-domain",
-    "NEXT_PUBLIC_FIREBASE_PROJECT_ID": "@firebase-project-id",
-    "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET": "@firebase-storage-bucket",
-    "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID": "@firebase-messaging-sender-id",
-    "NEXT_PUBLIC_FIREBASE_APP_ID": "@firebase-app-id",
-    "FIREBASE_SERVICE_ACCOUNT_JSON": "@firebase-service-account-json"
+    "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN": "fluted-helper-473819-e7.firebaseapp.com",
+    "NEXT_PUBLIC_FIREBASE_PROJECT_ID": "fluted-helper-473819-e7",
+    "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET": "fluted-helper-473819-e7.firebasestorage.app",
+    "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID": "342773355367",
+    "NEXT_PUBLIC_FIREBASE_APP_ID": "1:342773355367:web:8ac7289ffe1ac66c6e55c2"
   }
 }
