@@ -1,8 +1,8 @@
-# ProDeals - منصة جزائرية للمنتجات الرقمية
+# ProDeals - منصة جزائرية للمنتجات الرقمية 🇩🇿
 
-منصة بسيطة لبيع المنتجات الرقمية مع نظام طلبات ومشتريات، مبنية بـ Next.js 14 وFirebase Firestore.
+منصة حديثة ومتطورة لبيع المنتجات الرقمية في الجزائر، مبنية بتقنيات Next.js وFirebase.
 
-## 🚀 المميزات
+## ✨ المميزات
 
 ### للعملاء:
 - ✅ تصفح المنتجات الرقمية
@@ -11,7 +11,7 @@
 - 📦 تحميل المنتجات بعد التأكيد
 - 🔐 تسجيل دخول آمن عبر Google
 - 📱 واجهة باللغة العربية مع تصميم حديث
-- ✨ أنيميشن احترافي باستخدام Framer Motion
+- ⚡ سرعة فائقة في التنقل بين الصفحات
 
 ### للإدارة (لوحة التحكم):
 - ✅ إدارة المنتجات (إضافة، تعديل، حذف)
@@ -22,17 +22,18 @@
 
 ## 🛠️ التقنيات المستخدمة
 
-- **Frontend**: Next.js 14 (App Router), TypeScript
+- **Frontend**: Next.js 14 (App Router) + TypeScript
 - **Database**: Firebase Firestore
 - **Authentication**: Firebase Auth (Google)
-- **Animations**: Framer Motion
-- **Hosting**: Vercel
+- **Storage**: Firebase Storage
+- **Hosting**: Vercel (موصى به)
 - **Styling**: CSS Modules
 
 ## 📋 متطلبات التشغيل
 
-- Node.js 18+
+- Node.js 18 أو أحدث
 - حساب Firebase
+- حساب Vercel (للنشر)
 
 ## 🔧 إعداد المشروع
 
@@ -44,7 +45,8 @@
 1. أنشئ مشروع جديد في Firebase Console
 2. فعّل Firebase Authentication (Google Provider)
 3. فعّل Firestore Database
-4. انسخ قواعد الأمان من ملف `firestore.rules`
+4. فعّل Firebase Storage
+5. انسخ قواعد الأمان من ملف `firestore.rules`
 
 ### 2. تثبيت المكتبات
 
@@ -54,16 +56,22 @@ npm install
 
 ### 3. إعداد المتغيرات البيئية
 
-أضف متغيرات Firebase في ملف `.env.local`:
+أنشئ ملف `.env.local` في المجلد الرئيسي:
 
 ```env
+# Firebase Client Configuration
 NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
 NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
 NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
 NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+
+# Firebase Admin (Server-side)
+FIREBASE_SERVICE_ACCOUNT_JSON={"type":"service_account",...}
 ```
+
+راجع ملف `.env.example` للمزيد من التفاصيل.
 
 ### 4. تشغيل المشروع
 
@@ -71,7 +79,7 @@ NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 npm run dev
 ```
 
-سيتم تشغيل المشروع على `http://localhost:5000`
+سيتم تشغيل المشروع على `http://localhost:3000`
 
 ## 🔐 صلاحيات المسؤول
 
@@ -86,12 +94,19 @@ function isAdmin() {
 }
 ```
 
-## 📦 النشر على Vercel
+## 🌐 النشر على Vercel
 
-1. قم بربط المشروع مع GitHub
-2. استورد المشروع في [Vercel](https://vercel.com)
-3. أضف المتغيرات البيئية في إعدادات Vercel
-4. انشر المشروع
+⚠️ **المشروع جاهز تماماً للنشر على Vercel!**
+
+اتبع التعليمات الكاملة والمفصلة في ملف [`DEPLOYMENT.md`](./DEPLOYMENT.md)
+
+### خطوات سريعة:
+1. ارفع المشروع إلى GitHub/GitLab
+2. سجل في [Vercel](https://vercel.com) وربط Git
+3. استورد المشروع (Vercel سيكتشف Next.js تلقائياً)
+4. أضف **جميع** المتغيرات البيئية في Vercel Settings
+5. انشر المشروع
+6. أضف دومين Vercel في Firebase Authorized Domains
 
 ## 💾 نظام البيانات
 
