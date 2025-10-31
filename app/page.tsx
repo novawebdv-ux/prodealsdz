@@ -18,10 +18,10 @@ export default function Home() {
           <h2>مرحباً بك في ProDeals</h2>
           <p>منصة جزائرية رائدة لبيع المنتجات الرقمية</p>
           <div className={styles.heroActions}>
-            <Link href="/products" className="btn btn-primary">
+            <Link href="/products" className="btn btn-primary" prefetch={true}>
               تصفح المنتجات
             </Link>
-            <Link href="/about" className="btn btn-secondary">
+            <Link href="/about" className="btn btn-secondary" prefetch={true}>
               تعرف علينا
             </Link>
           </div>

@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { getCurrentUser, setCurrentUser, isAdmin } from '@/lib/auth'
 import styles from './Header.module.css'
 
@@ -11,6 +12,7 @@ export default function Header() {
   const [user, setUser] = useState<any>(null)
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     setUser(getCurrentUser())
@@ -31,7 +33,7 @@ export default function Header() {
     setCurrentUser(null)
     setUser(null)
     setShowMobileMenu(false)
-    window.location.href = '/'
+    router.push('/')
   }
 
   const closeMobileMenu = () => {
@@ -72,15 +74,15 @@ export default function Header() {
 
           {/* القائمة للشاشات الكبيرة */}
           <nav className={styles.nav}>
-            <Link href="/" className={styles.navLink}>الرئيسية</Link>
-            <Link href="/products" className={styles.navLink}>المنتجات</Link>
-            <Link href="/about" className={styles.navLink}>حولنا</Link>
-            <Link href="/contact" className={styles.navLink}>اتصل بنا</Link>
+            <Link href="/" className={styles.navLink} prefetch={true}>الرئيسية</Link>
+            <Link href="/products" className={styles.navLink} prefetch={true}>المنتجات</Link>
+            <Link href="/about" className={styles.navLink} prefetch={true}>حولنا</Link>
+            <Link href="/contact" className={styles.navLink} prefetch={true}>اتصل بنا</Link>
             {user && user.email !== 'guest@prodeals.dz' && (
-              <Link href="/my-purchases" className={styles.navLink}>مشترياتي</Link>
+              <Link href="/my-purchases" className={styles.navLink} prefetch={true}>مشترياتي</Link>
             )}
             {user && isAdmin(user.email) && (
-              <Link href="/admin" className={styles.navLink}>لوحة التحكم</Link>
+              <Link href="/admin" className={styles.navLink} prefetch={true}>لوحة التحكم</Link>
             )}
             
             {user ? (
@@ -103,7 +105,7 @@ export default function Header() {
                 )}
               </div>
             ) : (
-              <Link href="/login" className="btn btn-primary">
+              <Link href="/login" className="btn btn-primary" prefetch={true}>
                 تسجيل الدخول
               </Link>
             )}
@@ -133,24 +135,24 @@ export default function Header() {
               <nav className={styles.mobileNav}>
                 <div className={styles.mobileNavSection}>
                   <h3 className={styles.sectionTitle}>التصفح</h3>
-                  <Link href="/" className={styles.mobileNavLink} onClick={closeMobileMenu}>
+                  <Link href="/" className={styles.mobileNavLink} onClick={closeMobileMenu} prefetch={true}>
                     <span className={styles.navIcon}>🏠</span>
                     <span>الرئيسية</span>
                   </Link>
-                  <Link href="/products" className={styles.mobileNavLink} onClick={closeMobileMenu}>
+                  <Link href="/products" className={styles.mobileNavLink} onClick={closeMobileMenu} prefetch={true}>
                     <span className={styles.navIcon}>🛍️</span>
                     <span>المنتجات</span>
                   </Link>
-                  <Link href="/about" className={styles.mobileNavLink} onClick={closeMobileMenu}>
+                  <Link href="/about" className={styles.mobileNavLink} onClick={closeMobileMenu} prefetch={true}>
                     <span className={styles.navIcon}>ℹ️</span>
                     <span>حولنا</span>
                   </Link>
-                  <Link href="/contact" className={styles.mobileNavLink} onClick={closeMobileMenu}>
+                  <Link href="/contact" className={styles.mobileNavLink} onClick={closeMobileMenu} prefetch={true}>
                     <span className={styles.navIcon}>📞</span>
                     <span>اتصل بنا</span>
                   </Link>
                   {user && user.email !== 'guest@prodeals.dz' && (
-                    <Link href="/my-purchases" className={styles.mobileNavLink} onClick={closeMobileMenu}>
+                    <Link href="/my-purchases" className={styles.mobileNavLink} onClick={closeMobileMenu} prefetch={true}>
                       <span className={styles.navIcon}>📦</span>
                       <span>مشترياتي</span>
                     </Link>
@@ -162,7 +164,7 @@ export default function Header() {
                     <div className={styles.mobileMenuDivider}></div>
                     <div className={styles.mobileNavSection}>
                       <h3 className={styles.sectionTitle}>الإدارة</h3>
-                      <Link href="/admin" className={styles.mobileNavLink} onClick={closeMobileMenu}>
+                      <Link href="/admin" className={styles.mobileNavLink} onClick={closeMobileMenu} prefetch={true}>
                         <span className={styles.navIcon}>⚙️</span>
                         <span>لوحة التحكم</span>
                       </Link>
@@ -191,7 +193,7 @@ export default function Header() {
                 ) : (
                   <div className={styles.mobileNavSection}>
                     <h3 className={styles.sectionTitle}>الحساب</h3>
-                    <Link href="/login" className="btn btn-primary" onClick={closeMobileMenu} style={{ width: '100%', marginLeft: '6px', marginRight: '6px' }}>
+                    <Link href="/login" className="btn btn-primary" onClick={closeMobileMenu} prefetch={true} style={{ width: '100%', marginLeft: '6px', marginRight: '6px' }}>
                       🔐 تسجيل الدخول
                     </Link>
                   </div>
