@@ -1,12 +1,14 @@
 'use client'
 
 import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { signInWithPopup, signInAnonymously } from 'firebase/auth'
 import { auth, googleProvider } from '@/lib/firebase'
 import { setCurrentUser } from '@/lib/auth'
 
 export default function GoogleLogin({ onLoginSuccess }: { onLoginSuccess?: () => void }) {
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   const handleGoogleLogin = async () => {
     setIsLoading(true)
@@ -21,7 +23,7 @@ export default function GoogleLogin({ onLoginSuccess }: { onLoginSuccess?: () =>
       })
       
       onLoginSuccess?.()
-      window.location.reload()
+      router.push('/products')
     } catch (error: any) {
       console.error('خطأ في تسجيل الدخول:', error)
       alert('حدث خطأ في تسجيل الدخول. حاول مرة أخرى.')
@@ -41,7 +43,7 @@ export default function GoogleLogin({ onLoginSuccess }: { onLoginSuccess?: () =>
       })
       
       onLoginSuccess?.()
-      window.location.reload()
+      router.push('/products')
     } catch (error: any) {
       console.error('خطأ في الدخول كزائر:', error)
       alert('حدث خطأ. حاول مرة أخرى.')
