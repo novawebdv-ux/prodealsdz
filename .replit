@@ -47,20 +47,9 @@ localPort = 37143
 externalPort = 3001
 
 [[ports]]
-localPort = 43213
+localPort = 39083
 externalPort = 3003
 
 [deployment]
 deploymentTarget = "autoscale"
 run = ["python3", "server.py"]
-
-[userenv]
-
-[userenv.shared]
-NEXT_PUBLIC_FIREBASE_API_KEY = "AIzaSyCe585MI4eIYYqrhrIXxLAMxdlBlm6RH-o"
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN = "fluted-helper-473819-e7.firebaseapp.com"
-NEXT_PUBLIC_FIREBASE_PROJECT_ID = "fluted-helper-473819-e7"
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET = "fluted-helper-473819-e7.firebasestorage.app"
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID = "342773355367"
-NEXT_PUBLIC_FIREBASE_APP_ID = "1:342773355367:web:8ac7289ffe1ac66c6e55c2"
-NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID = "G-24T84KR9LF"
