@@ -2,7 +2,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import { motion } from 'framer-motion'
 import Header from '@/components/Header'
 import WhatsAppButton from '@/components/WhatsAppButton'
 import styles from './contact.module.css'
@@ -23,22 +22,13 @@ export default function ContactPage() {
       <WhatsAppButton />
 
       <main className="container">
-        <motion.div
-          className={styles.contactHeader}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
+        <div className={styles.contactHeader}>
           <h1>اتصل بنا</h1>
           <p>نحن هنا للإجابة على استفساراتك</p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-2">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-          >
+          <div>
             <div className="card">
               <h2>معلومات الاتصال</h2>
               <div className={styles.contactInfo}>
@@ -72,13 +62,9 @@ export default function ContactPage() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 }}
-          >
+          <div>
             <div className="card">
               <h2>أرسل لنا رسالة</h2>
               {submitted && (
@@ -112,7 +98,7 @@ export default function ContactPage() {
                 </button>
               </form>
             </div>
-          </motion.div>
+          </div>
         </div>
       </main>
 

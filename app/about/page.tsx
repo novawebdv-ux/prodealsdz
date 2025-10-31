@@ -1,8 +1,4 @@
-
-'use client'
-
 import React from 'react'
-import { motion } from 'framer-motion'
 import Header from '@/components/Header'
 import WhatsAppButton from '@/components/WhatsAppButton'
 import styles from './about.module.css'
@@ -14,22 +10,12 @@ export default function AboutPage() {
       <WhatsAppButton />
 
       <main className="container">
-        <motion.div
-          className={styles.aboutHeader}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
+        <div className={styles.aboutHeader}>
           <h1>من نحن</h1>
           <p>تعرف على قصتنا ورؤيتنا</p>
-        </motion.div>
+        </div>
 
-        <motion.section
-          className={styles.section}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
+        <section className={styles.section}>
           <div className="card">
             <h2>قصتنا</h2>
             <p>
@@ -41,14 +27,9 @@ export default function AboutPage() {
               من خلال منصتنا الإلكترونية السهلة الاستخدام.
             </p>
           </div>
-        </motion.section>
+        </section>
 
-        <motion.section
-          className={styles.section}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-        >
+        <section className={styles.section}>
           <div className="card">
             <h2>رؤيتنا</h2>
             <p>
@@ -56,14 +37,9 @@ export default function AboutPage() {
               تطوير السوق الرقمي المحلي.
             </p>
           </div>
-        </motion.section>
+        </section>
 
-        <motion.section
-          className={styles.section}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-        >
+        <section className={styles.section}>
           <div className="card">
             <h2>قيمنا</h2>
             <div className="grid grid-2">
@@ -85,7 +61,7 @@ export default function AboutPage() {
               </div>
             </div>
           </div>
-        </motion.section>
+        </section>
       </main>
 
       <footer className={styles.footer}>
