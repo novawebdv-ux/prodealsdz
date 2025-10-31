@@ -9,20 +9,32 @@ let db: Firestore;
 
 if (!getApps().length) {
   try {
-    const configPath = path.join(process.cwd(), 'firebase-config.json');
-    const configFile = fs.readFileSync(configPath, 'utf8');
-    const config = JSON.parse(configFile);
+    let serviceAccount;
+    
+    if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
+      serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
+    } else {
+      const configPath = path.join(process.cwd(), 'firebase-config.json');
+      const configFile = fs.readFileSync(configPath, 'utf8');
+      const config = JSON.parse(configFile);
+      serviceAccount = config.serviceAccount;
+      
+      if (serviceAccount.project_id === 'YOUR_PROJECT_ID' || 
+          serviceAccount.private_key === 'YOUR_PRIVATE_KEY') {
+        throw new Error('Firebase credentials not configured');
+      }
+    }
     
     app = initializeApp({
-      credential: cert(config.serviceAccount),
-      projectId: config.serviceAccount.project_id,
+      credential: cert(serviceAccount),
+      projectId: serviceAccount.project_id,
     });
     
     db = getFirestore(app);
     db.settings({ ignoreUndefinedProperties: true });
   } catch (error) {
     console.error('Error loading firebase config:', error);
-    throw new Error('Firebase configuration file not found. Please create firebase-config.json');
+    throw new Error('Firebase configuration not found. Please add FIREBASE_SERVICE_ACCOUNT_JSON secret or update firebase-config.json');
   }
 } else {
   app = getApps()[0];
