@@ -1,7 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Header from '@/components/Header'
@@ -15,12 +14,7 @@ export default function Home() {
       <WhatsAppButton />
 
       <main className="container">
-        <motion.section
-          className={styles.hero}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
+        <section className={styles.hero}>
           <h2>مرحباً بك في ProDeals</h2>
           <p>منصة جزائرية رائدة لبيع المنتجات الرقمية</p>
           <div className={styles.heroActions}>
@@ -31,15 +25,10 @@ export default function Home() {
               تعرف علينا
             </Link>
           </div>
-        </motion.section>
+        </section>
 
         <section className={styles.sellerProfile}>
-          <motion.div
-            className="card"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-          >
+          <div className="card">
             <div className={styles.profileHeader}>
               <Image
                 src="/images/logo.png"
@@ -47,6 +36,7 @@ export default function Home() {
                 width={100}
                 height={100}
                 className={styles.sellerAvatar}
+                loading="lazy"
               />
               <div className={styles.sellerInfo}>
                 <h3>ProDeals Team</h3>
@@ -74,42 +64,27 @@ export default function Home() {
                 نلتزم بالجودة العالية والخدمة الممتازة لجميع عملائنا.
               </p>
             </div>
-          </motion.div>
+          </div>
         </section>
 
         <section className={styles.features}>
           <h3>لماذا تختار ProDeals؟</h3>
           <div className="grid grid-3">
-            <motion.div
-              className="card"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
+            <div className="card">
               <div className={styles.featureIcon}>🎯</div>
               <h4>منتجات عالية الجودة</h4>
               <p>نقدم أفضل المنتجات الرقمية المختارة بعناية</p>
-            </motion.div>
-            <motion.div
-              className="card"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
+            </div>
+            <div className="card">
               <div className={styles.featureIcon}>⚡</div>
               <h4>تسليم فوري</h4>
               <p>احصل على منتجاتك فوراً بعد الدفع</p>
-            </motion.div>
-            <motion.div
-              className="card"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
+            </div>
+            <div className="card">
               <div className={styles.featureIcon}>💎</div>
               <h4>دعم متواصل</h4>
               <p>فريق الدعم متاح دائماً لمساعدتك</p>
-            </motion.div>
+            </div>
           </div>
         </section>
       </main>

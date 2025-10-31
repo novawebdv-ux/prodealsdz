@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 import { getCurrentUser } from '@/lib/auth'
 import Header from '@/components/Header'
 import WhatsAppButton from '@/components/WhatsAppButton'
@@ -75,13 +74,10 @@ export default function ProductsPage() {
         </div>
 
         <section className={`grid grid-3 ${styles.products}`}>
-          {filteredProducts.map((product, index) => (
-            <motion.div
+          {filteredProducts.map((product) => (
+            <div
               key={product.id}
               className="card"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <div className={styles.productThumb}>
                 <div className={styles.imagePlaceholder}>📦</div>
@@ -97,7 +93,7 @@ export default function ProductsPage() {
                   اشترِ الآن
                 </button>
               </div>
-            </motion.div>
+            </div>
           ))}
         </section>
 

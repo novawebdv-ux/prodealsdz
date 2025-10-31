@@ -4,7 +4,6 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
 import { getCurrentUser, setCurrentUser, isAdmin } from '@/lib/auth'
 import styles from './Header.module.css'
 
@@ -44,11 +43,7 @@ export default function Header() {
       <div className="container">
         <div className={styles.headerInner}>
           <Link href="/" className={styles.brand}>
-            <motion.div
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              whileTap={{ scale: 0.95 }}
-              className={styles.logoWrapper}
-            >
+            <div className={styles.logoWrapper}>
               <Image
                 src="/images/logo.png"
                 alt="ProDeals Logo"
@@ -57,7 +52,7 @@ export default function Header() {
                 className={styles.logo}
                 priority
               />
-            </motion.div>
+            </div>
             <div className={styles.brandText}>
               <h1>ProDeals</h1>
               <p>منصة جزائرية للمنتجات الرقمية</p>
@@ -117,23 +112,13 @@ export default function Header() {
       </div>
 
       {/* القائمة الجانبية للموبايل */}
-      <AnimatePresence>
         {showMobileMenu && (
           <>
-            <motion.div 
+            <div 
               className={styles.overlay}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
               onClick={closeMobileMenu}
             />
-            <motion.div 
-              className={styles.mobileMenu}
-              initial={{ y: '-100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '-100%' }}
-              transition={{ type: 'tween', duration: 0.4 }}
-            >
+            <div className={styles.mobileMenu}>
               <div className={styles.mobileMenuHeader}>
                 <h2>القائمة</h2>
                 <button 
@@ -212,10 +197,9 @@ export default function Header() {
                   </div>
                 )}
               </nav>
-            </motion.div>
+            </div>
           </>
         )}
-      </AnimatePresence>
     </header>
   )
 }

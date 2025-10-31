@@ -234,6 +234,25 @@
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
   backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 /* القائمة الجانبية للموبايل */
@@ -248,6 +267,7 @@
   z-index: 1001;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15), 
               0 2px 12px rgba(111, 208, 255, 0.1);
+  animation: slideDown 0.3s ease;
   overflow-y: auto;
   overflow-x: hidden;
   display: flex;
