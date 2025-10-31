@@ -49,8 +49,8 @@ export default function MyPurchasesPage() {
         <WhatsAppButton />
         <main className="container">
           <div className={styles.emptyState}>
-            <h1>مشترياتي</h1>
-            <p>يرجى تسجيل الدخول بحساب Google لرؤية مشترياتك</p>
+            <h1 className={styles.pageTitle}>مشترياتي</h1>
+            <p className={styles.emptyText}>يرجى تسجيل الدخول بحساب Google لرؤية مشترياتك</p>
             <button className="btn btn-primary" onClick={() => window.location.href = '/login'}>
               تسجيل الدخول
             </button>
@@ -66,7 +66,7 @@ export default function MyPurchasesPage() {
       <WhatsAppButton />
       
       <main className="container">
-        <h1>مشترياتي</h1>
+        <h1 className={styles.pageTitle}>مشترياتي</h1>
         
         {loading ? (
           <div style={{ textAlign: 'center', padding: '40px' }}>
@@ -74,7 +74,7 @@ export default function MyPurchasesPage() {
           </div>
         ) : purchases.length === 0 ? (
           <div className={styles.emptyState}>
-            <p>لم تقم بشراء أي منتجات بعد</p>
+            <p className={styles.emptyText}>لم تقم بشراء أي منتجات بعد</p>
             <button className="btn btn-primary" onClick={() => window.location.href = '/products'}>
               تصفح المنتجات
             </button>
@@ -84,7 +84,7 @@ export default function MyPurchasesPage() {
             {purchases.map((purchase) => (
               <div key={purchase.id} className={`card ${styles.purchaseCard}`}>
                 <div className={styles.productIcon}>✅</div>
-                <h3>{purchase.productTitle}</h3>
+                <h3 className={styles.productTitle}>{purchase.productTitle}</h3>
                 <p className={styles.date}>
                   تاريخ الشراء: {new Date(purchase.purchasedAt).toLocaleDateString('ar-DZ')}
                 </p>

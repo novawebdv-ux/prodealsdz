@@ -4,7 +4,7 @@
   padding-bottom: 40px;
 }
 
-h1 {
+.pageTitle {
   text-align: center;
   margin: 40px 0;
   background: linear-gradient(135deg, #0b6b8f, #6fd0ff);
@@ -22,7 +22,7 @@ h1 {
   max-width: 500px;
 }
 
-.emptyState p {
+.emptyText {
   margin: 20px 0;
   color: #666;
   font-size: 18px;
@@ -45,7 +45,7 @@ h1 {
   margin-bottom: 15px;
 }
 
-.purchaseCard h3 {
+.productTitle {
   color: var(--deep-blue);
   margin: 15px 0;
 }
