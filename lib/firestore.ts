@@ -179,14 +179,15 @@ export const firestoreService = {
     async getByEmail(email: string): Promise<Purchase[]> {
       const snapshot = await adminDb.collection('purchases')
         .where('customerEmail', '==', email)
-        .orderBy('purchasedAt', 'desc')
         .get();
       
-      return snapshot.docs.map(doc => ({
+      const purchases = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
         purchasedAt: convertTimestamp(doc.data().purchasedAt)
       } as Purchase));
+      
+      return purchases.sort((a, b) => b.purchasedAt.getTime() - a.purchasedAt.getTime());
     },
 
     async create(purchase: Omit<Purchase, 'id' | 'purchasedAt'>): Promise<string> {
