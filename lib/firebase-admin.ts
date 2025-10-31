@@ -12,7 +12,15 @@ if (!getApps().length) {
     let serviceAccount;
     
     if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
-      serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
+      try {
+        serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
+      } catch (jsonError) {
+        console.log('Failed to parse FIREBASE_SERVICE_ACCOUNT_JSON, falling back to config file');
+        const configPath = path.join(process.cwd(), 'firebase-config.json');
+        const configFile = fs.readFileSync(configPath, 'utf8');
+        const config = JSON.parse(configFile);
+        serviceAccount = config.serviceAccount;
+      }
     } else {
       const configPath = path.join(process.cwd(), 'firebase-config.json');
       const configFile = fs.readFileSync(configPath, 'utf8');
