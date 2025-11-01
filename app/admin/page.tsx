@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { getCurrentUser, isAdmin } from '@/lib/auth'
+import { getCurrentUser, isAdmin, clearAdminCache } from '@/lib/auth'
 import Header from '@/components/Header'
 import WhatsAppButton from '@/components/WhatsAppButton'
 import styles from './admin.module.css'
@@ -52,11 +52,15 @@ export default function AdminPanel() {
   const [rejectionReason, setRejectionReason] = useState('')
 
   useEffect(() => {
-    const currentUser = getCurrentUser()
-    setUser(currentUser)
-    if (currentUser && isAdmin(currentUser.email)) {
-      setIsAuthenticated(true)
+    async function checkAuth() {
+      const currentUser = getCurrentUser()
+      setUser(currentUser)
+      if (currentUser) {
+        const adminStatus = await isAdmin(currentUser.email)
+        setIsAuthenticated(adminStatus)
+      }
     }
+    checkAuth()
   }, [])
 
   useEffect(() => {
@@ -198,6 +202,8 @@ export default function AdminPanel() {
     })
 
     if (res.ok) {
+      const { clearAdminCache } = await import('@/lib/auth')
+      clearAdminCache()
       alert('✅ تم إضافة المسؤول بنجاح!')
       setNewAdminEmail('')
       fetchData()
@@ -223,6 +229,8 @@ export default function AdminPanel() {
     })
 
     if (res.ok) {
+      const { clearAdminCache } = await import('@/lib/auth')
+      clearAdminCache()
       alert('✅ تم إزالة المسؤول بنجاح!')
       fetchData()
     } else {
