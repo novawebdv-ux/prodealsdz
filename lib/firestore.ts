@@ -43,6 +43,12 @@ export type Settings = {
   updatedAt: Date;
 };
 
+export type AdminSettings = {
+  id: string;
+  emails: string[];
+  updatedAt: Date;
+};
+
 const convertTimestamp = (timestamp: any): Date => {
   if (!timestamp) return new Date();
   if (timestamp.toDate) return timestamp.toDate();
@@ -222,6 +228,56 @@ export const firestoreService = {
       } else {
         await adminDb.collection('settings').doc(snapshot.docs[0].id).update({
           ...settings,
+          updatedAt: FieldValue.serverTimestamp()
+        });
+      }
+    }
+  },
+
+  admins: {
+    async get(): Promise<AdminSettings | null> {
+      const snapshot = await adminDb.collection('admin_settings').limit(1).get();
+      if (snapshot.empty) return null;
+      const doc = snapshot.docs[0];
+      return {
+        id: doc.id,
+        ...doc.data(),
+        updatedAt: convertTimestamp(doc.data().updatedAt)
+      } as AdminSettings;
+    },
+
+    async addEmail(email: string): Promise<void> {
+      const snapshot = await adminDb.collection('admin_settings').limit(1).get();
+      
+      if (snapshot.empty) {
+        await adminDb.collection('admin_settings').add({
+          emails: [email],
+          updatedAt: FieldValue.serverTimestamp()
+        });
+      } else {
+        const doc = snapshot.docs[0];
+        const currentData = doc.data();
+        const emails = currentData.emails || [];
+        
+        if (!emails.includes(email)) {
+          await adminDb.collection('admin_settings').doc(doc.id).update({
+            emails: [...emails, email],
+            updatedAt: FieldValue.serverTimestamp()
+          });
+        }
+      }
+    },
+
+    async removeEmail(email: string): Promise<void> {
+      const snapshot = await adminDb.collection('admin_settings').limit(1).get();
+      
+      if (!snapshot.empty) {
+        const doc = snapshot.docs[0];
+        const currentData = doc.data();
+        const emails = currentData.emails || [];
+        
+        await adminDb.collection('admin_settings').doc(doc.id).update({
+          emails: emails.filter((e: string) => e !== email),
           updatedAt: FieldValue.serverTimestamp()
         });
       }

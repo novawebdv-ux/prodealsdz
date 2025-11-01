@@ -36,11 +36,13 @@ interface Settings {
 export default function AdminPanel() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [user, setUser] = useState<any>(null)
-  const [activeTab, setActiveTab] = useState<'orders' | 'products' | 'settings'>('orders')
+  const [activeTab, setActiveTab] = useState<'orders' | 'products' | 'settings' | 'admins'>('orders')
 
   const [products, setProducts] = useState<Product[]>([])
   const [orders, setOrders] = useState<Order[]>([])
   const [settings, setSettings] = useState<Settings>({ ccpNumber: '', ccpName: '' })
+  const [adminEmails, setAdminEmails] = useState<string[]>([])
+  const [newAdminEmail, setNewAdminEmail] = useState('')
 
   const [showProductModal, setShowProductModal] = useState(false)
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
@@ -77,6 +79,10 @@ export default function AdminPanel() {
         const res = await fetch('/api/settings')
         const data = await res.json()
         setSettings(data || { ccpNumber: '', ccpName: '' })
+      } else if (activeTab === 'admins') {
+        const res = await fetch('/api/admins')
+        const data = await res.json()
+        setAdminEmails(data.emails || [])
       }
     } catch (error) {
       console.error('Error fetching data:', error)
@@ -177,6 +183,53 @@ export default function AdminPanel() {
     fetchData()
   }
 
+  async function handleAddAdmin(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    
+    if (!newAdminEmail.trim() || !newAdminEmail.includes('@')) {
+      alert('❌ يرجى إدخال بريد إلكتروني صحيح')
+      return
+    }
+
+    const res = await fetch('/api/admins', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: newAdminEmail.trim() })
+    })
+
+    if (res.ok) {
+      alert('✅ تم إضافة المسؤول بنجاح!')
+      setNewAdminEmail('')
+      fetchData()
+    } else {
+      alert('❌ فشل في إضافة المسؤول')
+    }
+  }
+
+  async function handleRemoveAdmin(email: string) {
+    if (adminEmails.length <= 1) {
+      alert('❌ لا يمكن حذف آخر مسؤول!')
+      return
+    }
+
+    if (!confirm(`هل أنت متأكد من إزالة ${email} من قائمة المسؤولين؟`)) {
+      return
+    }
+
+    const res = await fetch('/api/admins', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    })
+
+    if (res.ok) {
+      alert('✅ تم إزالة المسؤول بنجاح!')
+      fetchData()
+    } else {
+      alert('❌ فشل في إزالة المسؤول')
+    }
+  }
+
   if (!isAuthenticated) {
     return (
       <>
@@ -227,6 +280,12 @@ export default function AdminPanel() {
             onClick={() => setActiveTab('settings')}
           >
             الإعدادات
+          </button>
+          <button
+            className={activeTab === 'admins' ? styles.activeTab : ''}
+            onClick={() => setActiveTab('admins')}
+          >
+            المسؤولين
           </button>
         </div>
 
@@ -363,6 +422,61 @@ export default function AdminPanel() {
                   </button>
                 </form>
               </div>
+            </div>
+          )}
+
+          {activeTab === 'admins' && (
+            <div>
+              <h2>إدارة المسؤولين</h2>
+              
+              <div className={`card ${styles.settingsCard}`} style={{ marginBottom: '30px' }}>
+                <h3>إضافة مسؤول جديد</h3>
+                <form onSubmit={handleAddAdmin}>
+                  <div className={styles.formGroup}>
+                    <label>البريد الإلكتروني</label>
+                    <input
+                      type="email"
+                      value={newAdminEmail}
+                      onChange={(e) => setNewAdminEmail(e.target.value)}
+                      placeholder="admin@example.com"
+                      required
+                    />
+                  </div>
+                  <button type="submit" className="btn btn-primary">
+                    + إضافة مسؤول
+                  </button>
+                </form>
+              </div>
+
+              <div className={styles.adminsGrid}>
+                {adminEmails.map((email, index) => (
+                  <div key={index} className="card">
+                    <div className={styles.adminCard}>
+                      <div className={styles.adminInfo}>
+                        <span className={styles.adminIcon}>👤</span>
+                        <div>
+                          <h3>{email}</h3>
+                          <p className={styles.adminBadge}>مسؤول</p>
+                        </div>
+                      </div>
+                      {adminEmails.length > 1 && (
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => handleRemoveAdmin(email)}
+                        >
+                          إزالة
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {adminEmails.length === 0 && (
+                <p style={{ textAlign: 'center', color: '#666', marginTop: '20px' }}>
+                  لا يوجد مسؤولين حالياً
+                </p>
+              )}
             </div>
           )}
         </div>
