@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { getCurrentUser, ADMIN_EMAIL, isAdmin } from '@/lib/auth'
+import { getCurrentUser, isAdmin } from '@/lib/auth'
 import Header from '@/components/Header'
 import WhatsAppButton from '@/components/WhatsAppButton'
 import styles from './admin.module.css'
@@ -186,7 +186,7 @@ export default function AdminPanel() {
           <div className={styles.loginCard}>
             <h1>⛔ غير مصرح</h1>
             <p style={{ textAlign: 'center', color: '#666', marginBottom: '20px' }}>
-              هذه الصفحة مخصصة للمسؤول فقط ({ADMIN_EMAIL})
+              هذه الصفحة مخصصة للمشرفين فقط
             </p>
             <button 
               onClick={() => window.location.href = '/'}

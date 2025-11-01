@@ -1,5 +1,9 @@
 
-export const ADMIN_EMAIL = 'bouazzasalah120120@gmail.com'
+export const ADMIN_EMAILS = [
+  'txmax984@gmail.com',
+  'madimoh44@gmail.com',
+  'bouazzasalah120120@gmail.com'
+]
 
 export interface User {
   email: string
@@ -8,7 +12,7 @@ export interface User {
 }
 
 export function isAdmin(email: string): boolean {
-  return email === ADMIN_EMAIL
+  return ADMIN_EMAILS.includes(email)
 }
 
 export function getCurrentUser(): User | null {

@@ -5,7 +5,9 @@ service cloud.firestore {
     // دالة للتحقق من أن المستخدم مسؤول
     function isAdmin() {
       return request.auth != null && 
-             request.auth.token.email == 'admin@prodeals.dz';
+             (request.auth.token.email == 'txmax984@gmail.com' ||
+              request.auth.token.email == 'madimoh44@gmail.com' ||
+              request.auth.token.email == 'bouazzasalah120120@gmail.com');
     }
     
     // قواعد المنتجات - يمكن للجميع القراءة، فقط المسؤول يمكنه الكتابة
