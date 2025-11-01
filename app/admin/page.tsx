@@ -41,6 +41,8 @@ export default function AdminPanel() {
   const [products, setProducts] = useState<Product[]>([])
   const [orders, setOrders] = useState<Order[]>([])
   const [settings, setSettings] = useState<Settings>({ ccpNumber: '', ccpName: '' })
+  const [ccpNumber, setCcpNumber] = useState('')
+  const [ccpName, setCcpName] = useState('')
   const [adminEmails, setAdminEmails] = useState<string[]>([])
   const [newAdminEmail, setNewAdminEmail] = useState('')
 
@@ -83,6 +85,8 @@ export default function AdminPanel() {
         const res = await fetch('/api/settings')
         const data = await res.json()
         setSettings(data || { ccpNumber: '', ccpName: '' })
+        setCcpNumber(data?.ccpNumber || '')
+        setCcpName(data?.ccpName || '')
       } else if (activeTab === 'admins') {
         const res = await fetch('/api/admins')
         const data = await res.json()
@@ -168,13 +172,25 @@ export default function AdminPanel() {
     alert('❌ تم رفض الطلبية')
   }
 
+  async function handleDeleteOrder(id: string) {
+    if (!confirm('هل أنت متأكد من حذف هذه الطلبية؟')) {
+      return
+    }
+
+    await fetch(`/api/orders/${id}`, {
+      method: 'DELETE',
+    })
+    
+    fetchData()
+    alert('✅ تم حذف الطلبية بنجاح!')
+  }
+
   async function handleSettingsUpdate(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    const formData = new FormData(e.currentTarget)
 
     const settingsData = {
-      ccpNumber: formData.get('ccpNumber') as string,
-      ccpName: formData.get('ccpName') as string,
+      ccpNumber: ccpNumber,
+      ccpName: ccpName,
     }
 
     await fetch('/api/settings', {
@@ -350,6 +366,17 @@ export default function AdminPanel() {
                           </button>
                         </div>
                       )}
+
+                      {(order.status === 'confirmed' || order.status === 'rejected') && (
+                        <div className={styles.orderActions}>
+                          <button
+                            className="btn btn-danger"
+                            onClick={() => handleDeleteOrder(order.id)}
+                          >
+                            🗑️ حذف
+                          </button>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -411,8 +438,8 @@ export default function AdminPanel() {
                     <label>رقم الحساب (CCP)</label>
                     <input
                       type="text"
-                      name="ccpNumber"
-                      defaultValue={settings.ccpNumber}
+                      value={ccpNumber}
+                      onChange={(e) => setCcpNumber(e.target.value)}
                       required
                     />
                   </div>
@@ -420,8 +447,8 @@ export default function AdminPanel() {
                     <label>الاسم</label>
                     <input
                       type="text"
-                      name="ccpName"
-                      defaultValue={settings.ccpName}
+                      value={ccpName}
+                      onChange={(e) => setCcpName(e.target.value)}
                       required
                     />
                   </div>
