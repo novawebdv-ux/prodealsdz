@@ -10,12 +10,22 @@ import styles from './Header.module.css'
 
 export default function Header() {
   const [user, setUser] = useState<any>(null)
+  const [isUserAdmin, setIsUserAdmin] = useState(false)
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
-    setUser(getCurrentUser())
+    const currentUser = getCurrentUser()
+    setUser(currentUser)
+    
+    if (currentUser) {
+      isAdmin(currentUser.email).then(adminStatus => {
+        setIsUserAdmin(adminStatus)
+      })
+    } else {
+      setIsUserAdmin(false)
+    }
   }, [])
 
   useEffect(() => {
@@ -81,7 +91,7 @@ export default function Header() {
             {user && user.email !== 'guest@prodeals.dz' && (
               <Link href="/my-purchases" className={styles.navLink} prefetch={true}>مشترياتي</Link>
             )}
-            {user && isAdmin(user.email) && (
+            {user && isUserAdmin && (
               <Link href="/admin" className={styles.navLink} prefetch={true}>لوحة التحكم</Link>
             )}
             
@@ -159,7 +169,7 @@ export default function Header() {
                   )}
                 </div>
 
-                {user && isAdmin(user.email) && (
+                {user && isUserAdmin && (
                   <>
                     <div className={styles.mobileMenuDivider}></div>
                     <div className={styles.mobileNavSection}>
