@@ -54,9 +54,10 @@ export async function getAdminEmails(): Promise<string[]> {
     const res = await fetch('/api/admins')
     if (res.ok) {
       const data = await res.json()
-      cachedAdminEmails = data.emails || ADMIN_EMAILS
+      const emails = data.emails || ADMIN_EMAILS
+      cachedAdminEmails = emails
       cacheTimestamp = now
-      return cachedAdminEmails
+      return emails
     }
   } catch (error) {
     console.error('Error fetching admin emails:', error)
