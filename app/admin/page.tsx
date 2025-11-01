@@ -193,14 +193,21 @@ export default function AdminPanel() {
       ccpName: ccpName,
     }
 
-    await fetch('/api/settings', {
+    const res = await fetch('/api/settings', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(settingsData),
     })
 
-    alert('✅ تم تحديث الإعدادات بنجاح!')
-    fetchData()
+    if (res.ok) {
+      const updatedSettings = await res.json()
+      setSettings(updatedSettings)
+      setCcpNumber(updatedSettings.ccpNumber)
+      setCcpName(updatedSettings.ccpName)
+      alert('✅ تم تحديث الإعدادات بنجاح!')
+    } else {
+      alert('❌ فشل في تحديث الإعدادات')
+    }
   }
 
   async function handleAddAdmin(e: React.FormEvent<HTMLFormElement>) {
