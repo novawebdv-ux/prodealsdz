@@ -124,7 +124,7 @@ export const firestoreService = {
         .where('customerEmail', '==', email)
         .orderBy('createdAt', 'desc')
         .get();
-      
+
       return snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
@@ -158,16 +158,16 @@ export const firestoreService = {
     async deleteOldOrders(daysOld: number = 7): Promise<number> {
       const cutoffDate = new Date();
       cutoffDate.setDate(cutoffDate.getDate() - daysOld);
-      
+
       const snapshot = await adminDb.collection('orders')
         .where('createdAt', '<', cutoffDate)
         .get();
-      
+
       const batch = adminDb.batch();
       snapshot.docs.forEach(doc => {
         batch.delete(doc.ref);
       });
-      
+
       await batch.commit();
       return snapshot.size;
     }
@@ -187,13 +187,13 @@ export const firestoreService = {
       const snapshot = await adminDb.collection('purchases')
         .where('customerEmail', '==', email)
         .get();
-      
+
       const purchases = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
         purchasedAt: convertTimestamp(doc.data().purchasedAt)
       } as Purchase));
-      
+
       return purchases.sort((a, b) => b.purchasedAt.getTime() - a.purchasedAt.getTime());
     },
 
@@ -220,7 +220,7 @@ export const firestoreService = {
 
     async createOrUpdate(settings: Omit<Settings, 'id' | 'updatedAt'>): Promise<void> {
       const snapshot = await adminDb.collection('settings').limit(1).get();
-      
+
       if (snapshot.empty) {
         await adminDb.collection('settings').add({
           ...settings,
@@ -249,7 +249,7 @@ export const firestoreService = {
 
     async addEmail(email: string): Promise<void> {
       const snapshot = await adminDb.collection('admin_settings').limit(1).get();
-      
+
       if (snapshot.empty) {
         await adminDb.collection('admin_settings').add({
           emails: [email],
@@ -259,7 +259,7 @@ export const firestoreService = {
         const doc = snapshot.docs[0];
         const currentData = doc.data();
         const emails = currentData.emails || [];
-        
+
         if (!emails.includes(email)) {
           await adminDb.collection('admin_settings').doc(doc.id).update({
             emails: [...emails, email],
@@ -271,12 +271,12 @@ export const firestoreService = {
 
     async removeEmail(email: string): Promise<void> {
       const snapshot = await adminDb.collection('admin_settings').limit(1).get();
-      
+
       if (!snapshot.empty) {
         const doc = snapshot.docs[0];
         const currentData = doc.data();
         const emails = currentData.emails || [];
-        
+
         await adminDb.collection('admin_settings').doc(doc.id).update({
           emails: emails.filter((e: string) => e !== email),
           updatedAt: FieldValue.serverTimestamp()
