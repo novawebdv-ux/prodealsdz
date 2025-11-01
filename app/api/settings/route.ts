@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { firestoreService } from '@/lib/firestore';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const currentSettings = await firestoreService.settings.get();
