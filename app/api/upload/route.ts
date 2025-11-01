@@ -1,6 +1,4 @@
 import { NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
 
 export async function POST(request: Request) {
   try {
@@ -11,20 +9,37 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
     
+    const apiKey = process.env.IMGBB_API_KEY;
+    
+    if (!apiKey) {
+      return NextResponse.json({ error: 'ImgBB API key not configured' }, { status: 500 });
+    }
+    
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
+    const base64Image = buffer.toString('base64');
     
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
-    await mkdir(uploadsDir, { recursive: true });
+    const imgbbFormData = new FormData();
+    imgbbFormData.append('image', base64Image);
     
-    const filename = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-    const filepath = path.join(uploadsDir, filename);
+    const imgbbResponse = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+      method: 'POST',
+      body: imgbbFormData,
+    });
     
-    await writeFile(filepath, buffer);
+    if (!imgbbResponse.ok) {
+      const errorData = await imgbbResponse.json();
+      console.error('ImgBB upload failed:', errorData);
+      return NextResponse.json({ error: 'Failed to upload to ImgBB' }, { status: 500 });
+    }
     
-    const publicUrl = `/uploads/${filename}`;
+    const imgbbData = await imgbbResponse.json();
     
-    return NextResponse.json({ url: publicUrl });
+    if (imgbbData.success && imgbbData.data && imgbbData.data.url) {
+      return NextResponse.json({ url: imgbbData.data.url });
+    } else {
+      return NextResponse.json({ error: 'Invalid response from ImgBB' }, { status: 500 });
+    }
   } catch (error) {
     console.error('Error uploading file:', error);
     return NextResponse.json({ error: 'Failed to upload file' }, { status: 500 });
