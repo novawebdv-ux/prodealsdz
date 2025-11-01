@@ -48,6 +48,8 @@ export default function AdminPanel() {
 
   const [showProductModal, setShowProductModal] = useState(false)
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
+  const [productImage, setProductImage] = useState<File | null>(null)
+  const [productImagePreview, setProductImagePreview] = useState<string | null>(null)
   
   const [showRejectModal, setShowRejectModal] = useState(false)
   const [rejectingOrderId, setRejectingOrderId] = useState<string | null>(null)
@@ -101,10 +103,28 @@ export default function AdminPanel() {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
 
+    let imageUrl = editingProduct?.imageUrl || null
+
+    if (productImage) {
+      const uploadFormData = new FormData()
+      uploadFormData.append('file', productImage)
+      
+      const uploadRes = await fetch('/api/upload', {
+        method: 'POST',
+        body: uploadFormData,
+      })
+      
+      if (uploadRes.ok) {
+        const { url } = await uploadRes.json()
+        imageUrl = url
+      }
+    }
+
     const productData = {
       title: formData.get('title') as string,
       description: formData.get('description') as string,
       price: parseInt(formData.get('price') as string),
+      imageUrl: imageUrl,
       downloadLink: formData.get('downloadLink') as string || null,
     }
 
@@ -124,6 +144,8 @@ export default function AdminPanel() {
 
     setShowProductModal(false)
     setEditingProduct(null)
+    setProductImage(null)
+    setProductImagePreview(null)
     fetchData()
   }
 
@@ -405,6 +427,11 @@ export default function AdminPanel() {
               <div className={styles.productsGrid}>
                 {products.map((product) => (
                   <div key={product.id} className="card">
+                    {product.imageUrl && (
+                      <div className={styles.productImage}>
+                        <img src={product.imageUrl} alt={product.title} />
+                      </div>
+                    )}
                     <h3>{product.title}</h3>
                     <p>{product.description}</p>
                     <p className={styles.price}>{product.price.toLocaleString()} دج</p>
@@ -418,6 +445,7 @@ export default function AdminPanel() {
                         className="btn btn-secondary"
                         onClick={() => {
                           setEditingProduct(product)
+                          setProductImagePreview(product.imageUrl || null)
                           setShowProductModal(true)
                         }}
                       >
@@ -528,10 +556,36 @@ export default function AdminPanel() {
         <div className="modal-overlay" onClick={() => {
           setShowProductModal(false)
           setEditingProduct(null)
+          setProductImage(null)
+          setProductImagePreview(null)
         }}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <h2>{editingProduct ? 'تعديل المنتج' : 'إضافة منتج جديد'}</h2>
             <form onSubmit={handleProductSubmit}>
+              <div className={styles.formGroup}>
+                <label>صورة المنتج</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file) {
+                      setProductImage(file)
+                      const reader = new FileReader()
+                      reader.onloadend = () => {
+                        setProductImagePreview(reader.result as string)
+                      }
+                      reader.readAsDataURL(file)
+                    }
+                  }}
+                  className={styles.fileInput}
+                />
+                {productImagePreview && (
+                  <div className={styles.imagePreview}>
+                    <img src={productImagePreview} alt="Preview" />
+                  </div>
+                )}
+              </div>
               <div className={styles.formGroup}>
                 <label>اسم المنتج</label>
                 <input
@@ -575,6 +629,8 @@ export default function AdminPanel() {
                   onClick={() => {
                     setShowProductModal(false)
                     setEditingProduct(null)
+                    setProductImage(null)
+                    setProductImagePreview(null)
                   }}
                 >
                   إلغاء

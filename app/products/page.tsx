@@ -78,21 +78,17 @@ export default function ProductsPage() {
             <div
               key={product.id}
               className="card"
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleBuyClick(product)}
             >
               <div className={styles.productThumb}>
-                <div className={styles.imagePlaceholder}>📦</div>
+                {product.imageUrl ? (
+                  <img src={product.imageUrl} alt={product.title} />
+                ) : (
+                  <div className={styles.imagePlaceholder}>📦</div>
+                )}
               </div>
               <h3>{product.title}</h3>
-              <p>{product.description}</p>
-              <p className="price">{product.price.toLocaleString()} دج</p>
-              <div className={styles.actions}>
-                <button
-                  className="btn btn-primary"
-                  onClick={() => handleBuyClick(product)}
-                >
-                  اشترِ الآن
-                </button>
-              </div>
             </div>
           ))}
         </section>

@@ -94,9 +94,17 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '600px' }}>
-        <h2>إتمام عملية الشراء</h2>
+        <h2>تفاصيل المنتج</h2>
         <div className={styles.productInfo}>
+          {(product as any).imageUrl && (
+            <div className={styles.productImageLarge}>
+              <img src={(product as any).imageUrl} alt={product.title} />
+            </div>
+          )}
           <h3>{product.title}</h3>
+          {(product as any).description && (
+            <p className={styles.description}>{(product as any).description}</p>
+          )}
           <p className={styles.price}>{product.price.toLocaleString()} دج</p>
         </div>
 

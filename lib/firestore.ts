@@ -6,6 +6,7 @@ export type Product = {
   title: string;
   description: string;
   price: number;
+  imageUrl?: string;
   downloadLink?: string;
   createdAt: Date;
 };
