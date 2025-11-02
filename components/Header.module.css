@@ -245,9 +245,9 @@
   }
 }
 
-@keyframes slideInRight {
+@keyframes slideInLeft {
   from {
-    transform: translateX(100%);
+    transform: translateX(-100%);
   }
   to {
     transform: translateX(0);
@@ -269,14 +269,14 @@
 .mobileMenu {
   position: fixed;
   top: 0;
-  right: 0;
+  left: 0;
   bottom: 0;
   width: 85%;
   max-width: 380px;
   background: #ffffff;
   z-index: 1001;
-  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
-  animation: slideInRight 0.25s ease-out;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+  animation: slideInLeft 0.25s ease-out;
   overflow-y: auto;
   overflow-x: hidden;
   display: flex;
