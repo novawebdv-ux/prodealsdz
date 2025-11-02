@@ -234,7 +234,7 @@
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
   backdrop-filter: blur(4px);
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes fadeIn {
@@ -248,10 +248,23 @@
 
 @keyframes slideDown {
   from {
-    transform: translateY(-100%);
+    transform: translateY(-100%) scale(0.98);
+    opacity: 0;
   }
   to {
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInItem {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
@@ -267,7 +280,7 @@
   z-index: 1001;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15), 
               0 2px 12px rgba(111, 208, 255, 0.1);
-  animation: slideDown 0.3s ease;
+  animation: slideDown 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   overflow-y: auto;
   overflow-x: hidden;
   display: flex;
@@ -402,7 +415,7 @@
   font-weight: 600;
   font-size: 16px;
   border-radius: 12px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -414,6 +427,7 @@
   background: rgba(255, 255, 255, 0.7);
   border: 2px solid transparent;
   backdrop-filter: blur(10px);
+  animation: slideInItem 0.4s cubic-bezier(0.4, 0, 0.2, 1) backwards;
 }
 
 .mobileNavLink::before {
@@ -424,7 +438,7 @@
   bottom: 0;
   width: 0;
   background: linear-gradient(135deg, var(--sky-blue), var(--light-blue));
-  transition: width 0.3s ease;
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 14px 0 0 14px;
 }
 
@@ -438,7 +452,7 @@
   flex-shrink: 0;
   position: relative;
   z-index: 1;
-  transition: transform 0.3s ease;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
   background: rgba(111, 208, 255, 0.15);
   border-radius: 10px;
 }
@@ -452,7 +466,7 @@
 .mobileNavLink:hover {
   background: rgba(111, 208, 255, 0.2);
   color: var(--deep-blue);
-  transform: translateX(-4px);
+  transform: translateX(-6px) scale(1.01);
   border-color: rgba(111, 208, 255, 0.4);
   box-shadow: 0 4px 16px rgba(111, 208, 255, 0.25);
 }
@@ -469,6 +483,39 @@
 .mobileNavLink:active {
   background: rgba(111, 208, 255, 0.25);
   transform: translateX(-8px) scale(0.98);
+}
+
+/* تأخيرات تدريجية للعناصر */
+.mobileNavLink:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.mobileNavLink:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.mobileNavLink:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.mobileNavLink:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.mobileNavLink:nth-child(5) {
+  animation-delay: 0.25s;
+}
+
+.mobileNavLink:nth-child(6) {
+  animation-delay: 0.3s;
+}
+
+.mobileNavLink:nth-child(7) {
+  animation-delay: 0.35s;
+}
+
+.mobileNavLink:nth-child(8) {
+  animation-delay: 0.4s;
 }
 
 .mobileMenuDivider {
