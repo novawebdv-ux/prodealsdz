@@ -5,7 +5,7 @@
   border-bottom: 1px solid var(--border-light);
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 90;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   transition: all 0.3s ease;
 }
@@ -232,7 +232,7 @@
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  z-index: 9998;
   animation: fadeIn 0.2s ease-out;
 }
 
@@ -274,7 +274,7 @@
   width: 85%;
   max-width: 380px;
   background: #ffffff;
-  z-index: 1001;
+  z-index: 9999;
   box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
   animation: slideInLeft 0.25s ease-out;
   overflow-y: auto;
