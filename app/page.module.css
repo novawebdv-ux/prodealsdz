@@ -266,16 +266,16 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 24px;
-  padding: 26px 32px;
+  gap: 20px;
+  padding: 18px 40px;
   background: white;
-  border-radius: 20px;
+  border-radius: 18px;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
   border: 2px solid rgba(111, 208, 255, 0.2);
   overflow: hidden;
   flex: 1;
-  min-width: 300px;
+  min-width: 320px;
   box-shadow: 0 10px 28px rgba(111, 208, 255, 0.18);
 }
 
@@ -311,8 +311,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 76px;
-  height: 76px;
+  width: 60px;
+  height: 60px;
   background: linear-gradient(135deg, rgba(111, 208, 255, 0.2), rgba(168, 224, 255, 0.12));
   border-radius: 50%;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -337,15 +337,15 @@
 .socialIconCircle svg {
   color: white;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
 }
 
 .socialContent {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 4px;
+  gap: 2px;
   text-align: right;
   flex: 1;
 }
@@ -368,13 +368,13 @@
 }
 
 .followButton {
-  margin-top: 8px;
-  padding: 10px 22px;
+  margin-top: 4px;
+  padding: 8px 20px;
   background: linear-gradient(135deg, var(--sky-blue), var(--light-blue));
   color: white;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
-  border-radius: 12px;
+  border-radius: 10px;
   transition: all 0.3s ease;
   box-shadow: 0 4px 14px rgba(111, 208, 255, 0.28);
   align-self: flex-start;
