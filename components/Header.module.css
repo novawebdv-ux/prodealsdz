@@ -177,6 +177,21 @@
   transform: translateX(-4px);
 }
 
+@media (min-width: 1200px) {
+  .brandText h1 {
+    font-size: 36px;
+  }
+
+  .brandText p {
+    font-size: 15px;
+  }
+
+  .navLink {
+    padding: 12px 24px;
+    font-size: 17px;
+  }
+}
+
 @media (max-width: 968px) {
   .brandText h1 {
     font-size: 26px;

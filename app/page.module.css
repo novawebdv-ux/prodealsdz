@@ -106,15 +106,22 @@
 
 .hero {
   background: linear-gradient(135deg, rgba(111, 208, 255, 0.25), rgba(168, 224, 255, 0.15));
-  padding: 64px 40px;
-  border-radius: 28px;
+  padding: 80px 40px;
+  border-radius: 32px;
   text-align: center;
-  margin: 40px 0;
+  margin: 48px 0;
   backdrop-filter: blur(20px);
   box-shadow: 0 12px 48px rgba(111, 208, 255, 0.2);
   position: relative;
   overflow: hidden;
   border: 2px solid rgba(111, 208, 255, 0.3);
+}
+
+@media (min-width: 1200px) {
+  .hero {
+    padding: 120px 80px;
+    margin: 64px 0;
+  }
 }
 
 .hero::before {
@@ -146,6 +153,17 @@
   position: relative;
   z-index: 1;
   font-weight: 500;
+}
+
+@media (min-width: 1200px) {
+  .hero h2 {
+    font-size: 56px;
+  }
+
+  .hero p {
+    font-size: 22px;
+    margin-top: 28px;
+  }
 }
 
 .products {
@@ -225,9 +243,15 @@
 
 .profileHeader {
   display: flex;
-  gap: 28px;
+  gap: 32px;
   align-items: center;
-  margin-bottom: 28px;
+  margin-bottom: 32px;
+}
+
+@media (min-width: 1200px) {
+  .profileHeader {
+    gap: 48px;
+  }
 }
 
 .sellerAvatar {
@@ -254,6 +278,16 @@
   font-size: 16px;
 }
 
+@media (min-width: 1200px) {
+  .sellerInfo h3 {
+    font-size: 32px;
+  }
+
+  .sellerInfo p {
+    font-size: 18px;
+  }
+}
+
 .socialLinks {
   display: flex;
   gap: 20px;
@@ -267,9 +301,9 @@
   flex-direction: row;
   align-items: center;
   gap: 20px;
-  padding: 18px 40px;
+  padding: 20px 32px;
   background: white;
-  border-radius: 18px;
+  border-radius: 20px;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
   border: 2px solid rgba(111, 208, 255, 0.2);
@@ -277,6 +311,13 @@
   flex: 1;
   min-width: 320px;
   box-shadow: 0 10px 28px rgba(111, 208, 255, 0.18);
+}
+
+@media (min-width: 1200px) {
+  .socialCard {
+    padding: 28px 48px;
+    gap: 28px;
+  }
 }
 
 .cardGlow {
@@ -404,10 +445,21 @@
 
 .features h3 {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 48px;
   color: var(--deep-blue);
   font-size: 36px;
   font-weight: 800;
+}
+
+@media (min-width: 1200px) {
+  .features {
+    margin: 80px 0;
+  }
+
+  .features h3 {
+    font-size: 44px;
+    margin-bottom: 64px;
+  }
 }
 
 .featureIcon {
@@ -432,6 +484,17 @@
 .features .card p {
   color: var(--text-secondary);
   line-height: 1.7;
+  font-size: 16px;
+}
+
+@media (min-width: 1200px) {
+  .features .card h4 {
+    font-size: 24px;
+  }
+
+  .features .card p {
+    font-size: 17px;
+  }
 }
 
 .footer {
