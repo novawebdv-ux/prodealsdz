@@ -1,13 +1,11 @@
 import React from 'react'
 import Header from '@/components/Header'
-import WhatsAppButton from '@/components/WhatsAppButton'
 import styles from './about.module.css'
 
 export default function AboutPage() {
   return (
     <div className={styles.page}>
       <Header />
-      <WhatsAppButton />
 
       <main className="container">
         <div className={styles.aboutHeader}>

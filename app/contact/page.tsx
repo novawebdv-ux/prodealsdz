@@ -3,7 +3,6 @@
 
 import React from 'react'
 import Header from '@/components/Header'
-import WhatsAppButton from '@/components/WhatsAppButton'
 import Image from 'next/image'
 import styles from './contact.module.css'
 
@@ -11,7 +10,6 @@ export default function ContactPage() {
   return (
     <div className={styles.page}>
       <Header />
-      <WhatsAppButton />
 
       <main className="container">
         <div className={styles.contactHeader}>

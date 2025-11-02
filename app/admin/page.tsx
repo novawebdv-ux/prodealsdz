@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react'
 import { getCurrentUser, isAdmin, clearAdminCache } from '@/lib/auth'
 import Header from '@/components/Header'
-import WhatsAppButton from '@/components/WhatsAppButton'
 import styles from './admin.module.css'
 
 interface Product {
@@ -288,7 +287,6 @@ export default function AdminPanel() {
     return (
       <>
         <Header />
-        <WhatsAppButton />
         <div className={styles.loginPage}>
           <div className={styles.loginCard}>
             <h1>⛔ غير مصرح</h1>
@@ -310,7 +308,6 @@ export default function AdminPanel() {
   return (
     <>
       <Header />
-      <WhatsAppButton />
       <div className={styles.adminPanel}>
         <header className={styles.header}>
           <h1>لوحة تحكم ProDeals</h1>

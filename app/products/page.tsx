@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react'
 import { getCurrentUser } from '@/lib/auth'
 import Header from '@/components/Header'
-import WhatsAppButton from '@/components/WhatsAppButton'
 import BuyModal from '@/components/BuyModal'
 import styles from './products.module.css'
 
@@ -61,7 +60,6 @@ export default function ProductsPage() {
   return (
     <div className={styles.page}>
       <Header />
-      <WhatsAppButton />
 
       <main className="container">
         <div className={styles.pageHeader}>

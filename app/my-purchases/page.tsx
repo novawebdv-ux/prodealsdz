@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react'
 import { getCurrentUser } from '@/lib/auth'
 import Header from '@/components/Header'
-import WhatsAppButton from '@/components/WhatsAppButton'
 import styles from './purchases.module.css'
 
 interface Purchase {
@@ -46,7 +45,6 @@ export default function MyPurchasesPage() {
     return (
       <div className={styles.page}>
         <Header />
-        <WhatsAppButton />
         <main className="container">
           <div className={styles.emptyState}>
             <h1 className={styles.pageTitle}>مشترياتي</h1>
@@ -63,7 +61,6 @@ export default function MyPurchasesPage() {
   return (
     <div className={styles.page}>
       <Header />
-      <WhatsAppButton />
       
       <main className="container">
         <h1 className={styles.pageTitle}>مشترياتي</h1>
