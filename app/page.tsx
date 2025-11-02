@@ -114,6 +114,7 @@ export default function Home() {
 
       <footer className={styles.footer}>
         <p>© 2025 ProDeals — جميع الحقوق محفوظة</p>
+        <p>Developed by NovaWeb</p>
       </footer>
     </div>
   )

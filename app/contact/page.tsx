@@ -71,6 +71,7 @@ export default function ContactPage() {
 
       <footer className={styles.footer}>
         <p>© 2025 ProDeals — جميع الحقوق محفوظة</p>
+        <p>Developed by NovaWeb</p>
       </footer>
     </div>
   )
