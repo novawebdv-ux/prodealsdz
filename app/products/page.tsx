@@ -21,6 +21,7 @@ export default function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [user, setUser] = useState<any>(null)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+  const [detailsProduct, setDetailsProduct] = useState<Product | null>(null)
 
   useEffect(() => {
     loadProducts()
@@ -76,12 +77,7 @@ export default function ProductsPage() {
 
         <section className={`grid grid-3 ${styles.products}`}>
           {filteredProducts.map((product) => (
-            <div
-              key={product.id}
-              className="card"
-              style={{ cursor: 'pointer' }}
-              onClick={() => handleBuyClick(product)}
-            >
+            <div key={product.id} className="card">
               <div className={styles.productThumb}>
                 {product.imageUrl ? (
                   <img src={product.imageUrl} alt={product.title} />
@@ -90,6 +86,32 @@ export default function ProductsPage() {
                 )}
               </div>
               <h3>{product.title}</h3>
+              <p className={styles.productDesc}>
+                {product.description.length > 80
+                  ? product.description.substring(0, 80) + '...'
+                  : product.description}
+              </p>
+              <div className={styles.price}>{product.price.toLocaleString('ar-DZ')} دج</div>
+              <div className={styles.actions}>
+                <button
+                  className="btn btn-primary"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleBuyClick(product)
+                  }}
+                >
+                  🛒 شراء الآن
+                </button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setDetailsProduct(product)
+                  }}
+                >
+                  📋 التفاصيل
+                </button>
+              </div>
             </div>
           ))}
         </section>
@@ -108,6 +130,43 @@ export default function ProductsPage() {
           customerEmail={user.email}
           customerName={user.name}
         />
+      )}
+
+      {detailsProduct && (
+        <div className={styles.modal} onClick={() => setDetailsProduct(null)}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <button className={styles.modalClose} onClick={() => setDetailsProduct(null)}>
+              ✕
+            </button>
+            <div className={styles.modalBody}>
+              {detailsProduct.imageUrl && (
+                <div className={styles.modalImage}>
+                  <img src={detailsProduct.imageUrl} alt={detailsProduct.title} />
+                </div>
+              )}
+              <h2>{detailsProduct.title}</h2>
+              <div className={styles.modalPrice}>
+                {detailsProduct.price.toLocaleString('ar-DZ')} دج
+              </div>
+              <div className={styles.modalDescription}>
+                <h3>الوصف</h3>
+                <p>{detailsProduct.description}</p>
+              </div>
+              <div className={styles.modalActions}>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => {
+                    setDetailsProduct(null)
+                    handleBuyClick(detailsProduct)
+                  }}
+                  style={{ width: '100%' }}
+                >
+                  🛒 شراء الآن
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )

@@ -77,6 +77,138 @@
   backdrop-filter: blur(10px);
 }
 
+.imagePlaceholder {
+  font-size: 64px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modalContent {
+  background: white;
+  border-radius: 16px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slideUp 0.3s ease-out;
+}
+
+.modalClose {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #6b7280;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  z-index: 1;
+}
+
+.modalClose:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--deep-blue);
+}
+
+.modalBody {
+  padding: 24px;
+}
+
+.modalImage {
+  width: 100%;
+  height: 300px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #e6f9ff, #ffffff);
+}
+
+.modalImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modalContent h2 {
+  margin: 0 0 16px 0;
+  color: var(--deep-blue);
+  font-size: 28px;
+}
+
+.modalPrice {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--sky-blue);
+  margin-bottom: 24px;
+  padding: 12px 20px;
+  background: rgba(111, 208, 255, 0.1);
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.modalDescription {
+  margin-bottom: 24px;
+}
+
+.modalDescription h3 {
+  font-size: 18px;
+  color: var(--deep-blue);
+  margin: 0 0 12px 0;
+}
+
+.modalDescription p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #4b5563;
+  margin: 0;
+}
+
+.modalActions {
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 768px) {
   .pageHeader {
     flex-direction: column;
@@ -89,5 +221,21 @@
 
   .actions {
     flex-direction: column;
+  }
+
+  .modalContent {
+    max-height: 95vh;
+  }
+
+  .modalImage {
+    height: 200px;
+  }
+
+  .modalContent h2 {
+    font-size: 24px;
+  }
+
+  .modalPrice {
+    font-size: 20px;
   }
 }
