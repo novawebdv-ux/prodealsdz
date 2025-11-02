@@ -266,17 +266,17 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 18px;
-  padding: 20px 26px;
+  gap: 24px;
+  padding: 26px 32px;
   background: white;
-  border-radius: 18px;
+  border-radius: 20px;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
   border: 2px solid rgba(111, 208, 255, 0.2);
   overflow: hidden;
   flex: 1;
-  min-width: 260px;
-  box-shadow: 0 8px 24px rgba(111, 208, 255, 0.15);
+  min-width: 300px;
+  box-shadow: 0 10px 28px rgba(111, 208, 255, 0.18);
 }
 
 .cardGlow {
@@ -311,13 +311,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 64px;
-  height: 64px;
+  width: 76px;
+  height: 76px;
   background: linear-gradient(135deg, rgba(111, 208, 255, 0.2), rgba(168, 224, 255, 0.12));
   border-radius: 50%;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  box-shadow: 0 6px 16px rgba(111, 208, 255, 0.2);
+  box-shadow: 0 8px 20px rgba(111, 208, 255, 0.22);
   flex-shrink: 0;
 }
 
@@ -337,8 +337,8 @@
 .socialIconCircle svg {
   color: white;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
 }
 
 .socialContent {
@@ -352,7 +352,7 @@
 
 .socialContent h4 {
   margin: 0;
-  font-size: 19px;
+  font-size: 22px;
   font-weight: 800;
   color: var(--deep-blue);
   line-height: 1.2;
@@ -360,7 +360,7 @@
 
 .socialContent p {
   margin: 0;
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-secondary);
   font-weight: 600;
   direction: ltr;
@@ -368,15 +368,15 @@
 }
 
 .followButton {
-  margin-top: 6px;
-  padding: 8px 18px;
+  margin-top: 8px;
+  padding: 10px 22px;
   background: linear-gradient(135deg, var(--sky-blue), var(--light-blue));
   color: white;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
-  border-radius: 10px;
+  border-radius: 12px;
   transition: all 0.3s ease;
-  box-shadow: 0 3px 12px rgba(111, 208, 255, 0.25);
+  box-shadow: 0 4px 14px rgba(111, 208, 255, 0.28);
   align-self: flex-start;
 }
 
