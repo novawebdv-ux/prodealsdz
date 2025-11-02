@@ -264,21 +264,19 @@
 .socialCard {
   position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 10px;
-  padding: 18px 16px;
+  gap: 14px;
+  padding: 16px 20px;
   background: white;
   border-radius: 16px;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
   border: 2px solid rgba(111, 208, 255, 0.2);
-  position: relative;
   overflow: hidden;
   flex: 1;
-  min-width: 160px;
-  max-width: 200px;
-  box-shadow: 0 6px 16px rgba(111, 208, 255, 0.12);
+  min-width: 220px;
+  box-shadow: 0 6px 20px rgba(111, 208, 255, 0.15);
 }
 
 .cardGlow {
@@ -296,9 +294,9 @@
 }
 
 .socialCard:hover {
-  transform: translateY(-8px) scale(1.05);
+  transform: translateY(-4px) scale(1.02);
   border-color: rgba(111, 208, 255, 0.5);
-  box-shadow: 0 20px 48px rgba(111, 208, 255, 0.3);
+  box-shadow: 0 12px 32px rgba(111, 208, 255, 0.3);
 }
 
 .instagram:hover {
@@ -313,13 +311,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
+  width: 50px;
+  height: 50px;
   background: linear-gradient(135deg, rgba(111, 208, 255, 0.2), rgba(168, 224, 255, 0.12));
   border-radius: 50%;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   box-shadow: 0 6px 16px rgba(111, 208, 255, 0.2);
+  flex-shrink: 0;
 }
 
 .instagram .socialIconCircle {
@@ -331,8 +330,8 @@
 }
 
 .socialCard:hover .socialIconCircle {
-  transform: scale(1.15) rotate(360deg);
-  box-shadow: 0 12px 36px rgba(111, 208, 255, 0.4);
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: 0 8px 24px rgba(111, 208, 255, 0.35);
 }
 
 .socialIconCircle svg {
@@ -345,37 +344,40 @@
 .socialContent {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  text-align: center;
+  align-items: flex-start;
+  gap: 4px;
+  text-align: right;
+  flex: 1;
 }
 
 .socialContent h4 {
   margin: 0;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 800;
   color: var(--deep-blue);
-  line-height: 1;
+  line-height: 1.2;
 }
 
 .socialContent p {
   margin: 0;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-secondary);
   font-weight: 600;
   direction: ltr;
+  text-align: left;
 }
 
 .followButton {
-  margin-top: 6px;
-  padding: 8px 16px;
+  margin-top: 4px;
+  padding: 6px 14px;
   background: linear-gradient(135deg, var(--sky-blue), var(--light-blue));
   color: white;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  border-radius: 10px;
+  border-radius: 8px;
   transition: all 0.3s ease;
-  box-shadow: 0 3px 12px rgba(111, 208, 255, 0.25);
+  box-shadow: 0 2px 10px rgba(111, 208, 255, 0.25);
+  align-self: flex-start;
 }
 
 .socialCard:hover .followButton {
