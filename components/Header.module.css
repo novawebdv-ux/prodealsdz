@@ -18,8 +18,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
   padding: 18px 0;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 769px) {
+  .headerInner {
+    flex-wrap: nowrap;
+    gap: 24px;
+  }
 }
 
 .brand {
@@ -85,7 +93,14 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 1200px) {
+  .nav {
+    gap: 24px;
+  }
 }
 
 .navLink {
@@ -122,6 +137,8 @@
 
 .userMenu {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .userButton {
@@ -130,12 +147,20 @@
   gap: 10px;
   background: white;
   border: 2px solid var(--sky-blue);
-  padding: 10px 18px;
+  padding: 8px 16px;
   border-radius: 12px;
   cursor: pointer;
   font-weight: 600;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 12px rgba(111, 208, 255, 0.15);
+  white-space: nowrap;
+}
+
+@media (min-width: 1200px) {
+  .userButton {
+    padding: 10px 20px;
+    gap: 12px;
+  }
 }
 
 .userButton:hover {
@@ -153,9 +178,10 @@
   border-radius: 14px;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
   padding: 12px;
-  min-width: 180px;
+  min-width: 200px;
   border: 1px solid var(--border-light);
   animation: fadeInScale 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
 }
 
 .dropdown button {
