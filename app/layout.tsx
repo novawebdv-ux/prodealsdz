@@ -1,7 +1,6 @@
 import React from 'react'
 import './globals.css'
 import type { Metadata } from 'next'
-import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: 'ProDeals - منصة المنتجات الرقمية',
@@ -15,12 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ar" dir="rtl">
-      <body>
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-          {children}
-          <Footer />
-        </div>
-      </body>
+      <body>{children}</body>
     </html>
   )
 }
