@@ -11,7 +11,6 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <Header />
-      <WhatsAppButton />
 
       <main className="container">
         <section className={styles.hero}>

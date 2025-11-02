@@ -266,18 +266,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  padding: 28px 24px;
+  gap: 10px;
+  padding: 18px 16px;
   background: white;
-  border-radius: 20px;
+  border-radius: 16px;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
   border: 2px solid rgba(111, 208, 255, 0.2);
   position: relative;
   overflow: hidden;
   flex: 1;
-  min-width: 220px;
-  box-shadow: 0 8px 24px rgba(111, 208, 255, 0.15);
+  min-width: 160px;
+  max-width: 200px;
+  box-shadow: 0 6px 16px rgba(111, 208, 255, 0.12);
 }
 
 .cardGlow {
@@ -312,13 +313,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 80px;
+  width: 56px;
+  height: 56px;
   background: linear-gradient(135deg, rgba(111, 208, 255, 0.2), rgba(168, 224, 255, 0.12));
   border-radius: 50%;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  box-shadow: 0 8px 24px rgba(111, 208, 255, 0.25);
+  box-shadow: 0 6px 16px rgba(111, 208, 255, 0.2);
 }
 
 .instagram .socialIconCircle {
@@ -336,7 +337,9 @@
 
 .socialIconCircle svg {
   color: white;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+  width: 24px;
+  height: 24px;
 }
 
 .socialContent {
@@ -349,7 +352,7 @@
 
 .socialContent h4 {
   margin: 0;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 800;
   color: var(--deep-blue);
   line-height: 1;
@@ -357,22 +360,22 @@
 
 .socialContent p {
   margin: 0;
-  font-size: 14px;
+  font-size: 12px;
   color: var(--text-secondary);
   font-weight: 600;
   direction: ltr;
 }
 
 .followButton {
-  margin-top: 8px;
-  padding: 10px 24px;
+  margin-top: 6px;
+  padding: 8px 16px;
   background: linear-gradient(135deg, var(--sky-blue), var(--light-blue));
   color: white;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
-  border-radius: 12px;
+  border-radius: 10px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(111, 208, 255, 0.3);
+  box-shadow: 0 3px 12px rgba(111, 208, 255, 0.25);
 }
 
 .socialCard:hover .followButton {
