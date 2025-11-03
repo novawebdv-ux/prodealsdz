@@ -8,8 +8,8 @@ interface Product {
   id: string
   title: string
   price: number
-  discountPrice?: number
-  discountEndDate?: string
+  discountPrice?: number | null
+  discountEndDate?: string | null
 }
 
 interface BuyModalProps {
