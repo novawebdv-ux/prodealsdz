@@ -134,7 +134,7 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
                 onClick={() => setPaymentMethod('ccp')}
               >
                 <img 
-                  src="/attached_assets/LS20251103082852_1762157165254.png" 
+                  src="/attached_assets/ccp-check.png" 
                   alt="الشيك CCP"
                   className={styles.paymentImage}
                 />
