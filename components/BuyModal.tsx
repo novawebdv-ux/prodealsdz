@@ -21,7 +21,13 @@ type PaymentMethod = 'rip' | 'ccp' | null
 
 export default function BuyModal({ product, onClose, customerEmail, customerName }: BuyModalProps) {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(null)
-  const [ccpInfo, setCcpInfo] = useState({ ccpNumber: '', ccpKey: '', ccpName: '' })
+  const [paymentInfo, setPaymentInfo] = useState({ 
+    ripNumber: '', 
+    ripKey: '', 
+    ccpNumber: '', 
+    ccpKey: '', 
+    ccpName: '' 
+  })
   const [receiptImage, setReceiptImage] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
   const [preview, setPreview] = useState<string | null>(null)
@@ -29,12 +35,14 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
   useEffect(() => {
     fetch('/api/settings')
       .then(res => res.json())
-      .then(data => setCcpInfo({
+      .then(data => setPaymentInfo({
+        ripNumber: data.ripNumber || '',
+        ripKey: data.ripKey || '',
         ccpNumber: data.ccpNumber || '',
         ccpKey: data.ccpKey || '',
         ccpName: data.ccpName || ''
       }))
-      .catch(err => console.error('Error fetching CCP info:', err))
+      .catch(err => console.error('Error fetching payment info:', err))
   }, [])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -157,23 +165,19 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
                 {paymentMethod === 'ccp' && (
                   <>
                     <p><strong>رقم الحساب (CCP):</strong></p>
-                    <p className={styles.ccpNumber}>{ccpInfo.ccpNumber || 'جاري التحميل...'}</p>
+                    <p className={styles.ccpNumber}>{paymentInfo.ccpNumber || 'جاري التحميل...'}</p>
+                    <p><strong>المفتاح (Clé):</strong></p>
+                    <p className={styles.ccpNumber}>{paymentInfo.ccpKey || 'جاري التحميل...'}</p>
+                    <p><strong>الاسم و اللقب:</strong> {paymentInfo.ccpName || 'ProDeals DZ'}</p>
                   </>
                 )}
                 
                 {paymentMethod === 'rip' && (
                   <>
                     <p><strong>رقم الحساب (RIP):</strong></p>
-                    <p className={styles.ccpNumber}>{ccpInfo.ccpNumber || 'جاري التحميل...'}</p>
-                  </>
-                )}
-                
-                <p><strong>المفتاح (Clé):</strong></p>
-                <p className={styles.ccpNumber}>{ccpInfo.ccpKey || 'جاري التحميل...'}</p>
-                
-                {paymentMethod === 'ccp' && (
-                  <>
-                    <p><strong>الاسم و اللقب:</strong> {ccpInfo.ccpName || 'ProDeals DZ'}</p>
+                    <p className={styles.ccpNumber}>{paymentInfo.ripNumber || 'جاري التحميل...'}</p>
+                    <p><strong>المفتاح (Clé):</strong></p>
+                    <p className={styles.ccpNumber}>{paymentInfo.ripKey || 'جاري التحميل...'}</p>
                   </>
                 )}
                 

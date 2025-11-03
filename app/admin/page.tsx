@@ -29,6 +29,8 @@ interface Order {
 }
 
 interface Settings {
+  ripNumber: string
+  ripKey: string
   ccpNumber: string
   ccpKey: string
   ccpName: string
@@ -41,7 +43,9 @@ export default function AdminPanel() {
 
   const [products, setProducts] = useState<Product[]>([])
   const [orders, setOrders] = useState<Order[]>([])
-  const [settings, setSettings] = useState<Settings>({ ccpNumber: '', ccpKey: '', ccpName: '' })
+  const [settings, setSettings] = useState<Settings>({ ripNumber: '', ripKey: '', ccpNumber: '', ccpKey: '', ccpName: '' })
+  const [ripNumber, setRipNumber] = useState('')
+  const [ripKey, setRipKey] = useState('')
   const [ccpNumber, setCcpNumber] = useState('')
   const [ccpKey, setCcpKey] = useState('')
   const [ccpName, setCcpName] = useState('')
@@ -88,7 +92,9 @@ export default function AdminPanel() {
       } else if (activeTab === 'settings') {
         const res = await fetch('/api/settings')
         const data = await res.json()
-        setSettings(data || { ccpNumber: '', ccpKey: '', ccpName: '' })
+        setSettings(data || { ripNumber: '', ripKey: '', ccpNumber: '', ccpKey: '', ccpName: '' })
+        setRipNumber(data?.ripNumber || '')
+        setRipKey(data?.ripKey || '')
         setCcpNumber(data?.ccpNumber || '')
         setCcpKey(data?.ccpKey || '')
         setCcpName(data?.ccpName || '')
@@ -214,6 +220,8 @@ export default function AdminPanel() {
     e.preventDefault()
 
     const settingsData = {
+      ripNumber: ripNumber,
+      ripKey: ripKey,
       ccpNumber: ccpNumber,
       ccpKey: ccpKey,
       ccpName: ccpName,
@@ -228,6 +236,8 @@ export default function AdminPanel() {
     if (res.ok) {
       const updatedSettings = await res.json()
       setSettings(updatedSettings)
+      setRipNumber(updatedSettings.ripNumber)
+      setRipKey(updatedSettings.ripKey)
       setCcpNumber(updatedSettings.ccpNumber)
       setCcpKey(updatedSettings.ccpKey)
       setCcpName(updatedSettings.ccpName)
@@ -469,11 +479,34 @@ export default function AdminPanel() {
 
           {activeTab === 'settings' && (
             <div>
-              <h2>إعدادات بريدي موب (CCP / RIP)</h2>
+              <h2>إعدادات بريدي موب</h2>
               <div className={`card ${styles.settingsCard}`}>
                 <form onSubmit={handleSettingsUpdate}>
+                  <h3 style={{ marginBottom: '20px', color: 'var(--deep-blue)' }}>البطاقة الذهبية (RIP)</h3>
                   <div className={styles.formGroup}>
-                    <label>رقم الحساب (CCP أو RIP)</label>
+                    <label>رقم الحساب (RIP)</label>
+                    <input
+                      type="text"
+                      value={ripNumber}
+                      onChange={(e) => setRipNumber(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>المفتاح (Clé)</label>
+                    <input
+                      type="text"
+                      value={ripKey}
+                      onChange={(e) => setRipKey(e.target.value)}
+                      required
+                    />
+                  </div>
+                  
+                  <hr style={{ margin: '30px 0', border: '1px solid #ddd' }} />
+                  
+                  <h3 style={{ marginBottom: '20px', color: 'var(--deep-blue)' }}>الشيك البريدي (CCP)</h3>
+                  <div className={styles.formGroup}>
+                    <label>رقم الحساب (CCP)</label>
                     <input
                       type="text"
                       value={ccpNumber}
@@ -499,6 +532,7 @@ export default function AdminPanel() {
                       required
                     />
                   </div>
+                  
                   <button type="submit" className="btn btn-primary">
                     حفظ التغييرات
                   </button>
