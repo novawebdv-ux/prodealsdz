@@ -30,6 +30,7 @@ interface Order {
 
 interface Settings {
   ccpNumber: string
+  ccpKey: string
   ccpName: string
 }
 
@@ -40,8 +41,9 @@ export default function AdminPanel() {
 
   const [products, setProducts] = useState<Product[]>([])
   const [orders, setOrders] = useState<Order[]>([])
-  const [settings, setSettings] = useState<Settings>({ ccpNumber: '', ccpName: '' })
+  const [settings, setSettings] = useState<Settings>({ ccpNumber: '', ccpKey: '', ccpName: '' })
   const [ccpNumber, setCcpNumber] = useState('')
+  const [ccpKey, setCcpKey] = useState('')
   const [ccpName, setCcpName] = useState('')
   const [adminEmails, setAdminEmails] = useState<string[]>([])
   const [newAdminEmail, setNewAdminEmail] = useState('')
@@ -86,8 +88,9 @@ export default function AdminPanel() {
       } else if (activeTab === 'settings') {
         const res = await fetch('/api/settings')
         const data = await res.json()
-        setSettings(data || { ccpNumber: '', ccpName: '' })
+        setSettings(data || { ccpNumber: '', ccpKey: '', ccpName: '' })
         setCcpNumber(data?.ccpNumber || '')
+        setCcpKey(data?.ccpKey || '')
         setCcpName(data?.ccpName || '')
       } else if (activeTab === 'admins') {
         const res = await fetch('/api/admins')
@@ -212,6 +215,7 @@ export default function AdminPanel() {
 
     const settingsData = {
       ccpNumber: ccpNumber,
+      ccpKey: ccpKey,
       ccpName: ccpName,
     }
 
@@ -225,6 +229,7 @@ export default function AdminPanel() {
       const updatedSettings = await res.json()
       setSettings(updatedSettings)
       setCcpNumber(updatedSettings.ccpNumber)
+      setCcpKey(updatedSettings.ccpKey)
       setCcpName(updatedSettings.ccpName)
       alert('✅ تم تحديث الإعدادات بنجاح!')
     } else {
@@ -464,11 +469,11 @@ export default function AdminPanel() {
 
           {activeTab === 'settings' && (
             <div>
-              <h2>إعدادات بريدي موب (CCP)</h2>
+              <h2>إعدادات بريدي موب (CCP / RIP)</h2>
               <div className={`card ${styles.settingsCard}`}>
                 <form onSubmit={handleSettingsUpdate}>
                   <div className={styles.formGroup}>
-                    <label>رقم الحساب (CCP)</label>
+                    <label>رقم الحساب (CCP أو RIP)</label>
                     <input
                       type="text"
                       value={ccpNumber}
@@ -477,7 +482,16 @@ export default function AdminPanel() {
                     />
                   </div>
                   <div className={styles.formGroup}>
-                    <label>الاسم</label>
+                    <label>المفتاح (Clé)</label>
+                    <input
+                      type="text"
+                      value={ccpKey}
+                      onChange={(e) => setCcpKey(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>الاسم و اللقب</label>
                     <input
                       type="text"
                       value={ccpName}

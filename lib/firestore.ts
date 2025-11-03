@@ -40,6 +40,7 @@ export type Purchase = {
 export type Settings = {
   id: string;
   ccpNumber: string;
+  ccpKey: string;
   ccpName: string;
   updatedAt: Date;
 };

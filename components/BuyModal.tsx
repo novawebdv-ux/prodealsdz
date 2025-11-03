@@ -17,8 +17,11 @@ interface BuyModalProps {
   customerName: string
 }
 
+type PaymentMethod = 'rip' | 'ccp' | null
+
 export default function BuyModal({ product, onClose, customerEmail, customerName }: BuyModalProps) {
-  const [ccpInfo, setCcpInfo] = useState({ ccpNumber: '', ccpName: '' })
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(null)
+  const [ccpInfo, setCcpInfo] = useState({ ccpNumber: '', ccpKey: '', ccpName: '' })
   const [receiptImage, setReceiptImage] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
   const [preview, setPreview] = useState<string | null>(null)
@@ -26,7 +29,11 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
   useEffect(() => {
     fetch('/api/settings')
       .then(res => res.json())
-      .then(data => setCcpInfo(data))
+      .then(data => setCcpInfo({
+        ccpNumber: data.ccpNumber || '',
+        ccpKey: data.ccpKey || '',
+        ccpName: data.ccpName || ''
+      }))
       .catch(err => console.error('Error fetching CCP info:', err))
   }, [])
 
@@ -77,6 +84,7 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
           productPrice: product.price,
           total: product.price,
           receiptImageUrl: url,
+          paymentMethod: paymentMethod,
         }),
       })
 
@@ -97,51 +105,119 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
       <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '600px' }}>
         <h2>شراء: {product.title}</h2>
 
-        <div className={styles.paymentInfo}>
-          <h4>📋 معلومات الدفع - بريدي موب</h4>
-          <div className={styles.ccpBox}>
-            <p><strong>رقم الحساب (CCP):</strong></p>
-            <p className={styles.ccpNumber}>{ccpInfo.ccpNumber || 'جاري التحميل...'}</p>
-            <p><strong>الاسم:</strong> {ccpInfo.ccpName || 'ProDeals DZ'}</p>
-            <p><strong>المبلغ:</strong> {product.price.toLocaleString()} دج</p>
-          </div>
-        </div>
-
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.formGroup}>
-            <label>📸 رفع صورة الوصل <span style={{ color: 'red' }}>*</span></label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              required
-              className={styles.fileInput}
-            />
-            {preview && (
-              <div className={styles.preview}>
-                <img src={preview} alt="Preview" />
+        {!paymentMethod ? (
+          <div className={styles.paymentSelection}>
+            <h3>اختر طريقة الدفع</h3>
+            <div className={styles.paymentOptions}>
+              <div 
+                className={styles.paymentOption}
+                onClick={() => setPaymentMethod('rip')}
+              >
+                <img 
+                  src="/attached_assets/LS20251103082823_1762157165287.png" 
+                  alt="البطاقة الذهبية RIP"
+                  className={styles.paymentImage}
+                />
+                <p className={styles.paymentLabel}>البطاقة الذهبية (RIP)</p>
               </div>
-            )}
+              
+              <div 
+                className={styles.paymentOption}
+                onClick={() => setPaymentMethod('ccp')}
+              >
+                <img 
+                  src="/attached_assets/LS20251103082852_1762157165254.png" 
+                  alt="الشيك CCP"
+                  className={styles.paymentImage}
+                />
+                <p className={styles.paymentLabel}>الشيك البريدي (CCP)</p>
+              </div>
+            </div>
+            
+            <div className={styles.actions}>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={onClose}
+              >
+                إلغاء
+              </button>
+            </div>
           </div>
+        ) : (
+          <>
+            <div className={styles.paymentInfo}>
+              <div className={styles.backButton} onClick={() => setPaymentMethod(null)}>
+                ← العودة لاختيار طريقة دفع أخرى
+              </div>
+              
+              <h4>📋 معلومات الدفع - {paymentMethod === 'rip' ? 'البطاقة الذهبية (RIP)' : 'الشيك البريدي (CCP)'}</h4>
+              
+              <div className={styles.ccpBox}>
+                {paymentMethod === 'ccp' && (
+                  <>
+                    <p><strong>رقم الحساب (CCP):</strong></p>
+                    <p className={styles.ccpNumber}>{ccpInfo.ccpNumber || 'جاري التحميل...'}</p>
+                  </>
+                )}
+                
+                {paymentMethod === 'rip' && (
+                  <>
+                    <p><strong>رقم الحساب (RIP):</strong></p>
+                    <p className={styles.ccpNumber}>{ccpInfo.ccpNumber || 'جاري التحميل...'}</p>
+                  </>
+                )}
+                
+                <p><strong>المفتاح (Clé):</strong></p>
+                <p className={styles.ccpNumber}>{ccpInfo.ccpKey || 'جاري التحميل...'}</p>
+                
+                {paymentMethod === 'ccp' && (
+                  <>
+                    <p><strong>الاسم و اللقب:</strong> {ccpInfo.ccpName || 'ProDeals DZ'}</p>
+                  </>
+                )}
+                
+                <p><strong>المبلغ:</strong> {product.price.toLocaleString()} دج</p>
+              </div>
+            </div>
 
-          <div className={styles.actions}>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={onClose}
-              disabled={uploading}
-            >
-              إلغاء
-            </button>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={uploading}
-            >
-              {uploading ? '⏳ جاري الإرسال...' : '✅ إرسال الطلبية'}
-            </button>
-          </div>
-        </form>
+            <form onSubmit={handleSubmit} className={styles.form}>
+              <div className={styles.formGroup}>
+                <label>📸 رفع صورة الوصل <span style={{ color: 'red' }}>*</span></label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  required
+                  className={styles.fileInput}
+                />
+                {preview && (
+                  <div className={styles.preview}>
+                    <img src={preview} alt="Preview" />
+                  </div>
+                )}
+              </div>
+
+              <div className={styles.actions}>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={onClose}
+                  disabled={uploading}
+                >
+                  إلغاء
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={uploading}
+                >
+                  {uploading ? '⏳ جاري الإرسال...' : '✅ إرسال الطلبية'}
+                </button>
+              </div>
+            </form>
+          </>
+        )}
       </div>
     </div>
   )
