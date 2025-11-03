@@ -59,6 +59,14 @@ export default function ProductsPage() {
       p.description.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
+  const calculateDaysRemaining = (endDate: string): number => {
+    const now = new Date()
+    const end = new Date(endDate)
+    const diffTime = end.getTime() - now.getTime()
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    return diffDays
+  }
+
   return (
     <div className={styles.page}>
       <Header />
@@ -95,6 +103,9 @@ export default function ProductsPage() {
                 <div className={styles.priceSection}>
                   <div className={styles.discountBadge}>
                     🏷️ {Math.round((1 - product.discountPrice / product.price) * 100)}% تخفيض
+                  </div>
+                  <div className={styles.daysRemaining}>
+                    ⏰ باقي {calculateDaysRemaining(product.discountEndDate)} {calculateDaysRemaining(product.discountEndDate) === 1 ? 'يوم' : 'أيام'}
                   </div>
                   <div className={styles.prices}>
                     <span className={styles.originalPrice}>{product.price.toLocaleString('ar-DZ')} دج</span>
@@ -161,6 +172,9 @@ export default function ProductsPage() {
                 <div className={styles.modalPriceSection}>
                   <div className={styles.discountBadge}>
                     🏷️ {Math.round((1 - detailsProduct.discountPrice / detailsProduct.price) * 100)}% تخفيض
+                  </div>
+                  <div className={styles.daysRemaining}>
+                    ⏰ باقي {calculateDaysRemaining(detailsProduct.discountEndDate)} {calculateDaysRemaining(detailsProduct.discountEndDate) === 1 ? 'يوم' : 'أيام'}
                   </div>
                   <div className={styles.modalPrices}>
                     <span className={styles.modalOriginalPrice}>{detailsProduct.price.toLocaleString('ar-DZ')} دج</span>

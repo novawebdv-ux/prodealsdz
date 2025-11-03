@@ -126,6 +126,19 @@
   animation: pulse 2s infinite;
 }
 
+.daysRemaining {
+  display: inline-block;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  margin-right: 8px;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
 @keyframes pulse {
   0%, 100% {
     transform: scale(1);
