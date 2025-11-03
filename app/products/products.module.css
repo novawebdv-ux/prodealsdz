@@ -109,6 +109,86 @@
   }
 }
 
+.priceSection {
+  margin: 18px 0;
+}
+
+.discountBadge {
+  display: inline-block;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.prices {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.originalPrice {
+  font-size: 18px;
+  font-weight: 600;
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
+.discountPrice {
+  font-size: 26px;
+  font-weight: 700;
+  color: #ef4444;
+}
+
+@media (min-width: 1200px) {
+  .originalPrice {
+    font-size: 20px;
+  }
+  
+  .discountPrice {
+    font-size: 30px;
+  }
+}
+
+.modalPriceSection {
+  margin-bottom: 24px;
+}
+
+.modalPrices {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.modalOriginalPrice {
+  font-size: 22px;
+  font-weight: 600;
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
+.modalDiscountPrice {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ef4444;
+}
+
 .actions {
   display: flex;
   gap: 12px;

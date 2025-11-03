@@ -8,6 +8,8 @@ export type Product = {
   price: number;
   imageUrl?: string;
   postPurchaseContent?: string;
+  discountPrice?: number;
+  discountEndDate?: string;
   createdAt: Date;
 };
 
@@ -74,6 +76,8 @@ export const firestoreService = {
           price: data.price,
           imageUrl: data.imageUrl,
           postPurchaseContent: data.postPurchaseContent || downloadLink || undefined,
+          discountPrice: data.discountPrice,
+          discountEndDate: data.discountEndDate,
           createdAt: convertTimestamp(data.createdAt)
         } as Product;
       });
@@ -91,6 +95,8 @@ export const firestoreService = {
         price: data?.price,
         imageUrl: data?.imageUrl,
         postPurchaseContent: data?.postPurchaseContent || downloadLink || undefined,
+        discountPrice: data?.discountPrice,
+        discountEndDate: data?.discountEndDate,
         createdAt: convertTimestamp(data?.createdAt)
       } as Product;
     },

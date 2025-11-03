@@ -12,6 +12,8 @@ interface Product {
   price: number
   imageUrl?: string | null
   postPurchaseContent?: string | null
+  discountPrice?: number | null
+  discountEndDate?: string | null
 }
 
 interface Order {
@@ -129,12 +131,29 @@ export default function AdminPanel() {
       }
     }
 
+    const discountPrice = formData.get('discountPrice') as string
+    const discountDays = formData.get('discountDays') as string
+    
+    let discountEndDate = null
+    
+    if (discountPrice && parseInt(discountPrice) > 0) {
+      if (discountDays && parseInt(discountDays) > 0) {
+        const endDate = new Date()
+        endDate.setDate(endDate.getDate() + parseInt(discountDays))
+        discountEndDate = endDate.toISOString()
+      } else if (editingProduct?.discountEndDate) {
+        discountEndDate = editingProduct.discountEndDate
+      }
+    }
+
     const productData = {
       title: formData.get('title') as string,
       description: formData.get('description') as string,
       price: parseInt(formData.get('price') as string),
       imageUrl: imageUrl,
       postPurchaseContent: formData.get('postPurchaseContent') as string || null,
+      discountPrice: discountPrice ? parseInt(discountPrice) : null,
+      discountEndDate: discountEndDate,
     }
 
     if (editingProduct) {
@@ -447,7 +466,20 @@ export default function AdminPanel() {
                     )}
                     <h3>{product.title}</h3>
                     <p>{product.description}</p>
-                    <p className={styles.price}>{product.price.toLocaleString()} دج</p>
+                    {product.discountPrice && product.discountEndDate && new Date(product.discountEndDate) > new Date() ? (
+                      <div className={styles.priceWithDiscount}>
+                        <span className={styles.originalPrice}>{product.price.toLocaleString()} دج</span>
+                        <span className={styles.discountPrice}>{product.discountPrice.toLocaleString()} دج</span>
+                        <div className={styles.discountBadge}>
+                          🏷️ {Math.round((1 - product.discountPrice / product.price) * 100)}% تخفيض
+                        </div>
+                        <small style={{ display: 'block', color: '#666', marginTop: '8px' }}>
+                          ⏰ ينتهي في {Math.ceil((new Date(product.discountEndDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} يوم
+                        </small>
+                      </div>
+                    ) : (
+                      <p className={styles.price}>{product.price.toLocaleString()} دج</p>
+                    )}
                     {product.postPurchaseContent && (
                       <p className={styles.postPurchasePreview}>
                         <small>📝 محتوى بعد الشراء: {product.postPurchaseContent.substring(0, 50)}...</small>
@@ -642,7 +674,7 @@ export default function AdminPanel() {
                 />
               </div>
               <div className={styles.formGroup}>
-                <label>السعر (دج)</label>
+                <label>السعر الأصلي (دج)</label>
                 <input
                   type="number"
                   name="price"
@@ -650,6 +682,48 @@ export default function AdminPanel() {
                   required
                 />
               </div>
+
+              <div style={{ 
+                backgroundColor: '#f0f9ff', 
+                padding: '20px', 
+                borderRadius: '8px', 
+                marginBottom: '20px',
+                border: '2px dashed #3b82f6'
+              }}>
+                <h3 style={{ color: '#3b82f6', marginBottom: '15px', fontSize: '16px' }}>
+                  🏷️ التخفيض (اختياري)
+                </h3>
+                <div className={styles.formGroup}>
+                  <label>السعر المخفض (دج)</label>
+                  <input
+                    type="number"
+                    name="discountPrice"
+                    defaultValue={editingProduct?.discountPrice || ''}
+                    placeholder="اترك فارغاً إذا لم يكن هناك تخفيض"
+                  />
+                  <small style={{ color: '#666', marginTop: '8px', display: 'block' }}>
+                    💡 سيظهر السعر الأصلي مشطوب والسعر المخفض بجانبه
+                  </small>
+                </div>
+                <div className={styles.formGroup}>
+                  <label>عدد أيام التخفيض</label>
+                  <input
+                    type="number"
+                    name="discountDays"
+                    defaultValue={
+                      editingProduct?.discountEndDate 
+                        ? Math.ceil((new Date(editingProduct.discountEndDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
+                        : ''
+                    }
+                    placeholder="مثال: 7 لمدة أسبوع"
+                    min="1"
+                  />
+                  <small style={{ color: '#666', marginTop: '8px', display: 'block' }}>
+                    ⏰ سينتهي التخفيض تلقائياً بعد عدد الأيام المحدد
+                  </small>
+                </div>
+              </div>
+
               <div className={styles.formGroup}>
                 <label>محتوى بعد الشراء (روابط، تعليمات، إلخ)</label>
                 <textarea

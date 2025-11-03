@@ -14,7 +14,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { title, description, price, imageUrl, postPurchaseContent } = body;
+    const { title, description, price, imageUrl, postPurchaseContent, discountPrice, discountEndDate } = body;
     
     const productId = await firestoreService.products.create({
       title,
@@ -22,6 +22,8 @@ export async function POST(request: Request) {
       price,
       imageUrl: imageUrl || undefined,
       postPurchaseContent: postPurchaseContent || undefined,
+      discountPrice: discountPrice || undefined,
+      discountEndDate: discountEndDate || undefined,
     });
     
     const newProduct = await firestoreService.products.getById(productId);

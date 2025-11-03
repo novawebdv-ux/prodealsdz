@@ -340,3 +340,54 @@
   color: #666;
   word-break: break-all;
 }
+
+.adminCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.adminInfo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.adminIcon {
+  font-size: 32px;
+}
+
+.adminBadge {
+  color: var(--sky-blue);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.priceWithDiscount {
+  margin: 15px 0;
+}
+
+.originalPrice {
+  font-size: 16px;
+  font-weight: 600;
+  color: #9ca3af;
+  text-decoration: line-through;
+  margin-left: 10px;
+}
+
+.discountPrice {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ef4444;
+}
+
+.discountBadge {
+  display: inline-block;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 8px;
+}

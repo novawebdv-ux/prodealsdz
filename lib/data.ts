@@ -6,6 +6,8 @@ export type Product = {
   description: string
   price: number
   image_url?: string
+  discountPrice?: number
+  discountEndDate?: string
 }
 
 export type Order = {

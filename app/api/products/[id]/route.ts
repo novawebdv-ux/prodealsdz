@@ -7,7 +7,7 @@ export async function PUT(
 ) {
   try {
     const body = await request.json();
-    const { title, description, price, imageUrl, postPurchaseContent } = body;
+    const { title, description, price, imageUrl, postPurchaseContent, discountPrice, discountEndDate } = body;
     
     await firestoreService.products.update(params.id, {
       title,
@@ -15,6 +15,8 @@ export async function PUT(
       price,
       imageUrl,
       postPurchaseContent,
+      discountPrice,
+      discountEndDate,
     });
     
     const updatedProduct = await firestoreService.products.getById(params.id);

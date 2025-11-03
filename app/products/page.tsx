@@ -13,6 +13,8 @@ interface Product {
   price: number
   imageUrl?: string | null
   postPurchaseContent?: string | null
+  discountPrice?: number | null
+  discountEndDate?: string | null
 }
 
 export default function ProductsPage() {
@@ -89,7 +91,19 @@ export default function ProductsPage() {
                   ? product.description.substring(0, 80) + '...'
                   : product.description}
               </p>
-              <div className={styles.price}>{product.price.toLocaleString('ar-DZ')} دج</div>
+              {product.discountPrice && product.discountEndDate && new Date(product.discountEndDate) > new Date() ? (
+                <div className={styles.priceSection}>
+                  <div className={styles.discountBadge}>
+                    🏷️ {Math.round((1 - product.discountPrice / product.price) * 100)}% تخفيض
+                  </div>
+                  <div className={styles.prices}>
+                    <span className={styles.originalPrice}>{product.price.toLocaleString('ar-DZ')} دج</span>
+                    <span className={styles.discountPrice}>{product.discountPrice.toLocaleString('ar-DZ')} دج</span>
+                  </div>
+                </div>
+              ) : (
+                <div className={styles.price}>{product.price.toLocaleString('ar-DZ')} دج</div>
+              )}
               <div className={styles.actions}>
                 <button
                   className="btn btn-primary"
@@ -143,9 +157,21 @@ export default function ProductsPage() {
                 </div>
               )}
               <h2>{detailsProduct.title}</h2>
-              <div className={styles.modalPrice}>
-                {detailsProduct.price.toLocaleString('ar-DZ')} دج
-              </div>
+              {detailsProduct.discountPrice && detailsProduct.discountEndDate && new Date(detailsProduct.discountEndDate) > new Date() ? (
+                <div className={styles.modalPriceSection}>
+                  <div className={styles.discountBadge}>
+                    🏷️ {Math.round((1 - detailsProduct.discountPrice / detailsProduct.price) * 100)}% تخفيض
+                  </div>
+                  <div className={styles.modalPrices}>
+                    <span className={styles.modalOriginalPrice}>{detailsProduct.price.toLocaleString('ar-DZ')} دج</span>
+                    <span className={styles.modalDiscountPrice}>{detailsProduct.discountPrice.toLocaleString('ar-DZ')} دج</span>
+                  </div>
+                </div>
+              ) : (
+                <div className={styles.modalPrice}>
+                  {detailsProduct.price.toLocaleString('ar-DZ')} دج
+                </div>
+              )}
               <div className={styles.modalDescription}>
                 <h3>الوصف</h3>
                 <p>{detailsProduct.description}</p>
