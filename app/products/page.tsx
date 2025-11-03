@@ -100,6 +100,9 @@ export default function ProductsPage() {
                     <span className={styles.originalPrice}>{product.price.toLocaleString('ar-DZ')} دج</span>
                     <span className={styles.discountPrice}>{product.discountPrice.toLocaleString('ar-DZ')} دج</span>
                   </div>
+                  <div className={styles.discountTimer}>
+                    ⏰ ينتهي خلال {Math.ceil((new Date(product.discountEndDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} يوم
+                  </div>
                 </div>
               ) : (
                 <div className={styles.price}>{product.price.toLocaleString('ar-DZ')} دج</div>
@@ -165,6 +168,9 @@ export default function ProductsPage() {
                   <div className={styles.modalPrices}>
                     <span className={styles.modalOriginalPrice}>{detailsProduct.price.toLocaleString('ar-DZ')} دج</span>
                     <span className={styles.modalDiscountPrice}>{detailsProduct.discountPrice.toLocaleString('ar-DZ')} دج</span>
+                  </div>
+                  <div className={styles.discountTimer}>
+                    ⏰ ينتهي خلال {Math.ceil((new Date(detailsProduct.discountEndDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} يوم
                   </div>
                 </div>
               ) : (
