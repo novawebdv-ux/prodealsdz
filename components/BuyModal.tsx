@@ -19,10 +19,7 @@ interface BuyModalProps {
   customerName: string
 }
 
-type PaymentMethod = 'rip' | 'ccp' | null
-
 export default function BuyModal({ product, onClose, customerEmail, customerName }: BuyModalProps) {
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(null)
   const [paymentInfo, setPaymentInfo] = useState({ 
     ripNumber: '', 
     ripKey: '', 
@@ -107,7 +104,7 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
           productPrice: finalPrice,
           total: finalPrice,
           receiptImageUrl: url,
-          paymentMethod: paymentMethod,
+          paymentMethod: 'rip',
         }),
       })
 
@@ -128,180 +125,89 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
       <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '600px' }}>
         <h2>شراء: {product.title}</h2>
 
-        {!paymentMethod ? (
-          <div className={styles.paymentSelection}>
-            <h3>اختر طريقة الدفع</h3>
-            <div className={styles.paymentOptions}>
-              <div 
-                className={styles.paymentOption}
-                onClick={() => setPaymentMethod('rip')}
-              >
-                <img 
-                  src="/images/golden-card-rip.png" 
-                  alt="البطاقة الذهبية RIP"
-                  className={styles.paymentImage}
-                />
-                <p className={styles.paymentLabel}>البطاقة الذهبية (RIP)</p>
-              </div>
-              
-              <div 
-                className={styles.paymentOption}
-                onClick={() => setPaymentMethod('ccp')}
-              >
-                <img 
-                  src="/images/ccp-check.png" 
-                  alt="بريد الجزائر"
-                  className={styles.paymentImage}
-                />
-                <p className={styles.paymentLabel}>بريد الجزائر</p>
-              </div>
-            </div>
-            
-            <div className={styles.actions}>
-              <button
+        <div className={styles.paymentInfo}>
+          <h4>📋 معلومات الدفع</h4>
+          
+          <div className={styles.ccpBox}>
+            <p><strong>رقم الحساب (RIP):</strong></p>
+            <div className={styles.numberWithCopy}>
+              <p className={styles.ccpNumber}>{paymentInfo.ripNumber || 'جاري التحميل...'}</p>
+              <button 
                 type="button"
-                className="btn btn-secondary"
-                onClick={onClose}
+                onClick={() => handleCopy(paymentInfo.ripNumber, 'ripNumber')}
+                className={styles.copyButton}
               >
-                إلغاء
+                {copied === 'ripNumber' ? '✓ تم النسخ' : '📋 نسخ'}
               </button>
             </div>
-          </div>
-        ) : (
-          <>
-            <div className={styles.paymentInfo}>
-              <div className={styles.backButton} onClick={() => setPaymentMethod(null)}>
-                ← العودة لاختيار طريقة دفع أخرى
-              </div>
-              
-              <h4>📋 معلومات الدفع - {paymentMethod === 'rip' ? 'البطاقة الذهبية (RIP)' : 'بريد الجزائر'}</h4>
-              
-              <div className={styles.ccpBox}>
-                {paymentMethod === 'ccp' && (
-                  <>
-                    <p><strong>رقم الحساب (CCP):</strong></p>
-                    <div className={styles.numberWithCopy}>
-                      <p className={styles.ccpNumber}>{paymentInfo.ccpNumber || 'جاري التحميل...'}</p>
-                      <button 
-                        type="button"
-                        onClick={() => handleCopy(paymentInfo.ccpNumber, 'ccpNumber')}
-                        className={styles.copyButton}
-                      >
-                        {copied === 'ccpNumber' ? '✓ تم النسخ' : '📋 نسخ'}
-                      </button>
-                    </div>
-                    
-                    <p><strong>المفتاح (Clé):</strong></p>
-                    <div className={styles.numberWithCopy}>
-                      <p className={styles.ccpNumber}>{paymentInfo.ccpKey || 'جاري التحميل...'}</p>
-                      <button 
-                        type="button"
-                        onClick={() => handleCopy(paymentInfo.ccpKey, 'ccpKey')}
-                        className={styles.copyButton}
-                      >
-                        {copied === 'ccpKey' ? '✓ تم النسخ' : '📋 نسخ'}
-                      </button>
-                    </div>
 
-                    <div className={styles.instagramBox}>
-                      <p><strong>📱 للحصول على معلومات الدفع:</strong></p>
-                      <a 
-                        href="https://www.instagram.com/pro_dealsdz?igsh=MXN6M3dvaWNpa2plbw=="
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.instagramButton}
-                      >
-                        <span>📩</span> أرسل رسالة على Instagram
-                      </a>
-                    </div>
-                  </>
-                )}
-                
-                {paymentMethod === 'rip' && (
-                  <>
-                    <p><strong>رقم الحساب (RIP):</strong></p>
-                    <div className={styles.numberWithCopy}>
-                      <p className={styles.ccpNumber}>{paymentInfo.ripNumber || 'جاري التحميل...'}</p>
-                      <button 
-                        type="button"
-                        onClick={() => handleCopy(paymentInfo.ripNumber, 'ripNumber')}
-                        className={styles.copyButton}
-                      >
-                        {copied === 'ripNumber' ? '✓ تم النسخ' : '📋 نسخ'}
-                      </button>
-                    </div>
-
-                    <p><strong>المفتاح (Clé):</strong></p>
-                    <div className={styles.numberWithCopy}>
-                      <p className={styles.ccpNumber}>{paymentInfo.ripKey || 'جاري التحميل...'}</p>
-                      <button 
-                        type="button"
-                        onClick={() => handleCopy(paymentInfo.ripKey, 'ripKey')}
-                        className={styles.copyButton}
-                      >
-                        {copied === 'ripKey' ? '✓ تم النسخ' : '📋 نسخ'}
-                      </button>
-                    </div>
-
-                    <div className={styles.instagramBox}>
-                      <p><strong>📱 للحصول على معلومات الدفع:</strong></p>
-                      <a 
-                        href="https://www.instagram.com/pro_dealsdz?igsh=MXN6M3dvaWNpa2plbw=="
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.instagramButton}
-                      >
-                        <span>📩</span> أرسل رسالة على Instagram
-                      </a>
-                    </div>
-                  </>
-                )}
-                
-                <p><strong>المبلغ:</strong> <span style={{ 
-                  color: '#e74c3c', 
-                  fontWeight: 'bold',
-                  fontSize: '18px' 
-                }}>{finalPrice.toLocaleString()} دج</span></p>
-              </div>
+            <p><strong>المفتاح (Clé):</strong></p>
+            <div className={styles.numberWithCopy}>
+              <p className={styles.ccpNumber}>{paymentInfo.ripKey || 'جاري التحميل...'}</p>
+              <button 
+                type="button"
+                onClick={() => handleCopy(paymentInfo.ripKey, 'ripKey')}
+                className={styles.copyButton}
+              >
+                {copied === 'ripKey' ? '✓ تم النسخ' : '📋 نسخ'}
+              </button>
             </div>
 
-            <form onSubmit={handleSubmit} className={styles.form}>
-              <div className={styles.formGroup}>
-                <label>📸 رفع صورة الوصل <span style={{ color: 'red' }}>*</span></label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  required
-                  className={styles.fileInput}
-                />
-                {preview && (
-                  <div className={styles.preview}>
-                    <img src={preview} alt="Preview" />
-                  </div>
-                )}
-              </div>
+            <div className={styles.instagramBox}>
+              <p><strong>📱 تواصل معنا لتلقي جميع معلومات الدفع</strong></p>
+              <a 
+                href="https://www.instagram.com/pro_dealsdz?igsh=MXN6M3dvaWNpa2plbw=="
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.instagramButton}
+              >
+                <span>📩</span> أرسل رسالة على Instagram
+              </a>
+            </div>
+            
+            <p><strong>المبلغ:</strong> <span style={{ 
+              color: '#e74c3c', 
+              fontWeight: 'bold',
+              fontSize: '18px' 
+            }}>{finalPrice.toLocaleString()} دج</span></p>
+          </div>
+        </div>
 
-              <div className={styles.actions}>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={onClose}
-                  disabled={uploading}
-                >
-                  إلغاء
-                </button>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={uploading}
-                >
-                  {uploading ? '⏳ جاري الإرسال...' : '✅ إرسال الطلبية'}
-                </button>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.formGroup}>
+            <label>📸 رفع صورة الوصل <span style={{ color: 'red' }}>*</span></label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              required
+              className={styles.fileInput}
+            />
+            {preview && (
+              <div className={styles.preview}>
+                <img src={preview} alt="Preview" />
               </div>
-            </form>
-          </>
-        )}
+            )}
+          </div>
+
+          <div className={styles.actions}>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={onClose}
+              disabled={uploading}
+            >
+              إلغاء
+            </button>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={uploading}
+            >
+              {uploading ? '⏳ جاري الإرسال...' : '✅ إرسال الطلبية'}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   )
