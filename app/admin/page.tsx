@@ -492,15 +492,6 @@ export default function AdminPanel() {
                       required
                     />
                   </div>
-                  <div className={styles.formGroup}>
-                    <label>المفتاح (Clé)</label>
-                    <input
-                      type="text"
-                      value={ripKey}
-                      onChange={(e) => setRipKey(e.target.value)}
-                      required
-                    />
-                  </div>
                   
                   <hr style={{ margin: '30px 0', border: '1px solid #ddd' }} />
                   
