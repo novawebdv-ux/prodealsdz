@@ -122,7 +122,7 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
                 onClick={() => setPaymentMethod('rip')}
               >
                 <img 
-                  src="/attached_assets/LS20251103082823_1762157165287.png" 
+                  src="/attached_assets/golden-card-rip.png" 
                   alt="البطاقة الذهبية RIP"
                   className={styles.paymentImage}
                 />
