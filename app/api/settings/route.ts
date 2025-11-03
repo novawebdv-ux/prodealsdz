@@ -8,7 +8,6 @@ export async function GET() {
     const currentSettings = await firestoreService.settings.get();
     return NextResponse.json(currentSettings || { 
       ripNumber: '0000000000', 
-      ripKey: '00', 
       ccpNumber: '0000000000', 
       ccpKey: '00', 
       ccpName: 'ProDeals DZ' 
@@ -22,9 +21,9 @@ export async function GET() {
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
-    const { ripNumber, ripKey, ccpNumber, ccpKey, ccpName } = body;
+    const { ripNumber, ccpNumber, ccpKey, ccpName } = body;
     
-    await firestoreService.settings.createOrUpdate({ ripNumber, ripKey, ccpNumber, ccpKey, ccpName });
+    await firestoreService.settings.createOrUpdate({ ripNumber, ccpNumber, ccpKey, ccpName });
     const updated = await firestoreService.settings.get();
     
     return NextResponse.json(updated);

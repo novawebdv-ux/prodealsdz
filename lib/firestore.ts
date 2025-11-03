@@ -42,7 +42,6 @@ export type Purchase = {
 export type Settings = {
   id: string;
   ripNumber: string;
-  ripKey: string;
   ccpNumber: string;
   ccpKey: string;
   ccpName: string;
