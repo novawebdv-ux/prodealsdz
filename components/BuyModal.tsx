@@ -141,18 +141,6 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
               </button>
             </div>
 
-            <p><strong>المفتاح (Clé):</strong></p>
-            <div className={styles.numberWithCopy}>
-              <p className={styles.ccpNumber}>{paymentInfo.ripKey || 'جاري التحميل...'}</p>
-              <button 
-                type="button"
-                onClick={() => handleCopy(paymentInfo.ripKey, 'ripKey')}
-                className={styles.copyButton}
-              >
-                {copied === 'ripKey' ? '✓ تم النسخ' : '📋 نسخ'}
-              </button>
-            </div>
-
             <div className={styles.instagramBox}>
               <p><strong>📱 تواصل معنا لتلقي جميع معلومات الدفع</strong></p>
               <a 
