@@ -150,10 +150,10 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
               >
                 <img 
                   src="/images/ccp-check.png" 
-                  alt="الشيك CCP"
+                  alt="بريد الجزائر"
                   className={styles.paymentImage}
                 />
-                <p className={styles.paymentLabel}>الشيك البريدي (CCP)</p>
+                <p className={styles.paymentLabel}>بريد الجزائر</p>
               </div>
             </div>
             
@@ -174,18 +174,46 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
                 ← العودة لاختيار طريقة دفع أخرى
               </div>
               
-              <h4>📋 معلومات الدفع - {paymentMethod === 'rip' ? 'البطاقة الذهبية (RIP)' : 'الشيك البريدي (CCP)'}</h4>
+              <h4>📋 معلومات الدفع - {paymentMethod === 'rip' ? 'البطاقة الذهبية (RIP)' : 'بريد الجزائر'}</h4>
               
               <div className={styles.ccpBox}>
                 {paymentMethod === 'ccp' && (
                   <>
                     <p><strong>رقم الحساب (CCP):</strong></p>
-                    <p className={styles.ccpNumber}>{paymentInfo.ccpNumber || 'جاري التحميل...'}</p>
+                    <div className={styles.numberWithCopy}>
+                      <p className={styles.ccpNumber}>{paymentInfo.ccpNumber || 'جاري التحميل...'}</p>
+                      <button 
+                        type="button"
+                        onClick={() => handleCopy(paymentInfo.ccpNumber, 'ccpNumber')}
+                        className={styles.copyButton}
+                      >
+                        {copied === 'ccpNumber' ? '✓ تم النسخ' : '📋 نسخ'}
+                      </button>
+                    </div>
                     
                     <p><strong>المفتاح (Clé):</strong></p>
-                    <p className={styles.ccpNumber}>{paymentInfo.ccpKey || 'جاري التحميل...'}</p>
-                    
-                    <p><strong>الاسم و اللقب:</strong> {paymentInfo.ccpName || 'ProDeals DZ'}</p>
+                    <div className={styles.numberWithCopy}>
+                      <p className={styles.ccpNumber}>{paymentInfo.ccpKey || 'جاري التحميل...'}</p>
+                      <button 
+                        type="button"
+                        onClick={() => handleCopy(paymentInfo.ccpKey, 'ccpKey')}
+                        className={styles.copyButton}
+                      >
+                        {copied === 'ccpKey' ? '✓ تم النسخ' : '📋 نسخ'}
+                      </button>
+                    </div>
+
+                    <div className={styles.instagramBox}>
+                      <p><strong>📱 للحصول على معلومات الدفع:</strong></p>
+                      <a 
+                        href="https://www.instagram.com/pro_dealsdz?igsh=MXN6M3dvaWNpa2plbw=="
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.instagramButton}
+                      >
+                        <span>📩</span> أرسل رسالة على Instagram
+                      </a>
+                    </div>
                   </>
                 )}
                 
@@ -202,45 +230,38 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
                         {copied === 'ripNumber' ? '✓ تم النسخ' : '📋 نسخ'}
                       </button>
                     </div>
+
+                    <p><strong>المفتاح (Clé):</strong></p>
+                    <div className={styles.numberWithCopy}>
+                      <p className={styles.ccpNumber}>{paymentInfo.ripKey || 'جاري التحميل...'}</p>
+                      <button 
+                        type="button"
+                        onClick={() => handleCopy(paymentInfo.ripKey, 'ripKey')}
+                        className={styles.copyButton}
+                      >
+                        {copied === 'ripKey' ? '✓ تم النسخ' : '📋 نسخ'}
+                      </button>
+                    </div>
+
+                    <div className={styles.instagramBox}>
+                      <p><strong>📱 للحصول على معلومات الدفع:</strong></p>
+                      <a 
+                        href="https://www.instagram.com/pro_dealsdz?igsh=MXN6M3dvaWNpa2plbw=="
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.instagramButton}
+                      >
+                        <span>📩</span> أرسل رسالة على Instagram
+                      </a>
+                    </div>
                   </>
                 )}
                 
-                {hasActiveDiscount ? (
-                  <div>
-                    <p>
-                      <strong>المبلغ:</strong>{' '}
-                      <span style={{ 
-                        textDecoration: 'line-through', 
-                        color: '#999', 
-                        fontSize: '14px',
-                        marginLeft: '10px' 
-                      }}>
-                        {product.price.toLocaleString()} دج
-                      </span>
-                      {' '}
-                      <span style={{ 
-                        color: '#e74c3c', 
-                        fontWeight: 'bold',
-                        fontSize: '18px' 
-                      }}>
-                        {finalPrice.toLocaleString()} دج
-                      </span>
-                      {' '}
-                      <span style={{ 
-                        background: '#e74c3c',
-                        color: 'white',
-                        padding: '2px 8px',
-                        borderRadius: '4px',
-                        fontSize: '12px',
-                        fontWeight: 'bold'
-                      }}>
-                        خصم {Math.round((1 - finalPrice / product.price) * 100)}%
-                      </span>
-                    </p>
-                  </div>
-                ) : (
-                  <p><strong>المبلغ:</strong> {product.price.toLocaleString()} دج</p>
-                )}
+                <p><strong>المبلغ:</strong> <span style={{ 
+                  color: '#e74c3c', 
+                  fontWeight: 'bold',
+                  fontSize: '18px' 
+                }}>{finalPrice.toLocaleString()} دج</span></p>
               </div>
             </div>
 

@@ -124,6 +124,42 @@
   transform: translateY(-2px);
 }
 
+.instagramBox {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px dashed var(--sky-blue);
+  text-align: center;
+}
+
+.instagramBox p {
+  margin-bottom: 12px;
+  color: var(--deep-blue);
+}
+
+.instagramButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+  color: white;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(131, 58, 180, 0.4);
+}
+
+.instagramButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(131, 58, 180, 0.6);
+}
+
+.instagramButton span {
+  font-size: 20px;
+}
+
 .form {
   margin-top: 20px;
 }
