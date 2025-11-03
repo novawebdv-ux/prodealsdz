@@ -33,9 +33,6 @@ interface Order {
 interface Settings {
   ripNumber: string
   ripKey: string
-  ccpNumber: string
-  ccpKey: string
-  ccpName: string
 }
 
 export default function AdminPanel() {
@@ -45,12 +42,9 @@ export default function AdminPanel() {
 
   const [products, setProducts] = useState<Product[]>([])
   const [orders, setOrders] = useState<Order[]>([])
-  const [settings, setSettings] = useState<Settings>({ ripNumber: '', ripKey: '', ccpNumber: '', ccpKey: '', ccpName: '' })
+  const [settings, setSettings] = useState<Settings>({ ripNumber: '', ripKey: '' })
   const [ripNumber, setRipNumber] = useState('')
   const [ripKey, setRipKey] = useState('')
-  const [ccpNumber, setCcpNumber] = useState('')
-  const [ccpKey, setCcpKey] = useState('')
-  const [ccpName, setCcpName] = useState('')
   const [adminEmails, setAdminEmails] = useState<string[]>([])
   const [newAdminEmail, setNewAdminEmail] = useState('')
 
@@ -94,12 +88,9 @@ export default function AdminPanel() {
       } else if (activeTab === 'settings') {
         const res = await fetch('/api/settings')
         const data = await res.json()
-        setSettings(data || { ripNumber: '', ripKey: '', ccpNumber: '', ccpKey: '', ccpName: '' })
+        setSettings(data || { ripNumber: '', ripKey: '' })
         setRipNumber(data?.ripNumber || '')
         setRipKey(data?.ripKey || '')
-        setCcpNumber(data?.ccpNumber || '')
-        setCcpKey(data?.ccpKey || '')
-        setCcpName(data?.ccpName || '')
       } else if (activeTab === 'admins') {
         const res = await fetch('/api/admins')
         const data = await res.json()
@@ -241,9 +232,6 @@ export default function AdminPanel() {
     const settingsData = {
       ripNumber: ripNumber,
       ripKey: ripKey,
-      ccpNumber: ccpNumber,
-      ccpKey: ccpKey,
-      ccpName: ccpName,
     }
 
     const res = await fetch('/api/settings', {
@@ -257,9 +245,6 @@ export default function AdminPanel() {
       setSettings(updatedSettings)
       setRipNumber(updatedSettings.ripNumber)
       setRipKey(updatedSettings.ripKey)
-      setCcpNumber(updatedSettings.ccpNumber)
-      setCcpKey(updatedSettings.ccpKey)
-      setCcpName(updatedSettings.ccpName)
       alert('✅ تم تحديث الإعدادات بنجاح!')
     } else {
       alert('❌ فشل في تحديث الإعدادات')
@@ -524,34 +509,12 @@ export default function AdminPanel() {
                       required
                     />
                   </div>
-                  
-                  <hr style={{ margin: '30px 0', border: '1px solid #ddd' }} />
-                  
-                  <h3 style={{ marginBottom: '20px', color: 'var(--deep-blue)' }}>الشيك البريدي (CCP)</h3>
-                  <div className={styles.formGroup}>
-                    <label>رقم الحساب (CCP)</label>
-                    <input
-                      type="text"
-                      value={ccpNumber}
-                      onChange={(e) => setCcpNumber(e.target.value)}
-                      required
-                    />
-                  </div>
                   <div className={styles.formGroup}>
                     <label>المفتاح (Clé)</label>
                     <input
                       type="text"
-                      value={ccpKey}
-                      onChange={(e) => setCcpKey(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className={styles.formGroup}>
-                    <label>الاسم و اللقب</label>
-                    <input
-                      type="text"
-                      value={ccpName}
-                      onChange={(e) => setCcpName(e.target.value)}
+                      value={ripKey}
+                      onChange={(e) => setRipKey(e.target.value)}
                       required
                     />
                   </div>

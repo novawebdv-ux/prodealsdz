@@ -22,10 +22,7 @@ interface BuyModalProps {
 export default function BuyModal({ product, onClose, customerEmail, customerName }: BuyModalProps) {
   const [paymentInfo, setPaymentInfo] = useState({ 
     ripNumber: '', 
-    ripKey: '', 
-    ccpNumber: '', 
-    ccpKey: '', 
-    ccpName: '' 
+    ripKey: ''
   })
   const [receiptImage, setReceiptImage] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
@@ -42,10 +39,7 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
       .then(res => res.json())
       .then(data => setPaymentInfo({
         ripNumber: data.ripNumber || '',
-        ripKey: data.ripKey || '',
-        ccpNumber: data.ccpNumber || '',
-        ccpKey: data.ccpKey || '',
-        ccpName: data.ccpName || ''
+        ripKey: data.ripKey || ''
       }))
       .catch(err => console.error('Error fetching payment info:', err))
   }, [])
