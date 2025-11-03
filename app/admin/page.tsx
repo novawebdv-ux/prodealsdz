@@ -32,7 +32,6 @@ interface Order {
 
 interface Settings {
   ripNumber: string
-  ripKey: string
 }
 
 export default function AdminPanel() {
@@ -42,9 +41,8 @@ export default function AdminPanel() {
 
   const [products, setProducts] = useState<Product[]>([])
   const [orders, setOrders] = useState<Order[]>([])
-  const [settings, setSettings] = useState<Settings>({ ripNumber: '', ripKey: '' })
+  const [settings, setSettings] = useState<Settings>({ ripNumber: '' })
   const [ripNumber, setRipNumber] = useState('')
-  const [ripKey, setRipKey] = useState('')
   const [adminEmails, setAdminEmails] = useState<string[]>([])
   const [newAdminEmail, setNewAdminEmail] = useState('')
 
@@ -88,9 +86,8 @@ export default function AdminPanel() {
       } else if (activeTab === 'settings') {
         const res = await fetch('/api/settings')
         const data = await res.json()
-        setSettings(data || { ripNumber: '', ripKey: '' })
+        setSettings(data || { ripNumber: '' })
         setRipNumber(data?.ripNumber || '')
-        setRipKey(data?.ripKey || '')
       } else if (activeTab === 'admins') {
         const res = await fetch('/api/admins')
         const data = await res.json()
@@ -231,7 +228,6 @@ export default function AdminPanel() {
 
     const settingsData = {
       ripNumber: ripNumber,
-      ripKey: ripKey,
     }
 
     const res = await fetch('/api/settings', {
@@ -244,7 +240,6 @@ export default function AdminPanel() {
       const updatedSettings = await res.json()
       setSettings(updatedSettings)
       setRipNumber(updatedSettings.ripNumber)
-      setRipKey(updatedSettings.ripKey)
       alert('✅ تم تحديث الإعدادات بنجاح!')
     } else {
       alert('❌ فشل في تحديث الإعدادات')
@@ -506,15 +501,6 @@ export default function AdminPanel() {
                       type="text"
                       value={ripNumber}
                       onChange={(e) => setRipNumber(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className={styles.formGroup}>
-                    <label>المفتاح (Clé)</label>
-                    <input
-                      type="text"
-                      value={ripKey}
-                      onChange={(e) => setRipKey(e.target.value)}
                       required
                     />
                   </div>
