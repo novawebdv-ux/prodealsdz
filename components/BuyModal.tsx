@@ -130,7 +130,7 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
                 onClick={() => setPaymentMethod('rip')}
               >
                 <img 
-                  src="/attached_assets/golden-card-rip.png" 
+                  src="/images/golden-card-rip.png" 
                   alt="البطاقة الذهبية RIP"
                   className={styles.paymentImage}
                 />
@@ -142,7 +142,7 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
                 onClick={() => setPaymentMethod('ccp')}
               >
                 <img 
-                  src="/attached_assets/ccp-check.png" 
+                  src="/images/ccp-check.png" 
                   alt="الشيك CCP"
                   className={styles.paymentImage}
                 />
