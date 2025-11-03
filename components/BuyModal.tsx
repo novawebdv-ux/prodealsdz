@@ -8,6 +8,8 @@ interface Product {
   id: string
   title: string
   price: number
+  discountPrice?: number
+  discountEndDate?: string
 }
 
 interface BuyModalProps {
@@ -32,6 +34,11 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
   const [uploading, setUploading] = useState(false)
   const [preview, setPreview] = useState<string | null>(null)
   const [copied, setCopied] = useState<string | null>(null)
+
+  const hasActiveDiscount = product.discountPrice && product.discountPrice > 0 && 
+    product.discountEndDate && new Date(product.discountEndDate) > new Date()
+  
+  const finalPrice = hasActiveDiscount ? product.discountPrice! : product.price
 
   useEffect(() => {
     fetch('/api/settings')
@@ -97,8 +104,8 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
           customerPhone: '',
           productId: product.id,
           productTitle: product.title,
-          productPrice: product.price,
-          total: product.price,
+          productPrice: finalPrice,
+          total: finalPrice,
           receiptImageUrl: url,
           paymentMethod: paymentMethod,
         }),
@@ -198,7 +205,42 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
                   </>
                 )}
                 
-                <p><strong>المبلغ:</strong> {product.price.toLocaleString()} دج</p>
+                {hasActiveDiscount ? (
+                  <div>
+                    <p>
+                      <strong>المبلغ:</strong>{' '}
+                      <span style={{ 
+                        textDecoration: 'line-through', 
+                        color: '#999', 
+                        fontSize: '14px',
+                        marginLeft: '10px' 
+                      }}>
+                        {product.price.toLocaleString()} دج
+                      </span>
+                      {' '}
+                      <span style={{ 
+                        color: '#e74c3c', 
+                        fontWeight: 'bold',
+                        fontSize: '18px' 
+                      }}>
+                        {finalPrice.toLocaleString()} دج
+                      </span>
+                      {' '}
+                      <span style={{ 
+                        background: '#e74c3c',
+                        color: 'white',
+                        padding: '2px 8px',
+                        borderRadius: '4px',
+                        fontSize: '12px',
+                        fontWeight: 'bold'
+                      }}>
+                        خصم {Math.round((1 - finalPrice / product.price) * 100)}%
+                      </span>
+                    </p>
+                  </div>
+                ) : (
+                  <p><strong>المبلغ:</strong> {product.price.toLocaleString()} دج</p>
+                )}
               </div>
             </div>
 
