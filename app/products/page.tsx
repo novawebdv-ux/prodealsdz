@@ -12,7 +12,7 @@ interface Product {
   description: string
   price: number
   imageUrl?: string | null
-  downloadLink?: string | null
+  postPurchaseContent?: string | null
 }
 
 export default function ProductsPage() {

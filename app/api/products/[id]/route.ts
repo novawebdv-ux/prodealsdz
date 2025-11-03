@@ -7,14 +7,14 @@ export async function PUT(
 ) {
   try {
     const body = await request.json();
-    const { title, description, price, imageUrl, downloadLink } = body;
+    const { title, description, price, imageUrl, postPurchaseContent } = body;
     
     await firestoreService.products.update(params.id, {
       title,
       description,
       price,
       imageUrl,
-      downloadLink,
+      postPurchaseContent,
     });
     
     const updatedProduct = await firestoreService.products.getById(params.id);

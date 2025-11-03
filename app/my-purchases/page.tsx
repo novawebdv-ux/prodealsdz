@@ -8,7 +8,7 @@ import styles from './purchases.module.css'
 interface Purchase {
   id: string
   productTitle: string
-  downloadLink: string | null
+  postPurchaseContent: string | null
   purchasedAt: string
 }
 
@@ -85,17 +85,39 @@ export default function MyPurchasesPage() {
                 <p className={styles.date}>
                   تاريخ الشراء: {new Date(purchase.purchasedAt).toLocaleDateString('ar-DZ')}
                 </p>
-                {purchase.downloadLink ? (
-                  <a 
-                    href={purchase.downloadLink} 
-                    className="btn btn-primary" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                  >
-                    📥 تحميل المنتج
-                  </a>
+                {purchase.postPurchaseContent ? (
+                  <div className={styles.purchaseContent}>
+                    <h4 className={styles.contentTitle}>📦 معلومات المنتج:</h4>
+                    <div className={styles.contentText}>
+                      {purchase.postPurchaseContent.split('\n').map((line, index) => {
+                        const urlRegex = /(https?:\/\/[^\s]+)/g;
+                        const parts = line.split(urlRegex);
+                        
+                        return (
+                          <p key={index}>
+                            {parts.map((part, i) => {
+                              if (urlRegex.test(part)) {
+                                return (
+                                  <a 
+                                    key={i}
+                                    href={part} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className={styles.contentLink}
+                                  >
+                                    {part}
+                                  </a>
+                                );
+                              }
+                              return <span key={i}>{part}</span>;
+                            })}
+                          </p>
+                        );
+                      })}
+                    </div>
+                  </div>
                 ) : (
-                  <p className={styles.noLink}>الرابط غير متوفر حالياً</p>
+                  <p className={styles.noContent}>المحتوى غير متوفر حالياً</p>
                 )}
               </div>
             ))}

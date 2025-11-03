@@ -11,7 +11,7 @@ interface Product {
   description: string
   price: number
   imageUrl?: string | null
-  downloadLink?: string | null
+  postPurchaseContent?: string | null
 }
 
 interface Order {
@@ -125,7 +125,7 @@ export default function AdminPanel() {
       description: formData.get('description') as string,
       price: parseInt(formData.get('price') as string),
       imageUrl: imageUrl,
-      downloadLink: formData.get('downloadLink') as string || null,
+      postPurchaseContent: formData.get('postPurchaseContent') as string || null,
     }
 
     if (editingProduct) {
@@ -433,9 +433,9 @@ export default function AdminPanel() {
                     <h3>{product.title}</h3>
                     <p>{product.description}</p>
                     <p className={styles.price}>{product.price.toLocaleString()} دج</p>
-                    {product.downloadLink && (
-                      <p className={styles.downloadLink}>
-                        <small>🔗 {product.downloadLink}</small>
+                    {product.postPurchaseContent && (
+                      <p className={styles.postPurchasePreview}>
+                        <small>📝 محتوى بعد الشراء: {product.postPurchaseContent.substring(0, 50)}...</small>
                       </p>
                     )}
                     <div className={styles.productActions}>
@@ -612,13 +612,16 @@ export default function AdminPanel() {
                 />
               </div>
               <div className={styles.formGroup}>
-                <label>رابط التحميل (اختياري)</label>
-                <input
-                  type="url"
-                  name="downloadLink"
-                  defaultValue={editingProduct?.downloadLink || ''}
-                  placeholder="https://..."
+                <label>محتوى بعد الشراء (روابط، تعليمات، إلخ)</label>
+                <textarea
+                  name="postPurchaseContent"
+                  rows={6}
+                  defaultValue={editingProduct?.postPurchaseContent || ''}
+                  placeholder="اكتب هنا المحتوى الذي سيظهر للزبون بعد شراء المنتج (روابط التحميل، تعليمات الاستخدام، إلخ)"
                 />
+                <small style={{ color: '#666', marginTop: '8px', display: 'block' }}>
+                  💡 يمكنك كتابة نص مع روابط وتعليمات. سيظهر هذا المحتوى للزبون في صفحة "مشترياتي"
+                </small>
               </div>
               <div className={styles.modalActions}>
                 <button

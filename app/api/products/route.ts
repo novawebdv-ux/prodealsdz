@@ -14,14 +14,14 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { title, description, price, imageUrl, downloadLink } = body;
+    const { title, description, price, imageUrl, postPurchaseContent } = body;
     
     const productId = await firestoreService.products.create({
       title,
       description,
       price,
       imageUrl: imageUrl || undefined,
-      downloadLink: downloadLink || undefined,
+      postPurchaseContent: postPurchaseContent || undefined,
     });
     
     const newProduct = await firestoreService.products.getById(productId);

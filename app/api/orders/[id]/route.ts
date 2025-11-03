@@ -25,7 +25,7 @@ export async function PATCH(
           customerEmail: updatedOrder.customerEmail,
           productId: updatedOrder.productId,
           productTitle: updatedOrder.productTitle,
-          downloadLink: product.downloadLink || '',
+          postPurchaseContent: product.postPurchaseContent || '',
         });
       }
     }

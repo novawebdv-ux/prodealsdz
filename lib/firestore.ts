@@ -7,7 +7,7 @@ export type Product = {
   description: string;
   price: number;
   imageUrl?: string;
-  downloadLink?: string;
+  postPurchaseContent?: string;
   createdAt: Date;
 };
 
@@ -33,7 +33,7 @@ export type Purchase = {
   customerEmail: string;
   productId: string;
   productTitle: string;
-  downloadLink?: string;
+  postPurchaseContent?: string;
   purchasedAt: Date;
 };
 
@@ -61,26 +61,41 @@ export const firestoreService = {
   products: {
     async getAll(): Promise<Product[]> {
       const snapshot = await adminDb.collection('products').orderBy('createdAt', 'desc').get();
-      return snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        createdAt: convertTimestamp(doc.data().createdAt)
-      } as Product));
+      return snapshot.docs.map(doc => {
+        const data = doc.data();
+        const { downloadLink, ...rest } = data;
+        return {
+          id: doc.id,
+          title: data.title,
+          description: data.description,
+          price: data.price,
+          imageUrl: data.imageUrl,
+          postPurchaseContent: data.postPurchaseContent || downloadLink || undefined,
+          createdAt: convertTimestamp(data.createdAt)
+        } as Product;
+      });
     },
 
     async getById(id: string): Promise<Product | null> {
       const doc = await adminDb.collection('products').doc(id).get();
       if (!doc.exists) return null;
+      const data = doc.data();
+      const downloadLink = data?.downloadLink;
       return {
         id: doc.id,
-        ...doc.data(),
-        createdAt: convertTimestamp(doc.data()?.createdAt)
+        title: data?.title,
+        description: data?.description,
+        price: data?.price,
+        imageUrl: data?.imageUrl,
+        postPurchaseContent: data?.postPurchaseContent || downloadLink || undefined,
+        createdAt: convertTimestamp(data?.createdAt)
       } as Product;
     },
 
     async create(product: Omit<Product, 'id' | 'createdAt'>): Promise<string> {
       const docRef = await adminDb.collection('products').add({
         ...product,
+        downloadLink: product.postPurchaseContent,
         createdAt: FieldValue.serverTimestamp()
       });
       return docRef.id;
@@ -88,6 +103,9 @@ export const firestoreService = {
 
     async update(id: string, product: Partial<Product>): Promise<void> {
       const { createdAt, id: _, ...updateData } = product as any;
+      if (updateData.postPurchaseContent !== undefined) {
+        updateData.downloadLink = updateData.postPurchaseContent;
+      }
       await adminDb.collection('products').doc(id).update(updateData);
     },
 
@@ -176,11 +194,19 @@ export const firestoreService = {
   purchases: {
     async getAll(): Promise<Purchase[]> {
       const snapshot = await adminDb.collection('purchases').orderBy('purchasedAt', 'desc').get();
-      return snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        purchasedAt: convertTimestamp(doc.data().purchasedAt)
-      } as Purchase));
+      return snapshot.docs.map(doc => {
+        const data = doc.data();
+        const downloadLink = data.downloadLink;
+        return {
+          id: doc.id,
+          orderId: data.orderId,
+          customerEmail: data.customerEmail,
+          productId: data.productId,
+          productTitle: data.productTitle,
+          postPurchaseContent: data.postPurchaseContent || downloadLink || undefined,
+          purchasedAt: convertTimestamp(data.purchasedAt)
+        } as Purchase;
+      });
     },
 
     async getByEmail(email: string): Promise<Purchase[]> {
@@ -188,11 +214,19 @@ export const firestoreService = {
         .where('customerEmail', '==', email)
         .get();
 
-      const purchases = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        purchasedAt: convertTimestamp(doc.data().purchasedAt)
-      } as Purchase));
+      const purchases = snapshot.docs.map(doc => {
+        const data = doc.data();
+        const downloadLink = data.downloadLink;
+        return {
+          id: doc.id,
+          orderId: data.orderId,
+          customerEmail: data.customerEmail,
+          productId: data.productId,
+          productTitle: data.productTitle,
+          postPurchaseContent: data.postPurchaseContent || downloadLink || undefined,
+          purchasedAt: convertTimestamp(data.purchasedAt)
+        } as Purchase;
+      });
 
       return purchases.sort((a, b) => b.purchasedAt.getTime() - a.purchasedAt.getTime());
     },
@@ -200,6 +234,7 @@ export const firestoreService = {
     async create(purchase: Omit<Purchase, 'id' | 'purchasedAt'>): Promise<string> {
       const docRef = await adminDb.collection('purchases').add({
         ...purchase,
+        downloadLink: purchase.postPurchaseContent,
         purchasedAt: FieldValue.serverTimestamp()
       });
       return docRef.id;
