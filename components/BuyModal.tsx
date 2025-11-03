@@ -176,8 +176,6 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
                   <>
                     <p><strong>رقم الحساب (RIP):</strong></p>
                     <p className={styles.ccpNumber}>{paymentInfo.ripNumber || 'جاري التحميل...'}</p>
-                    <p><strong>المفتاح (Clé):</strong></p>
-                    <p className={styles.ccpNumber}>{paymentInfo.ripKey || 'جاري التحميل...'}</p>
                   </>
                 )}
                 
