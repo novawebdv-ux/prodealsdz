@@ -173,27 +173,11 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
                 {paymentMethod === 'ccp' && (
                   <>
                     <p><strong>رقم الحساب (CCP):</strong></p>
-                    <div className={styles.numberWithCopy}>
-                      <p className={styles.ccpNumber}>{paymentInfo.ccpNumber || 'جاري التحميل...'}</p>
-                      <button 
-                        type="button"
-                        onClick={() => handleCopy(paymentInfo.ccpNumber, 'ccpNumber')}
-                        className={styles.copyButton}
-                      >
-                        {copied === 'ccpNumber' ? '✓ تم النسخ' : '📋 نسخ'}
-                      </button>
-                    </div>
+                    <p className={styles.ccpNumber}>{paymentInfo.ccpNumber || 'جاري التحميل...'}</p>
+                    
                     <p><strong>المفتاح (Clé):</strong></p>
-                    <div className={styles.numberWithCopy}>
-                      <p className={styles.ccpNumber}>{paymentInfo.ccpKey || 'جاري التحميل...'}</p>
-                      <button 
-                        type="button"
-                        onClick={() => handleCopy(paymentInfo.ccpKey, 'ccpKey')}
-                        className={styles.copyButton}
-                      >
-                        {copied === 'ccpKey' ? '✓ تم النسخ' : '📋 نسخ'}
-                      </button>
-                    </div>
+                    <p className={styles.ccpNumber}>{paymentInfo.ccpKey || 'جاري التحميل...'}</p>
+                    
                     <p><strong>الاسم و اللقب:</strong> {paymentInfo.ccpName || 'ProDeals DZ'}</p>
                   </>
                 )}
