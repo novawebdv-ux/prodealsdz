@@ -84,16 +84,44 @@
   margin-bottom: 20px;
 }
 
+.numberWithCopy {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 10px 0;
+}
+
 .ccpNumber {
-  font-size: 22px;
+  flex: 1;
+  font-size: 18px;
   font-weight: 700;
   color: var(--deep-blue);
   background: rgba(111, 208, 255, 0.2);
-  padding: 10px;
+  padding: 12px;
   border-radius: 8px;
-  margin: 10px 0;
   font-family: 'Courier New', monospace;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
+  word-break: break-all;
+  margin: 0;
+}
+
+.copyButton {
+  background: var(--sky-blue);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  min-width: 100px;
+}
+
+.copyButton:hover {
+  background: var(--deep-blue);
+  transform: translateY(-2px);
 }
 
 .form {
@@ -146,7 +174,17 @@
 
 @media (max-width: 768px) {
   .ccpNumber {
-    font-size: 18px;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+  }
+  
+  .numberWithCopy {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .copyButton {
+    width: 100%;
   }
   
   .actions {

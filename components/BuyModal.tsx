@@ -31,6 +31,7 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
   const [receiptImage, setReceiptImage] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
   const [preview, setPreview] = useState<string | null>(null)
+  const [copied, setCopied] = useState<string | null>(null)
 
   useEffect(() => {
     fetch('/api/settings')
@@ -44,6 +45,13 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
       }))
       .catch(err => console.error('Error fetching payment info:', err))
   }, [])
+
+  const handleCopy = (text: string, type: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(type)
+      setTimeout(() => setCopied(null), 2000)
+    })
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -165,9 +173,27 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
                 {paymentMethod === 'ccp' && (
                   <>
                     <p><strong>رقم الحساب (CCP):</strong></p>
-                    <p className={styles.ccpNumber}>{paymentInfo.ccpNumber || 'جاري التحميل...'}</p>
+                    <div className={styles.numberWithCopy}>
+                      <p className={styles.ccpNumber}>{paymentInfo.ccpNumber || 'جاري التحميل...'}</p>
+                      <button 
+                        type="button"
+                        onClick={() => handleCopy(paymentInfo.ccpNumber, 'ccpNumber')}
+                        className={styles.copyButton}
+                      >
+                        {copied === 'ccpNumber' ? '✓ تم النسخ' : '📋 نسخ'}
+                      </button>
+                    </div>
                     <p><strong>المفتاح (Clé):</strong></p>
-                    <p className={styles.ccpNumber}>{paymentInfo.ccpKey || 'جاري التحميل...'}</p>
+                    <div className={styles.numberWithCopy}>
+                      <p className={styles.ccpNumber}>{paymentInfo.ccpKey || 'جاري التحميل...'}</p>
+                      <button 
+                        type="button"
+                        onClick={() => handleCopy(paymentInfo.ccpKey, 'ccpKey')}
+                        className={styles.copyButton}
+                      >
+                        {copied === 'ccpKey' ? '✓ تم النسخ' : '📋 نسخ'}
+                      </button>
+                    </div>
                     <p><strong>الاسم و اللقب:</strong> {paymentInfo.ccpName || 'ProDeals DZ'}</p>
                   </>
                 )}
@@ -175,7 +201,16 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
                 {paymentMethod === 'rip' && (
                   <>
                     <p><strong>رقم الحساب (RIP):</strong></p>
-                    <p className={styles.ccpNumber}>{paymentInfo.ripNumber || 'جاري التحميل...'}</p>
+                    <div className={styles.numberWithCopy}>
+                      <p className={styles.ccpNumber}>{paymentInfo.ripNumber || 'جاري التحميل...'}</p>
+                      <button 
+                        type="button"
+                        onClick={() => handleCopy(paymentInfo.ripNumber, 'ripNumber')}
+                        className={styles.copyButton}
+                      >
+                        {copied === 'ripNumber' ? '✓ تم النسخ' : '📋 نسخ'}
+                      </button>
+                    </div>
                   </>
                 )}
                 
