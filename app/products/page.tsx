@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { getCurrentUser } from '@/lib/auth'
 import Header from '@/components/Header'
 import BuyModal from '@/components/BuyModal'
+import Breadcrumbs from '@/components/Breadcrumbs'
 import styles from './products.module.css'
 
 interface Product {
@@ -72,6 +73,11 @@ export default function ProductsPage() {
       <Header />
 
       <main className="container">
+        <Breadcrumbs items={[
+          { label: 'الرئيسية', href: '/' },
+          { label: 'المنتجات' }
+        ]} />
+        
         <div className={styles.pageHeader}>
           <h1>المنتجات الرقمية</h1>
           <input

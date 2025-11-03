@@ -497,6 +497,135 @@
   }
 }
 
+.faqSection {
+  margin: 80px 0;
+}
+
+.faqSection h3 {
+  text-align: center;
+  margin-bottom: 48px;
+  color: var(--deep-blue);
+  font-size: 36px;
+  font-weight: 800;
+}
+
+@media (min-width: 1200px) {
+  .faqSection {
+    margin: 100px 0;
+  }
+
+  .faqSection h3 {
+    font-size: 44px;
+    margin-bottom: 64px;
+  }
+}
+
+.faqContainer {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.faqItem {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid rgba(111, 208, 255, 0.15);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.faqItem:hover {
+  border-color: rgba(111, 208, 255, 0.4);
+  box-shadow: 0 8px 24px rgba(111, 208, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.faqQuestion {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 24px 28px;
+  text-align: right;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--deep-blue);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.3s ease;
+}
+
+.faqQuestion:hover {
+  background: rgba(111, 208, 255, 0.05);
+}
+
+.faqQuestion.active {
+  background: linear-gradient(135deg, rgba(111, 208, 255, 0.1), rgba(168, 224, 255, 0.08));
+  color: var(--sky-blue);
+}
+
+.faqIcon {
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--sky-blue);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(111, 208, 255, 0.12);
+  border-radius: 8px;
+}
+
+.faqQuestion.active .faqIcon {
+  transform: rotate(180deg);
+  background: rgba(111, 208, 255, 0.2);
+}
+
+.faqAnswer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.faqAnswer.show {
+  max-height: 500px;
+}
+
+.faqAnswer p {
+  padding: 0 28px 24px 28px;
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-size: 16px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@media (max-width: 768px) {
+  .faqQuestion {
+    padding: 20px;
+    font-size: 16px;
+  }
+
+  .faqAnswer p {
+    padding: 0 20px 20px 20px;
+    font-size: 15px;
+  }
+
+  .faqIcon {
+    font-size: 24px;
+    width: 28px;
+    height: 28px;
+  }
+}
+
 .footer {
   margin-top: auto;
   padding: 40px 0;

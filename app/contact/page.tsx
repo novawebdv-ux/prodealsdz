@@ -3,6 +3,7 @@
 
 import React from 'react'
 import Header from '@/components/Header'
+import Breadcrumbs from '@/components/Breadcrumbs'
 import Image from 'next/image'
 import styles from './contact.module.css'
 
@@ -12,6 +13,11 @@ export default function ContactPage() {
       <Header />
 
       <main className="container">
+        <Breadcrumbs items={[
+          { label: 'الرئيسية', href: '/' },
+          { label: 'اتصل بنا' }
+        ]} />
+        
         <div className={styles.contactHeader}>
           <div className={styles.logoContainer}>
             <Image 

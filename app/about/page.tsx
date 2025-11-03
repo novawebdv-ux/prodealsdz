@@ -1,5 +1,6 @@
 import React from 'react'
 import Header from '@/components/Header'
+import Breadcrumbs from '@/components/Breadcrumbs'
 import styles from './about.module.css'
 
 export default function AboutPage() {
@@ -8,6 +9,11 @@ export default function AboutPage() {
       <Header />
 
       <main className="container">
+        <Breadcrumbs items={[
+          { label: 'الرئيسية', href: '/' },
+          { label: 'حولنا' }
+        ]} />
+        
         <div className={styles.aboutHeader}>
           <h1>من نحن</h1>
           <p>تعرف على قصتنا ورؤيتنا</p>

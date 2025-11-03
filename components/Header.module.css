@@ -6,12 +6,23 @@
   position: sticky;
   top: 0;
   z-index: 90;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.header.scrolled {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(25px);
+  box-shadow: 0 8px 32px rgba(111, 208, 255, 0.2);
+  border-bottom-color: rgba(111, 208, 255, 0.3);
 }
 
 .header:hover {
   box-shadow: 0 6px 28px rgba(111, 208, 255, 0.12);
+}
+
+.header.scrolled:hover {
+  box-shadow: 0 10px 40px rgba(111, 208, 255, 0.25);
 }
 
 .headerInner {

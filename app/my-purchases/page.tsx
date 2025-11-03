@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { getCurrentUser } from '@/lib/auth'
 import Header from '@/components/Header'
+import Breadcrumbs from '@/components/Breadcrumbs'
 import styles from './purchases.module.css'
 
 interface Purchase {
@@ -63,6 +64,11 @@ export default function MyPurchasesPage() {
       <Header />
       
       <main className="container">
+        <Breadcrumbs items={[
+          { label: 'الرئيسية', href: '/' },
+          { label: 'مشترياتي' }
+        ]} />
+        
         <h1 className={styles.pageTitle}>مشترياتي</h1>
         
         {loading ? (

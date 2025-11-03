@@ -13,6 +13,7 @@ export default function Header() {
   const [isUserAdmin, setIsUserAdmin] = useState(false)
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -26,6 +27,13 @@ export default function Header() {
     } else {
       setIsUserAdmin(false)
     }
+
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   useEffect(() => {
@@ -52,7 +60,7 @@ export default function Header() {
 
   return (
     <>
-      <header className={styles.header}>
+      <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
         <div className="container">
           <div className={styles.headerInner}>
             <Link href="/" className={styles.brand}>

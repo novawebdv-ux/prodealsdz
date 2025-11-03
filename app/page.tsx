@@ -1,12 +1,41 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Header from '@/components/Header'
 import styles from './page.module.css'
 
 export default function Home() {
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null)
+
+  const faqs = [
+    {
+      question: 'كيف يمكنني الشراء من ProDeals؟',
+      answer: 'بكل بساطة! اختر المنتج الذي تريده، اضغط على "شراء الآن"، سجل الدخول بحساب Google، ثم ادفع عبر بريدي موب باستخدام البطاقة الذهبية. بعد تأكيد الدفع، ستحصل على المنتج فوراً.'
+    },
+    {
+      question: 'ما هي طرق الدفع المتاحة؟',
+      answer: 'نقبل الدفع عبر بريدي موب باستخدام البطاقة الذهبية (RIP). بعد الشراء، سترسل لنا صورة وصل الدفع للمراجعة والموافقة.'
+    },
+    {
+      question: 'متى سأحصل على المنتج بعد الدفع؟',
+      answer: 'بمجرد مراجعة وصل الدفع والموافقة عليه، ستحصل على المنتج فوراً في صفحة "مشترياتي". عادة ما تتم المراجعة خلال دقائق معدودة.'
+    },
+    {
+      question: 'هل يمكنني استرجاع أموالي؟',
+      answer: 'نعم، إذا كان هناك مشكلة في المنتج أو لم يكن كما هو موصوف، يمكنك التواصل معنا عبر صفحة "اتصل بنا" وسنساعدك في حل المشكلة.'
+    },
+    {
+      question: 'ماذا لو رُفض طلبي؟',
+      answer: 'إذا رُفض طلبك، ستجد السبب في صفحة "مشترياتي". يمكنك التواصل معنا لمعرفة التفاصيل وحل المشكلة.'
+    },
+    {
+      question: 'هل منتجاتكم أصلية؟',
+      answer: 'نعم، جميع منتجاتنا أصلية ومختارة بعناية لضمان أعلى مستوى من الجودة لعملائنا.'
+    }
+  ]
+
   return (
     <div className={styles.page}>
       <Header />
@@ -108,6 +137,26 @@ export default function Home() {
               <h4>دعم متواصل</h4>
               <p>فريق الدعم متاح دائماً لمساعدتك</p>
             </div>
+          </div>
+        </section>
+
+        <section className={styles.faqSection}>
+          <h3>الأسئلة الشائعة</h3>
+          <div className={styles.faqContainer}>
+            {faqs.map((faq, index) => (
+              <div key={index} className={styles.faqItem}>
+                <button
+                  className={`${styles.faqQuestion} ${openFaqIndex === index ? styles.active : ''}`}
+                  onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
+                >
+                  <span>{faq.question}</span>
+                  <span className={styles.faqIcon}>{openFaqIndex === index ? '−' : '+'}</span>
+                </button>
+                <div className={`${styles.faqAnswer} ${openFaqIndex === index ? styles.show : ''}`}>
+                  <p>{faq.answer}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
       </main>
