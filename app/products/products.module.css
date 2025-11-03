@@ -155,18 +155,6 @@
   color: #ef4444;
 }
 
-.discountTimer {
-  margin-top: 8px;
-  padding: 6px 12px;
-  background: linear-gradient(135deg, #fef3c7, #fde68a);
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #92400e;
-  display: inline-block;
-  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.2);
-}
-
 @media (min-width: 1200px) {
   .originalPrice {
     font-size: 20px;
@@ -174,10 +162,6 @@
   
   .discountPrice {
     font-size: 30px;
-  }
-
-  .discountTimer {
-    font-size: 14px;
   }
 }
 
