@@ -136,7 +136,7 @@ export default function BuyModal({ product, onClose, customerEmail, customerName
             </div>
 
             <div className={styles.instagramBox}>
-              <p><strong>📱 تواصل معنا لتلقي جميع معلومات الدفع</strong></p>
+              <p><strong>📱 للدفع بالشيك تواصل معنا لتلقي جميع معلومات الدفع</strong></p>
               <a 
                 href="https://www.instagram.com/pro_dealsdz?igsh=MXN6M3dvaWNpa2plbw=="
                 target="_blank"
